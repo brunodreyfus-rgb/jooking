@@ -1,8 +1,1 @@
-<svg width="240" height="64" viewBox="0 0 240 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="64" height="64" rx="18" fill="#0F172A"/>
-  <path d="M32 12L48 19V31C48 42 41 51 32 55C23 51 16 42 16 31V19L32 12Z" fill="#1D4ED8"/>
-  <path d="M32 20C26.5 20 22 24.4 22 30C22 38 32 47 32 47C32 47 42 38 42 30C42 24.4 37.5 20 32 20Z" fill="white"/>
-  <circle cx="32" cy="30" r="3.5" fill="#1D4ED8"/>
-  <text x="78" y="37" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" fill="#0F172A">AntiBooking</text>
-  <text x="80" y="53" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#64748B">Travel informed. Stand against discrimination.</text>
-</svg>
+<svg width="320" height="86" viewBox="0 0 320 86" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="86" height="86" rx="22" fill="#0B1220"/><path d="M43 10L66 22V41C66 58 56.5 72 43 78C29.5 72 20 58 20 41V22L43 10Z" fill="#1D4ED8"/><path d="M43 23L49.3 34H61.8L51.7 40.6L56.8 52.5L43 44.8L29.2 52.5L34.3 40.6L24.2 34H36.7L43 23Z" fill="white"/><circle cx="43" cy="42" r="4" fill="#F59E0B"/><text x="104" y="39" font-family="Inter,Arial,sans-serif" font-size="31" font-weight="900" fill="#0B1220">AntiBooking</text><text x="106" y="61" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="750" fill="#475569">Travel informed. Stay aware.</text></svg>
