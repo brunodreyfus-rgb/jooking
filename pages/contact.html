@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us | AntiBooking</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+<body>
+  <div id="siteHeader"></div>
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <h1>Contact Us</h1>
+      <p>Reach AntiBooking for support, corrections, feedback or right-of-reply requests.</p>
+    </div>
+  </section>
+  <main class="main">
+    
+<section class="form-section">
+  <div class="panel">
+    <h2>Contact the team</h2>
+    <p>Use this form for corrections, source submissions, right-of-reply requests or general support.</p>
+  </div>
+  <form class="panel" action="https://api.web3forms.com/submit" method="POST">
+    <input type="hidden" name="access_key" value="YOUR_NEW_WEB3FORMS_KEY_HERE" />
+    <input type="checkbox" name="botcheck" style="display:none;" />
+    <input type="hidden" name="subject" value="New AntiBooking Contact Message" />
+    <input type="hidden" name="from_name" value="AntiBooking Website" />
+    <div class="form-grid">
+      <div class="input-box"><label>Name</label><input name="name" required /></div>
+      <div class="input-box"><label>Email</label><input type="email" name="email" required /></div>
+      <div class="input-box full"><label>Message</label><textarea name="message" required></textarea></div>
+      <div class="full"><button class="btn btn-primary" type="submit" style="width:100%; padding:16px;">Send message</button></div>
+    </div>
+  </form>
+</section>
+
+  </main>
+  <div id="siteFooter"></div>
+  <script src="/assets/js/components.js"></script>
+  <script src="/assets/js/forms.js"></script>
+</body>
+</html>

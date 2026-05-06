@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Country Risk Dashboard | AntiBooking</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+<body>
+  <div id="siteHeader"></div>
+
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <h1>Country Risk Dashboard</h1>
+      <p>Live risk intelligence based on approved Supabase incidents and real-source starter cases. Fictional seed data is excluded.</p>
+    </div>
+  </section>
+
+  <main class="main">
+    <div class="section-head">
+      <div>
+        <h2>Highest-risk countries</h2>
+        <p>Score formula: direct tourism case ×4, tourism-related lead ×2.</p>
+      </div>
+    </div>
+
+    <div class="results-grid" id="riskCards"></div>
+
+    <section class="info-band">
+      <div>
+        <h2>Tourism-oriented only</h2>
+        <p>
+          This dashboard excludes Holocaust museums, memorials and generic community institutions from the public avoidance logic. It focuses on hotels, restaurants, airlines, airport services, rentals, transport, attractions and visitor-facing public spaces.
+        </p>
+      </div>
+      <div class="steps">
+        <div class="step">Direct tourism: provider or booking experience</div>
+        <div class="step">Tourism-related: station, airport, visitor area, major public landmark</div>
+        <div class="step">Context only: risk intelligence, not blacklist</div>
+        <div class="step">Human moderation before publication</div>
+      </div>
+    </section>
+
+    <div class="section-head">
+      <div>
+        <h2>Country scoring table</h2>
+        <p>Use this to prioritize research and moderation work.</p>
+      </div>
+    </div>
+
+    <div id="riskTable"></div>
+  </main>
+
+  <div id="siteFooter"></div>
+  <script src="/assets/js/components.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script src="/assets/js/data.js"></script>
+  <script src="/assets/js/live-incidents.js"></script>
+  <script src="/assets/js/risk.js"></script>
+</body>
+</html>

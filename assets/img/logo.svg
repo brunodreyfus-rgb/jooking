@@ -1,0 +1,8 @@
+<svg width="240" height="64" viewBox="0 0 240 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="18" fill="#0F172A"/>
+  <path d="M32 12L48 19V31C48 42 41 51 32 55C23 51 16 42 16 31V19L32 12Z" fill="#1D4ED8"/>
+  <path d="M32 20C26.5 20 22 24.4 22 30C22 38 32 47 32 47C32 47 42 38 42 30C42 24.4 37.5 20 32 20Z" fill="white"/>
+  <circle cx="32" cy="30" r="3.5" fill="#1D4ED8"/>
+  <text x="78" y="37" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" fill="#0F172A">AntiBooking</text>
+  <text x="80" y="53" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#64748B">Travel informed. Stand against discrimination.</text>
+</svg>
