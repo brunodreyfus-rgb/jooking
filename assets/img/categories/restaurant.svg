@@ -1,1 +1,11 @@
-<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="110" r="96" fill="#fff" stroke="#1B365D" stroke-width="10"/><path d="M80 52v115" stroke="#0038A8" stroke-width="13" stroke-linecap="round"/><path d="M58 55v48M80 55v48M102 55v48" stroke="#0038A8" stroke-width="12" stroke-linecap="round"/><path d="M150 53c28 35 21 76-8 91v23" stroke="#1B365D" stroke-width="14" stroke-linecap="round"/><path d="M86 106l65 65" stroke="#1B365D" stroke-width="13" stroke-linecap="round"/></svg>
+<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Restaurant">
+  <circle cx="110" cy="110" r="96" fill="#ffffff" stroke="#1B365D" stroke-width="10"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M76 52V168" stroke="#0038A8" stroke-width="13"/>
+    <path d="M54 54V103M76 54V103M98 54V103" stroke="#0038A8" stroke-width="11"/>
+    <path d="M54 103C54 119 66 130 76 130C86 130 98 119 98 103" stroke="#0038A8" stroke-width="11"/>
+    <path d="M146 54C170 82 172 121 147 140V168" stroke="#1B365D" stroke-width="13"/>
+    <path d="M146 54V140" stroke="#1B365D" stroke-width="13"/>
+  </g>
+  <circle cx="110" cy="110" r="42" fill="none" stroke="#0038A8" stroke-width="7" opacity=".16"/>
+</svg>
