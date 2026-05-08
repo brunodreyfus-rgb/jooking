@@ -1,47 +1,111 @@
-
-/* AntiBooking V2.4.7 Grey Header Final */
+/* AntiBooking V2.4.8 - transparent logo + final grey header */
 
 .topbar {
-  background: linear-gradient(90deg, #d9dde3 0%, #c8d0da 45%, #b8c3d1 100%) !important;
-  min-height: 118px !important;
-  padding: 8px 3% !important;
+  background: linear-gradient(90deg, #e4e8ee 0%, #d3d9e2 48%, #c0cad6 100%) !important;
+  min-height: 122px !important;
+  padding: 10px 3.2% !important;
   display: flex !important;
   align-items: center !important;
-  gap: 12px !important;
-  border-bottom: 2px solid rgba(27,54,93,0.25) !important;
+  justify-content: flex-start !important;
+  gap: 22px !important;
+  border-bottom: 3px solid rgba(27, 54, 93, 0.34) !important;
+  box-shadow: 0 10px 24px rgba(16, 24, 32, 0.10) !important;
 }
 
 .brand {
-  width: 240px !important;
-  min-width: 240px !important;
-  margin-right: 4px !important;
+  flex: 0 0 auto !important;
+  width: 245px !important;
+  min-width: 245px !important;
+  margin-right: 24px !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
 .brand-logo {
-  width: 240px !important;
-  height: 100px !important;
+  width: 245px !important;
+  max-width: 245px !important;
+  height: 104px !important;
   object-fit: contain !important;
+  object-position: left center !important;
+  display: block !important;
   background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
 .nav {
   display: flex !important;
-  gap: 16px !important;
+  align-items: center !important;
+  gap: 24px !important;
   margin-left: 0 !important;
-  font-size: 15px !important;
-  font-weight: 800 !important;
+  flex: 1 1 auto !important;
+  font-size: 16px !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
 }
 
 .nav a {
-  color: #0f172a !important;
+  color: #101820 !important;
+  opacity: 0.96 !important;
+}
+
+.nav a:hover {
+  color: #0038A8 !important;
+  opacity: 1 !important;
 }
 
 .topbar > .btn {
   margin-left: auto !important;
-  padding: 11px 18px !important;
-  font-size: 15px !important;
+  font-size: 16px !important;
+  padding: 13px 24px !important;
   border-radius: 12px !important;
   background: #ffffff !important;
-  color: #0b3ea8 !important;
-  border: 1px solid rgba(15,23,42,0.08) !important;
+  color: #0038A8 !important;
+  border: 1px solid rgba(16, 24, 32, 0.10) !important;
+  box-shadow: 0 8px 18px rgba(16, 24, 32, 0.12) !important;
+}
+
+.footer .brand-logo {
+  width: 285px !important;
+  max-width: 285px !important;
+  height: 96px !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 1180px) {
+  .brand,
+  .brand-logo {
+    width: 210px !important;
+    max-width: 210px !important;
+    min-width: 210px !important;
+  }
+
+  .nav {
+    gap: 13px !important;
+    font-size: 13px !important;
+  }
+
+  .topbar > .btn {
+    font-size: 14px !important;
+    padding: 11px 15px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .topbar {
+    min-height: 96px !important;
+    justify-content: space-between !important;
+  }
+
+  .brand,
+  .brand-logo {
+    width: 190px !important;
+    max-width: 190px !important;
+    min-width: 190px !important;
+    height: 78px !important;
+  }
 }
