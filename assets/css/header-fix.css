@@ -1,16 +1,361 @@
+/* AntiBooking V2.4.10 - exact approved mockup */
 
-/* === FIX LOGO CONTRAST === */
-/* Add this at the END of assets/css/header-fix.css */
+:root {
+  --ab-blue: #0038A8;
+  --ab-navy: #071F46;
+  --ab-ink: #071A3D;
+}
+
+.topbar {
+  background: linear-gradient(90deg, #eef2f6 0%, #d9e1eb 46%, #b9c5d2 100%) !important;
+  min-height: 142px !important;
+  padding: 14px 3.3% 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 30px !important;
+  border-bottom: 3px solid rgba(27,54,93,0.42) !important;
+  box-shadow: 0 8px 22px rgba(16,24,32,0.13) !important;
+}
 
 .brand {
+  flex: 0 0 auto !important;
+  width: 210px !important;
+  min-width: 210px !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 26px 0 0 !important;
   opacity: 1 !important;
   filter: none !important;
   mix-blend-mode: normal !important;
 }
 
 .brand-logo {
+  width: 210px !important;
+  max-width: 210px !important;
+  height: 116px !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  display: block !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
   opacity: 1 !important;
   filter: none !important;
   mix-blend-mode: normal !important;
   isolation: isolate !important;
+}
+
+.nav {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 33px !important;
+  flex: 1 1 auto !important;
+  margin: 8px 0 0 0 !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+}
+
+.nav a {
+  position: relative !important;
+  color: #101820 !important;
+  opacity: 1 !important;
+  padding: 12px 0 17px !important;
+  line-height: 1 !important;
+}
+
+.nav a:hover,
+.nav a.active {
+  color: #0038A8 !important;
+}
+
+.nav a:hover::after,
+.nav a.active::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  height: 4px !important;
+  border-radius: 999px !important;
+  background: #0038A8 !important;
+}
+
+.report-cta {
+  margin-left: auto !important;
+  padding: 16px 25px !important;
+  min-width: 214px !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  color: #0038A8 !important;
+  border: 1px solid rgba(16,24,32,0.08) !important;
+  box-shadow: 0 10px 22px rgba(16,24,32,0.13) !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+}
+
+.report-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #0038A8 !important;
+}
+
+.hero {
+  position: relative !important;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.93) 34%, rgba(255,255,255,0.50) 64%, rgba(255,255,255,0.18) 100%),
+    url("https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg") center right / 68% auto no-repeat,
+    linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%) !important;
+  color: #071A3D !important;
+  padding: 78px 6.5% 72px !important;
+  min-height: 488px !important;
+  overflow: hidden !important;
+}
+
+.hero::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: radial-gradient(circle at 78% 45%, rgba(0,56,168,0.14), transparent 32%) !important;
+  pointer-events: none !important;
+}
+
+.hero-grid {
+  position: relative !important;
+  z-index: 1 !important;
+  max-width: 1220px !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: .86fr 1.14fr !important;
+  gap: 38px !important;
+  align-items: center !important;
+}
+
+.eyebrow,
+.hero-card {
+  display: none !important;
+}
+
+.hero h1 {
+  color: #071A3D !important;
+  font-size: clamp(54px, 6.2vw, 83px) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.065em !important;
+  margin: 0 0 26px !important;
+  max-width: 570px !important;
+}
+
+.hero p {
+  color: #172033 !important;
+  font-size: 20px !important;
+  line-height: 1.55 !important;
+  max-width: 560px !important;
+  margin: 0 0 28px !important;
+}
+
+.hero .btn {
+  border-radius: 10px !important;
+  padding: 16px 25px !important;
+  font-size: 17px !important;
+  box-shadow: 0 8px 18px rgba(16,24,32,0.10) !important;
+}
+
+.hero .btn-primary {
+  background: #0038A8 !important;
+}
+
+.hero .btn-light {
+  background: #ffffff !important;
+  border: 1px solid #0038A8 !important;
+  color: #0038A8 !important;
+}
+
+.hero-grid::after {
+  content: "Risk Level\A\A■  High\A■  Medium\A■  Low\A■  N/A" !important;
+  white-space: pre !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: 48% !important;
+  transform: translateY(-50%) !important;
+  background: rgba(255,255,255,0.92) !important;
+  border: 1px solid rgba(16,24,32,0.08) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 25px rgba(16,24,32,0.13) !important;
+  padding: 18px 22px !important;
+  color: #071A3D !important;
+  font-weight: 700 !important;
+  line-height: 1.45 !important;
+  font-size: 16px !important;
+}
+
+#worldRiskMap {
+  display: none !important;
+}
+
+.search-panel {
+  max-width: 1180px !important;
+  margin: 26px auto 0 !important;
+  border: 1px solid #d9e2ee !important;
+  box-shadow: 0 7px 18px rgba(16,24,32,0.08) !important;
+  border-radius: 14px !important;
+}
+
+.category-strip {
+  grid-template-columns: repeat(7, minmax(128px, 1fr)) !important;
+  gap: 18px !important;
+  margin: 20px 0 34px !important;
+}
+
+.category-tile {
+  position: relative !important;
+  padding: 18px 12px !important;
+  min-height: 146px !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  border: 1px solid #dfe6ef !important;
+  box-shadow: 0 8px 20px rgba(16,24,32,0.08) !important;
+}
+
+.category-tile:last-child::after {
+  content: "NEW" !important;
+  position: absolute !important;
+  top: 8px !important;
+  right: 10px !important;
+  background: #0038A8 !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  border-radius: 999px !important;
+  padding: 3px 7px !important;
+}
+
+.category-tile img {
+  width: 78px !important;
+  height: 78px !important;
+  margin: 0 auto 11px !important;
+}
+
+.category-tile strong {
+  color: #101820 !important;
+  font-size: 14px !important;
+  line-height: 1.18 !important;
+}
+
+.results-grid {
+  gap: 13px !important;
+}
+
+.incident-card.result-card {
+  grid-template-columns: 162px 1fr 168px !important;
+  min-height: 162px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 5px 14px rgba(16,24,32,0.07) !important;
+}
+
+.card-image {
+  min-height: 162px !important;
+  height: 162px !important;
+}
+
+.card-image img {
+  width: 90px !important;
+  height: 90px !important;
+}
+
+.card-body {
+  padding: 13px 18px !important;
+}
+
+.incident-card h3 {
+  font-size: 20px !important;
+  margin-bottom: 5px !important;
+}
+
+.incident-card p {
+  font-size: 13.5px !important;
+  line-height: 1.38 !important;
+  margin-bottom: 7px !important;
+}
+
+.card-side {
+  padding: 13px 13px !important;
+}
+
+.score-value {
+  font-size: 20px !important;
+  padding: 7px 9px !important;
+}
+
+.risk-bars span {
+  width: 7px !important;
+  height: 22px !important;
+}
+
+.card-side .btn {
+  padding: 9px 11px !important;
+  font-size: 13px !important;
+}
+
+.footer .brand-logo {
+  width: 250px !important;
+  max-width: 250px !important;
+  height: 96px !important;
+  background: transparent !important;
+}
+
+@media (max-width: 1180px) {
+  .topbar {
+    min-height: 110px !important;
+    gap: 16px !important;
+  }
+  .brand,
+  .brand-logo {
+    width: 185px !important;
+    max-width: 185px !important;
+    min-width: 185px !important;
+    height: 92px !important;
+  }
+  .nav {
+    gap: 14px !important;
+    font-size: 14px !important;
+  }
+  .report-cta {
+    min-width: auto !important;
+    font-size: 14px !important;
+    padding: 12px 16px !important;
+  }
+  .category-strip {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .hero-grid::after {
+    display: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .nav {
+    display: none !important;
+  }
+  .topbar {
+    justify-content: space-between !important;
+  }
+  .hero {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.88)),
+      url("https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg") center / cover no-repeat !important;
+  }
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .category-strip {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .incident-card.result-card {
+    grid-template-columns: 1fr !important;
+  }
 }
