@@ -1,30 +1,30 @@
-/* AntiBooking V2.4.8 - transparent logo + final grey header */
+/* AntiBooking V2.4.9 - final grey header + compact Booking-style cards */
 
 .topbar {
-  background: linear-gradient(90deg, #e4e8ee 0%, #d3d9e2 48%, #c0cad6 100%) !important;
-  min-height: 122px !important;
-  padding: 10px 3.2% !important;
+  background: linear-gradient(90deg, #e6eaf0 0%, #d6dde6 46%, #c5cfdb 100%) !important;
+  min-height: 112px !important;
+  padding: 8px 2.8% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  gap: 22px !important;
-  border-bottom: 3px solid rgba(27, 54, 93, 0.34) !important;
-  box-shadow: 0 10px 24px rgba(16, 24, 32, 0.10) !important;
+  gap: 18px !important;
+  border-bottom: 2px solid rgba(27,54,93,0.28) !important;
+  box-shadow: 0 8px 22px rgba(16,24,32,0.10) !important;
 }
 
 .brand {
   flex: 0 0 auto !important;
-  width: 245px !important;
-  min-width: 245px !important;
-  margin-right: 24px !important;
+  width: 230px !important;
+  min-width: 230px !important;
+  margin-right: 18px !important;
   display: flex !important;
   align-items: center !important;
 }
 
 .brand-logo {
-  width: 245px !important;
-  max-width: 245px !important;
-  height: 104px !important;
+  width: 230px !important;
+  max-width: 230px !important;
+  height: 96px !important;
   object-fit: contain !important;
   object-position: left center !important;
   display: block !important;
@@ -38,10 +38,10 @@
 .nav {
   display: flex !important;
   align-items: center !important;
-  gap: 24px !important;
+  gap: 22px !important;
   margin-left: 0 !important;
   flex: 1 1 auto !important;
-  font-size: 16px !important;
+  font-size: 15px !important;
   font-weight: 850 !important;
   white-space: nowrap !important;
 }
@@ -53,59 +53,237 @@
 
 .nav a:hover {
   color: #0038A8 !important;
-  opacity: 1 !important;
 }
 
 .topbar > .btn {
   margin-left: auto !important;
-  font-size: 16px !important;
-  padding: 13px 24px !important;
+  font-size: 15px !important;
+  padding: 12px 21px !important;
   border-radius: 12px !important;
   background: #ffffff !important;
   color: #0038A8 !important;
-  border: 1px solid rgba(16, 24, 32, 0.10) !important;
-  box-shadow: 0 8px 18px rgba(16, 24, 32, 0.12) !important;
+  border: 1px solid rgba(16,24,32,0.10) !important;
+  box-shadow: 0 8px 18px rgba(16,24,32,0.12) !important;
+}
+
+/* Compact world map */
+.world-map-card {
+  padding: 18px !important;
+  margin: 22px 0 28px !important;
+  border-radius: 14px !important;
+}
+
+.world-map-card .section-head {
+  margin: 0 0 12px !important;
+}
+
+.world-map-card .section-head h2 {
+  font-size: 25px !important;
+}
+
+.world-map-card .section-head p {
+  margin-top: 4px !important;
+  font-size: 14px !important;
+}
+
+.world-map-wrap {
+  height: 300px !important;
+  border-radius: 12px !important;
+}
+
+/* Compact category tiles */
+.category-strip {
+  grid-template-columns: repeat(7, minmax(118px, 1fr)) !important;
+  gap: 12px !important;
+  margin: 18px 0 28px !important;
+}
+
+.category-tile {
+  padding: 12px 10px !important;
+  min-height: 118px !important;
+  border-radius: 12px !important;
+}
+
+.category-tile img {
+  width: 62px !important;
+  height: 62px !important;
+  margin: 0 auto 8px !important;
+}
+
+.category-tile strong {
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+}
+
+/* Booking-like compact reported cards */
+.results-grid {
+  gap: 12px !important;
+}
+
+.incident-card.result-card {
+  grid-template-columns: 170px 1fr 170px !important;
+  min-height: 170px !important;
+  border-radius: 9px !important;
+  box-shadow: 0 4px 13px rgba(16,24,32,0.07) !important;
+}
+
+.incident-card.result-card:hover {
+  box-shadow: 0 8px 21px rgba(0,108,228,0.18) !important;
+}
+
+.card-image {
+  min-height: 170px !important;
+  height: 170px !important;
+  background: #edf3fb !important;
+  border-right: 1px solid #d9e2ee !important;
+}
+
+.card-image img {
+  width: 92px !important;
+  height: 92px !important;
+  object-fit: contain !important;
+}
+
+.card-body {
+  padding: 14px 18px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+}
+
+.tag-row {
+  margin-bottom: 8px !important;
+  gap: 6px !important;
+}
+
+.tag {
+  font-size: 10px !important;
+  padding: 4px 7px !important;
+  border-radius: 5px !important;
+}
+
+.incident-card h3 {
+  font-size: 21px !important;
+  margin: 0 0 6px !important;
+  color: #006ce4 !important;
+}
+
+.incident-card p {
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  margin: 0 0 8px !important;
+  max-width: 900px !important;
+}
+
+.meta {
+  margin-top: auto !important;
+  padding-top: 6px !important;
+  font-size: 13px !important;
+}
+
+.card-side {
+  padding: 14px 14px !important;
+  background: #ffffff !important;
+  border-left: 1px solid #d9e2ee !important;
+  text-align: right !important;
+}
+
+.score-label {
+  font-size: 12px !important;
+}
+
+.score-value {
+  font-size: 21px !important;
+  padding: 7px 9px !important;
+  margin-top: 5px !important;
+}
+
+.risk-bars {
+  margin: 8px 0 8px !important;
+}
+
+.risk-bars span {
+  width: 7px !important;
+  height: 22px !important;
+}
+
+.card-side p {
+  font-size: 11px !important;
+  line-height: 1.25 !important;
+  margin-bottom: 8px !important;
+}
+
+.card-side .btn {
+  padding: 10px 12px !important;
+  font-size: 13px !important;
+  border-radius: 7px !important;
 }
 
 .footer .brand-logo {
-  width: 285px !important;
-  max-width: 285px !important;
-  height: 96px !important;
+  width: 260px !important;
+  max-width: 260px !important;
+  height: 90px !important;
   background: transparent !important;
-  padding: 0 !important;
-  box-shadow: none !important;
 }
 
 @media (max-width: 1180px) {
   .brand,
   .brand-logo {
-    width: 210px !important;
-    max-width: 210px !important;
-    min-width: 210px !important;
+    width: 205px !important;
+    max-width: 205px !important;
+    min-width: 205px !important;
   }
 
   .nav {
-    gap: 13px !important;
+    gap: 12px !important;
     font-size: 13px !important;
   }
 
   .topbar > .btn {
-    font-size: 14px !important;
-    padding: 11px 15px !important;
+    font-size: 13px !important;
+    padding: 10px 14px !important;
+  }
+
+  .category-strip {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+
+  .incident-card.result-card {
+    grid-template-columns: 145px 1fr !important;
+  }
+
+  .card-side {
+    grid-column: 1/-1 !important;
+    border-left: 0 !important;
+    border-top: 1px solid #d9e2ee !important;
+    flex-direction: row !important;
+    align-items: center !important;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 800px) {
   .topbar {
-    min-height: 96px !important;
-    justify-content: space-between !important;
+    min-height: 92px !important;
   }
 
   .brand,
   .brand-logo {
-    width: 190px !important;
-    max-width: 190px !important;
-    min-width: 190px !important;
-    height: 78px !important;
+    width: 185px !important;
+    max-width: 185px !important;
+    min-width: 185px !important;
+    height: 72px !important;
+  }
+
+  .incident-card.result-card {
+    grid-template-columns: 1fr !important;
+  }
+
+  .card-image {
+    height: 120px !important;
+    min-height: 120px !important;
+  }
+
+  .category-strip {
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
