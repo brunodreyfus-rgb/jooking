@@ -1,66 +1,47 @@
+
+/* AntiBooking V2.4.7 Grey Header Final */
+
 .topbar {
-  background: linear-gradient(90deg, #101820 0%, #101820 38%, #1B365D 100%) !important;
-  min-height: 120px !important;
-  padding: 8px 3.2% !important;
+  background: linear-gradient(90deg, #d9dde3 0%, #c8d0da 45%, #b8c3d1 100%) !important;
+  min-height: 118px !important;
+  padding: 8px 3% !important;
   display: flex !important;
   align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 14px !important;
-  border-bottom: 3px solid rgba(0, 56, 168, 0.55) !important;
+  gap: 12px !important;
+  border-bottom: 2px solid rgba(27,54,93,0.25) !important;
 }
+
 .brand {
-  flex: 0 0 auto !important;
-  width: 275px !important;
-  min-width: 275px !important;
-  margin-right: 10px !important;
-  display: flex !important;
-  align-items: center !important;
+  width: 240px !important;
+  min-width: 240px !important;
+  margin-right: 4px !important;
 }
+
 .brand-logo {
-  width: 275px !important;
-  max-width: 275px !important;
-  height: 108px !important;
+  width: 240px !important;
+  height: 100px !important;
   object-fit: contain !important;
-  object-position: left center !important;
-  display: block !important;
   background: transparent !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border-radius: 0 !important;
 }
+
 .nav {
   display: flex !important;
-  align-items: center !important;
-  gap: 18px !important;
+  gap: 16px !important;
   margin-left: 0 !important;
-  flex: 1 1 auto !important;
   font-size: 15px !important;
-  font-weight: 900 !important;
-  white-space: nowrap !important;
+  font-weight: 800 !important;
 }
-.nav a { color: #F2F2F2 !important; opacity: 0.96 !important; }
-.nav a:hover { color: #ffffff !important; opacity: 1 !important; }
+
+.nav a {
+  color: #0f172a !important;
+}
+
 .topbar > .btn {
   margin-left: auto !important;
-  font-size: 16px !important;
-  padding: 15px 24px !important;
-  border-radius: 8px !important;
-  background: #F2F2F2 !important;
-  color: #0038A8 !important;
-}
-.footer .brand-logo {
-  width: 285px !important;
-  max-width: 285px !important;
-  height: 96px !important;
-  background: transparent !important;
-  padding: 0 !important;
-}
-@media (max-width: 1180px) {
-  .brand, .brand-logo {
-    width: 230px !important;
-    max-width: 230px !important;
-    min-width: 230px !important;
-  }
-  .nav { gap: 11px !important; font-size: 13px !important; }
-  .topbar > .btn { font-size: 14px !important; padding: 12px 15px !important; }
+  padding: 11px 18px !important;
+  font-size: 15px !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  color: #0b3ea8 !important;
+  border: 1px solid rgba(15,23,42,0.08) !important;
 }
