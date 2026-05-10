@@ -1,4 +1,4 @@
-/* AntiBooking V2.4.15 - approved light header + footer */
+/* AntiBooking V2.4.16 - FORCE approved header/footer + pinned hero */
 
 :root {
   --ab-blue: #0038A8;
@@ -7,8 +7,8 @@
   --ab-text: #101820;
 }
 
-/* HEADER - exact approved style */
-.topbar {
+/* HEADER - approved light style */
+body .topbar {
   background: linear-gradient(90deg, #eef2f6 0%, #dce4ee 47%, #c4cfdc 100%) !important;
   min-height: 132px !important;
   padding: 13px 2.6% 10px !important;
@@ -18,9 +18,10 @@
   gap: 38px !important;
   border-bottom: 2px solid rgba(27,54,93,0.34) !important;
   box-shadow: 0 8px 22px rgba(16,24,32,0.12) !important;
+  color: #101820 !important;
 }
 
-.brand {
+body .topbar .brand {
   flex: 0 0 auto !important;
   width: 170px !important;
   min-width: 170px !important;
@@ -32,7 +33,7 @@
   mix-blend-mode: normal !important;
 }
 
-.brand-logo {
+body .topbar .brand-logo {
   width: 170px !important;
   max-width: 170px !important;
   height: 108px !important;
@@ -50,7 +51,7 @@
   isolation: isolate !important;
 }
 
-.nav {
+body .topbar .nav {
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
@@ -62,21 +63,22 @@
   white-space: nowrap !important;
 }
 
-.nav a {
+body .topbar .nav a {
   position: relative !important;
   color: #101820 !important;
   opacity: 1 !important;
   padding: 12px 0 17px !important;
   line-height: 1 !important;
+  text-decoration: none !important;
 }
 
-.nav a:hover,
-.nav a.active {
+body .topbar .nav a:hover,
+body .topbar .nav a.active {
   color: #0038A8 !important;
 }
 
-.nav a:hover::after,
-.nav a.active::after {
+body .topbar .nav a:hover::after,
+body .topbar .nav a.active::after {
   content: "" !important;
   position: absolute !important;
   left: 0 !important;
@@ -87,7 +89,7 @@
   background: #0038A8 !important;
 }
 
-.report-cta {
+body .topbar .report-cta {
   margin-left: auto !important;
   padding: 16px 25px !important;
   min-width: 206px !important;
@@ -101,13 +103,13 @@
   gap: 11px !important;
 }
 
-.report-icon {
+body .topbar .report-icon {
   display: inline-flex !important;
   color: #0038A8 !important;
 }
 
-/* FOOTER - same approved light style as header */
-.footer {
+/* FOOTER - exact same light style */
+body .footer {
   background: linear-gradient(90deg, #eef2f6 0%, #dce4ee 47%, #c4cfdc 100%) !important;
   color: #101820 !important;
   border-top: 2px solid rgba(27,54,93,0.34) !important;
@@ -116,7 +118,7 @@
   padding: 24px 3.2% !important;
 }
 
-.footer-grid {
+body .footer-grid {
   max-width: 1490px !important;
   margin: 0 auto !important;
   display: flex !important;
@@ -125,7 +127,7 @@
   gap: 30px !important;
 }
 
-.footer .brand {
+body .footer .brand {
   width: 170px !important;
   min-width: 170px !important;
   margin: 0 !important;
@@ -133,7 +135,7 @@
   align-items: center !important;
 }
 
-.footer .brand-logo {
+body .footer .brand-logo {
   width: 170px !important;
   max-width: 170px !important;
   height: 108px !important;
@@ -149,19 +151,74 @@
   mix-blend-mode: normal !important;
 }
 
-.footer p {
+body .footer p {
   color: #101820 !important;
   font-weight: 700 !important;
 }
 
-.footer-grid > p:last-child {
+body .footer-grid > p:last-child {
   color: #071A3D !important;
   font-size: 15px !important;
   text-align: right !important;
 }
 
-/* Hero map and approved layout preservation */
-.hero-map {
+/* HERO - approved pinned map */
+body .hero {
+  position: relative !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+  color: #071A3D !important;
+  padding: 62px 3.6% 42px !important;
+  min-height: 520px !important;
+  overflow: hidden !important;
+}
+
+body .hero-grid {
+  max-width: 1490px !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: 0.78fr 1.22fr !important;
+  gap: 42px !important;
+  align-items: center !important;
+}
+
+body .hero .eyebrow,
+body .hero .hero-card {
+  display: none !important;
+}
+
+body .hero h1 {
+  color: #071A3D !important;
+  font-size: clamp(54px, 6vw, 84px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.065em !important;
+  margin: 0 0 26px !important;
+  max-width: 560px !important;
+}
+
+body .hero p {
+  color: #172033 !important;
+  font-size: 20px !important;
+  line-height: 1.55 !important;
+  max-width: 570px !important;
+  margin: 0 0 28px !important;
+}
+
+body .hero .btn {
+  border-radius: 10px !important;
+  padding: 16px 24px !important;
+  font-size: 17px !important;
+  box-shadow: 0 8px 18px rgba(16,24,32,0.10) !important;
+}
+
+body .hero .btn-primary { background: #0038A8 !important; }
+body .hero .btn-light {
+  background: #ffffff !important;
+  border: 1px solid #0038A8 !important;
+  color: #0038A8 !important;
+}
+
+/* If old hero still has aside, force hidden and map box will show from new index */
+body .hero-map {
   position: relative !important;
   height: 392px !important;
   border-radius: 12px !important;
@@ -173,7 +230,7 @@
   border: 1px solid rgba(16,24,32,0.06) !important;
 }
 
-.map-pin {
+body .map-pin {
   position: absolute !important;
   z-index: 3 !important;
   width: 28px !important;
@@ -185,7 +242,7 @@
   box-shadow: 0 5px 12px rgba(16,24,32,.35) !important;
 }
 
-.map-pin::after {
+body .map-pin::after {
   content: "" !important;
   position: absolute !important;
   width: 8px !important;
@@ -197,11 +254,11 @@
   transform: translate(-50%, -50%) !important;
 }
 
-.map-pin.high { background: #dc2626 !important; }
-.map-pin.medium { background: #f59e0b !important; }
-.map-pin.low { background: #0038A8 !important; }
+body .map-pin.high { background: #dc2626 !important; }
+body .map-pin.medium { background: #f59e0b !important; }
+body .map-pin.low { background: #0038A8 !important; }
 
-.map-legend {
+body .map-legend {
   position: absolute !important;
   right: 14px !important;
   bottom: 14px !important;
@@ -215,13 +272,13 @@
   min-width: 130px !important;
 }
 
-.map-legend strong {
+body .map-legend strong {
   display: block !important;
   margin-bottom: 10px !important;
   font-size: 14px !important;
 }
 
-.legend-row {
+body .legend-row {
   display: flex !important;
   align-items: center !important;
   gap: 9px !important;
@@ -229,7 +286,7 @@
   font-size: 13px !important;
 }
 
-.legend-pin {
+body .legend-pin {
   width: 12px !important;
   height: 12px !important;
   border-radius: 50% 50% 50% 0 !important;
@@ -238,54 +295,66 @@
   background: #94a3b8 !important;
 }
 
-.legend-pin.high { background: #dc2626 !important; }
-.legend-pin.medium { background: #f59e0b !important; }
-.legend-pin.low { background: #0038A8 !important; }
-.legend-pin.na { background: #9ca3af !important; }
+body .legend-pin.high { background: #dc2626 !important; }
+body .legend-pin.medium { background: #f59e0b !important; }
+body .legend-pin.low { background: #0038A8 !important; }
+body .legend-pin.na { background: #9ca3af !important; }
 
 @media (max-width: 1180px) {
-  .topbar {
+  body .topbar {
     min-height: 110px !important;
     gap: 18px !important;
   }
 
-  .brand,
-  .brand-logo,
-  .footer .brand,
-  .footer .brand-logo {
+  body .topbar .brand,
+  body .topbar .brand-logo,
+  body .footer .brand,
+  body .footer .brand-logo {
     width: 155px !important;
     max-width: 155px !important;
     min-width: 155px !important;
     height: 88px !important;
   }
 
-  .nav {
+  body .topbar .nav {
     gap: 14px !important;
     font-size: 14px !important;
   }
 
-  .report-cta {
+  body .topbar .report-cta {
     min-width: auto !important;
     font-size: 14px !important;
     padding: 12px 16px !important;
   }
+
+  body .hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body .hero-map {
+    height: 340px !important;
+  }
 }
 
 @media (max-width: 900px) {
-  .nav {
+  body .topbar .nav {
     display: none !important;
   }
 
-  .topbar {
+  body .topbar {
     justify-content: space-between !important;
   }
 
-  .footer-grid {
+  body .footer-grid {
     flex-direction: column !important;
     align-items: flex-start !important;
   }
 
-  .footer-grid > p:last-child {
+  body .footer-grid > p:last-child {
     text-align: left !important;
+  }
+
+  body .hero-map {
+    height: 260px !important;
   }
 }
