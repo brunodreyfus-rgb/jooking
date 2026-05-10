@@ -12,7 +12,7 @@ function siteHeader(current = "") {
   return `
     <header class="topbar">
       <a href="/index.html" class="brand" aria-label="AntiBooking home">
-        <img class="brand-logo" src="/assets/img/logo-header.png?v=2414" alt="AntiBooking logo" />
+        <img class="brand-logo" src="/assets/img/logo-header.png?v=2415" alt="AntiBooking logo" />
       </a>
 
       <nav class="nav">
@@ -43,7 +43,7 @@ function siteFooter() {
       <div class="footer-grid">
         <div>
           <div class="brand">
-            <img class="brand-logo" src="/assets/img/logo-header.png?v=2414" alt="AntiBooking logo" />
+            <img class="brand-logo" src="/assets/img/logo-header.png?v=2415" alt="AntiBooking logo" />
           </div>
           <p>Travel informed. Stay aware.</p>
         </div>
