@@ -1,0 +1,64 @@
+/* AntiBooking V2.4.13 - Footer grey like header */
+
+.footer {
+  background: linear-gradient(90deg, #eef2f6 0%, #dce4ee 47%, #c4cfdc 100%) !important;
+  color: #101820 !important;
+  border-top: 2px solid rgba(27,54,93,0.34) !important;
+  box-shadow: 0 -8px 22px rgba(16,24,32,0.08) !important;
+  padding: 30px 7% !important;
+}
+
+.footer-grid {
+  max-width: 1180px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 30px !important;
+}
+
+.footer .brand {
+  width: 210px !important;
+  min-width: 210px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.footer .brand-logo {
+  width: 210px !important;
+  max-width: 210px !important;
+  height: 105px !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+.footer p {
+  color: #101820 !important;
+  font-weight: 700 !important;
+}
+
+.footer-grid > p:last-child {
+  color: #071A3D !important;
+  font-size: 15px !important;
+  text-align: right !important;
+}
+
+@media (max-width: 800px) {
+  .footer-grid {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .footer-grid > p:last-child {
+    text-align: left !important;
+  }
+}
