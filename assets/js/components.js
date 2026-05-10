@@ -12,11 +12,17 @@ function siteHeader(current = "") {
   return `
     <header class="topbar">
       <a href="/index.html" class="brand" aria-label="AntiBooking home">
-        <img class="brand-logo" src="/assets/img/logo-header.png?v=2413" alt="AntiBooking logo" />
+        <img class="brand-logo" src="/assets/img/logo-header.png?v=2414" alt="AntiBooking logo" />
       </a>
+
       <nav class="nav">
-        ${nav.map(([label, href], index) => `<a class="${index === 0 ? "active" : ""}" href="${href}">${label}</a>`).join("")}
+        ${nav.map(([label, href], index) => `
+          <a class="${index === 0 ? "active" : ""}" href="${href}">
+            ${label}
+          </a>
+        `).join("")}
       </nav>
+
       <a class="btn btn-light report-cta" href="/pages/report.html">
         <span class="report-icon" aria-hidden="true">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -37,10 +43,11 @@ function siteFooter() {
       <div class="footer-grid">
         <div>
           <div class="brand">
-            <img class="brand-logo" src="/assets/img/logo-header.png?v=2413" alt="AntiBooking logo" />
+            <img class="brand-logo" src="/assets/img/logo-header.png?v=2414" alt="AntiBooking logo" />
           </div>
           <p>Travel informed. Stay aware.</p>
         </div>
+
         <p>© 2026 AntiBooking. Evidence-first travel risk intelligence.</p>
       </div>
     </footer>
@@ -50,6 +57,7 @@ function siteFooter() {
 function mountLayout() {
   const header = document.getElementById("siteHeader");
   const footer = document.getElementById("siteFooter");
+
   if (header) header.innerHTML = siteHeader();
   if (footer) footer.innerHTML = siteFooter();
 }
