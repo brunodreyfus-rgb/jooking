@@ -2,17 +2,17 @@ function siteHeader(current = "") {
   const nav = [
     ["Home", "/index.html"],
     ["Search", "/index.html#search"],
-    ["Report", "/pages/report.html"],
+    ["Risks", "/index.html#search"],
+    ["Friendly Places", "/pages/friendly.html"],
     ["Risk Map", "/pages/country-risk.html"],
     ["Methodology", "/pages/methodology.html"],
-    ["Right of Reply", "/pages/right-of-reply.html"],
     ["Admin", "/pages/admin.html"]
   ];
 
   return `
     <header class="topbar">
       <a href="/index.html" class="brand" aria-label="AntiBooking home">
-        <img class="brand-logo" src="/assets/img/logo-header.png?v=2416" alt="AntiBooking logo" />
+        <img class="brand-logo" src="/assets/img/logo-header.png?v=251" alt="AntiBooking logo" />
       </a>
 
       <nav class="nav">
@@ -43,7 +43,7 @@ function siteFooter() {
       <div class="footer-grid">
         <div>
           <div class="brand">
-            <img class="brand-logo" src="/assets/img/logo-header.png?v=2416" alt="AntiBooking logo" />
+            <img class="brand-logo" src="/assets/img/logo-header.png?v=251" alt="AntiBooking logo" />
           </div>
           <p>Travel informed. Stay aware.</p>
         </div>
