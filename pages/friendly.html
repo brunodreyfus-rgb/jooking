@@ -4,30 +4,22 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Friendly Places | AntiBooking</title>
-
   <link rel="stylesheet" href="/assets/css/style.css"/>
   <link rel="stylesheet" href="/assets/css/header-fix.css"/>
   <link rel="stylesheet" href="/assets/css/footer-fix.css"/>
   <link rel="stylesheet" href="/assets/css/friendly.css"/>
 </head>
 <body>
-
 <div id="siteHeader"></div>
 
 <section class="friendly-hero">
   <div class="friendly-grid">
     <div>
-      <div class="eyebrow">Evidence-first recommendations</div>
-
+      <div class="friendly-eyebrow">Evidence-first recommendations</div>
       <h1>Friendly places for Jewish & Israeli travelers.</h1>
-
-      <p>
-        AntiBooking also highlights hotels, restaurants, communities and tourism services
-        positively reviewed by Jewish and Israeli travelers using the same evidence-first methodology.
-      </p>
-
+      <p>AntiBooking also highlights hotels, restaurants, communities and tourism services positively reviewed by Jewish and Israeli travelers using the same evidence-first methodology.</p>
       <div class="friendly-actions">
-        <a class="btn btn-primary" href="#friendlyPlaces">Explore places</a>
+        <a class="btn btn-primary" href="#friendlyPlaces">Explore friendly places</a>
         <a class="btn btn-light" href="/pages/report.html">Recommend a place</a>
       </div>
     </div>
@@ -37,41 +29,20 @@
         <span>🇫🇮 Finland Travel Confidence</span>
         <strong>7.8 / 10</strong>
       </div>
-
-      <div class="score-row">
-        <label>Physical safety</label>
-        <div class="bar"><span style="width:85%"></span></div>
-      </div>
-
-      <div class="score-row">
-        <label>Jewish infrastructure</label>
-        <div class="bar"><span style="width:72%"></span></div>
-      </div>
-
-      <div class="score-row">
-        <label>Friendly places</label>
-        <div class="bar"><span style="width:81%"></span></div>
-      </div>
-
-      <div class="score-row">
-        <label>Political atmosphere</label>
-        <div class="bar"><span style="width:55%"></span></div>
-      </div>
+      <div class="score-row"><label>Physical safety</label><div class="bar"><span style="width:85%"></span></div></div>
+      <div class="score-row"><label>Jewish infrastructure</label><div class="bar"><span style="width:72%"></span></div></div>
+      <div class="score-row"><label>Friendly places</label><div class="bar"><span style="width:81%"></span></div></div>
+      <div class="score-row"><label>Political atmosphere</label><div class="bar"><span style="width:55%"></span></div></div>
     </div>
   </div>
 </section>
 
 <main class="main">
-
   <section class="methodology-band">
     <div>
       <h2>Evidence-first recommendations</h2>
-      <p>
-        Friendly places are not advertisements. Recommendations are based on documented traveler experiences,
-        community trust, repeat positive reviews, Jewish infrastructure presence or verified assistance to travelers.
-      </p>
+      <p>Friendly places are not ads. Recommendations are based on documented traveler experiences, community trust, repeat positive reviews, Jewish infrastructure or verified assistance to travelers.</p>
     </div>
-
     <div class="badge-group">
       <span class="friendly-badge verified">Verified Friendly</span>
       <span class="friendly-badge trusted">Community Trusted</span>
@@ -80,115 +51,19 @@
   </section>
 
   <section id="friendlyPlaces">
-
     <div class="section-head">
       <div>
         <h2>Friendly places</h2>
         <p>Recommended places and safe travel infrastructure.</p>
       </div>
     </div>
-
-    <div class="friendly-cards">
-
-      <article class="friendly-card">
-        <div class="friendly-image hotel"></div>
-
-        <div class="friendly-content">
-          <div class="friendly-tags">
-            <span class="friendly-badge verified">Verified Friendly</span>
-            <span class="friendly-badge city">Helsinki</span>
-          </div>
-
-          <h3>Hotel Kämp</h3>
-
-          <p>
-            International luxury hotel frequently used by international travelers and business visitors.
-            No documented discrimination incidents and strong international reputation.
-          </p>
-
-          <div class="friendly-meta">
-            <span>🇫🇮 Finland</span>
-            <span>Hotel</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="friendly-card">
-        <div class="friendly-image community"></div>
-
-        <div class="friendly-content">
-          <div class="friendly-tags">
-            <span class="friendly-badge verified">Verified Friendly</span>
-            <span class="friendly-badge city">Helsinki</span>
-          </div>
-
-          <h3>Chabad Finland</h3>
-
-          <p>
-            Active Jewish community support center assisting travelers, Shabbat meals and local guidance.
-          </p>
-
-          <div class="friendly-meta">
-            <span>🇫🇮 Finland</span>
-            <span>Community</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="friendly-card">
-        <div class="friendly-image cafe"></div>
-
-        <div class="friendly-content">
-          <div class="friendly-tags">
-            <span class="friendly-badge safe">Safe Tourist Area</span>
-            <span class="friendly-badge city">Helsinki</span>
-          </div>
-
-          <h3>Café Regatta</h3>
-
-          <p>
-            Popular international café in a calm tourist environment with strong traveler reputation.
-          </p>
-
-          <div class="friendly-meta">
-            <span>🇫🇮 Finland</span>
-            <span>Café</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="friendly-card">
-        <div class="friendly-image district"></div>
-
-        <div class="friendly-content">
-          <div class="friendly-tags">
-            <span class="friendly-badge trusted">Community Trusted</span>
-            <span class="friendly-badge city">Helsinki</span>
-          </div>
-
-          <h3>Punavuori District</h3>
-
-          <p>
-            Trendy and international neighborhood considered comfortable for foreign travelers and tourists.
-          </p>
-
-          <div class="friendly-meta">
-            <span>🇫🇮 Finland</span>
-            <span>District</span>
-          </div>
-        </div>
-      </article>
-
-    </div>
-
+    <div class="friendly-cards" id="friendlyCards"></div>
   </section>
-
 </main>
 
 <div id="siteFooter"></div>
 
 <script src="/assets/js/components.js"></script>
 <script src="/assets/js/friendly.js"></script>
-
 </body>
 </html>
