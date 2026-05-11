@@ -1,26 +1,21 @@
-# CAM Weekly Scanner Prompt for AntiBooking
+# AntiBooking CAM Weekly Scanner Prompt
 
-Use weekly report URLs like:
-https://combatantisemitism.org/newsletters/weekly-report-august-7-2025/
+Target URL pattern:
+https://combatantisemitism.org/newsletters/weekly-report-{month}-{day}-{year}/
 
-For each weekly report, extract ONLY items relevant to:
-- hotels
-- restaurants
-- airlines / airports
-- taxis / transport
-- beaches / attractions
-- museums
-- rentals / hostels
-- tourist areas
-- harassment of Israeli/Jewish tourists
+Examples:
+- weekly-report-august-7-2025
+- weekly-report-july-31-2025
+- weekly-report-july-24-2025
+- weekly-report-july-17-2025
+- weekly-report-july-10-2025
+- weekly-report-july-3-2025
 
-Return:
-- country
-- city
-- place name
-- category
-- direct service refusal vs harassment/atmosphere vs vandalism/attack
-- source URL
-- source quality
-- publishability recommendation
-- whether the business itself was responsible or only the setting/location
+Extract only travel/tourism-relevant items: hotel, restaurant, airline/airport, taxi/transport, beach club, museum/attraction, hostel/campground/rental, public tourist area, Jewish/Israeli tourist harassment.
+
+Classify:
+- direct service discrimination
+- vandalism / attack
+- harassment / atmosphere
+- friendly / recommended
+- not travel relevant
