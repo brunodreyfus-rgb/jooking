@@ -357,4 +357,5 @@ body .legend-pin.na { background: #9ca3af !important; }
   body .hero-map {
     height: 260px !important;
   }
+  @import url('/assets/css/mobile-fix.css');
 }
