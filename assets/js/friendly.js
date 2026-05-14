@@ -1,13 +1,69 @@
-const friendlyPlaces = [
-  {id:"chabad-finland",name:"Chabad Finland",category:"Community",city:"Helsinki",country:"Finland",badge:"Verified Friendly",badgeClass:"verified",imageClass:"community",website:"https://www.chabad.fi/",sourceLabel:"Official community website",sourceUrl:"https://www.chabad.fi/",summary:"Jewish community support point for travelers, including Shabbat support and local guidance.",details:"Useful for Jewish and Israeli travelers looking for local orientation, Shabbat/holiday support and Jewish infrastructure in Helsinki. Listed as Friendly because it is direct Jewish infrastructure rather than a commercial endorsement."},
-  {id:"jewish-community-helsinki",name:"Jewish Community of Helsinki",category:"Community",city:"Helsinki",country:"Finland",badge:"Verified Friendly",badgeClass:"verified",imageClass:"community",website:"https://jchelsinki.fi/",sourceLabel:"Official community website",sourceUrl:"https://jchelsinki.fi/",summary:"Official Jewish community infrastructure and a useful orientation point for Jewish visitors.",details:"Evidence-first positive listing based on official Jewish community presence, not a tourism sponsorship. Useful as a trust anchor for visitors planning Jewish life logistics in Finland."},
-  {id:"hotel-kamp",name:"Hotel Kämp",category:"Hotel",city:"Helsinki",country:"Finland",badge:"Community Trusted",badgeClass:"trusted",imageClass:"hotel",website:"https://www.hotelkamp.com/",sourceLabel:"Official hotel website + international traveler reputation",sourceUrl:"https://www.hotelkamp.com/",summary:"International luxury hotel used by global travelers; no documented AntiBooking risk signal currently identified.",details:"Starter Friendly listing for an internationally oriented hotel in central Helsinki. Needs community feedback over time before upgrading to Verified Friendly."},
-  {id:"hotel-st-george",name:"Hotel St. George Helsinki",category:"Hotel",city:"Helsinki",country:"Finland",badge:"Community Trusted",badgeClass:"trusted",imageClass:"hotel",website:"https://www.stgeorgehelsinki.com/",sourceLabel:"Official hotel website + international traveler reputation",sourceUrl:"https://www.stgeorgehelsinki.com/",summary:"International upscale hotel in central Helsinki, suitable for global travelers and business visitors.",details:"Starter positive listing based on international positioning and no current AntiBooking risk signal. Should be enriched with user recommendations."},
-  {id:"cafe-regatta",name:"Café Regatta",category:"Cafe",city:"Helsinki",country:"Finland",badge:"Safe Tourist Area",badgeClass:"safe",imageClass:"cafe",website:"https://www.caferegatta.fi/",sourceLabel:"Official café website + tourist reputation",sourceUrl:"https://www.caferegatta.fi/",summary:"Popular tourist café in a calm, international visitor environment.",details:"Listed as Safe Tourist Area rather than Verified Friendly. This means no special Jewish/Israeli service signal yet, but a positive travel environment signal."},
-  {id:"punavuori-design-district",name:"Punavuori / Design District",category:"District",city:"Helsinki",country:"Finland",badge:"Safe Tourist Area",badgeClass:"safe",imageClass:"district",website:"https://www.myhelsinki.fi/",sourceLabel:"Helsinki tourism information + traveler environment",sourceUrl:"https://www.myhelsinki.fi/",summary:"International, central and tourist-friendly area with a generally comfortable atmosphere for visitors.",details:"Area-level positive travel signal. This does not mean every business is verified; it helps travelers orient toward comfortable international neighborhoods."}
-];
+/* AntiBooking V2.5.6 - Supabase-only Friendly Places */
 
-let currentFriendly = [...friendlyPlaces];
+let friendlyPlaces = [];
+let currentFriendly = [];
+
+function mapFriendlyPlace(row) {
+  return {
+    id: row.id,
+    name: row.place_name || "Unnamed friendly place",
+    category: row.category || "Other",
+    city: row.city || "Unknown",
+    country: row.country || "Unknown",
+    badge: row.badge || "Evidence-first friendly",
+    badgeClass: badgeClassFromText(row.badge || row.confidence || ""),
+    imageClass: imageClassFromCategory(row.category || ""),
+    website: row.website || "#",
+    sourceLabel: row.source_label || "Source",
+    sourceUrl: row.source_url || row.website || "#",
+    summary: row.summary || "",
+    details: row.details || row.summary || ""
+  };
+}
+
+function badgeClassFromText(value) {
+  const v = String(value || "").toLowerCase();
+  if (v.includes("verified")) return "verified";
+  if (v.includes("trusted")) return "trusted";
+  if (v.includes("safe")) return "safe";
+  return "safe";
+}
+
+function imageClassFromCategory(value) {
+  const v = String(value || "").toLowerCase();
+  if (v.includes("hotel")) return "hotel";
+  if (v.includes("community")) return "community";
+  if (v.includes("cafe") || v.includes("restaurant")) return "cafe";
+  return "district";
+}
+
+async function loadFriendlyPlacesFromSupabase() {
+  if (!window.antibookingSupabase) {
+    console.error("Supabase client not found: antibookingSupabase is missing.");
+    friendlyPlaces = [];
+    currentFriendly = [];
+    return;
+  }
+
+  const { data, error } = await window.antibookingSupabase
+    .from("friendly_places")
+    .select("*")
+    .eq("status", "approved")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Could not load friendly_places from Supabase:", error);
+    friendlyPlaces = [];
+    currentFriendly = [];
+    return;
+  }
+
+  const rows = Array.isArray(data) ? data : [];
+  console.info(`AntiBooking Supabase approved friendly places loaded: ${rows.length}`);
+
+  friendlyPlaces = rows.map(mapFriendlyPlace);
+  currentFriendly = [...friendlyPlaces];
+}
 
 function initFriendlyFilters() {
   const country = document.getElementById("friendlyCountry");
@@ -16,75 +72,150 @@ function initFriendlyFilters() {
   if (!country || !city || !category) return;
 
   country.innerHTML = '<option value="all">All countries</option>';
-  [...new Set(friendlyPlaces.map(p => p.country))].sort().forEach(value => country.innerHTML += `<option value="${value}">${value}</option>`);
+  [...new Set(friendlyPlaces.map(p => p.country))].sort().forEach(value => {
+    country.innerHTML += `<option value="${safeAttr(value)}">${safeHtml(value)}</option>`;
+  });
 
   category.innerHTML = '<option value="all">All categories</option>';
-  [...new Set(friendlyPlaces.map(p => p.category))].sort().forEach(value => category.innerHTML += `<option value="${value}">${value}</option>`);
+  [...new Set(friendlyPlaces.map(p => p.category))].sort().forEach(value => {
+    category.innerHTML += `<option value="${safeAttr(value)}">${safeHtml(value)}</option>`;
+  });
 
   country.addEventListener("change", updateFriendlyCities);
   city.addEventListener("change", filterFriendlyPlaces);
   category.addEventListener("change", filterFriendlyPlaces);
+
   updateFriendlyCities();
 }
 
 function updateFriendlyCities() {
-  const selectedCountry = document.getElementById("friendlyCountry").value;
-  const city = document.getElementById("friendlyCity");
-  const cities = [...new Set(friendlyPlaces.filter(p => selectedCountry === "all" || p.country === selectedCountry).map(p => p.city))].sort();
-  city.innerHTML = '<option value="all">All cities</option>';
-  cities.forEach(value => city.innerHTML += `<option value="${value}">${value}</option>`);
+  const countryEl = document.getElementById("friendlyCountry");
+  const cityEl = document.getElementById("friendlyCity");
+  if (!countryEl || !cityEl) return;
+
+  const selectedCountry = countryEl.value;
+  const cities = [...new Set(
+    friendlyPlaces
+      .filter(p => selectedCountry === "all" || p.country === selectedCountry)
+      .map(p => p.city)
+  )].sort();
+
+  cityEl.innerHTML = '<option value="all">All cities</option>';
+  cities.forEach(value => {
+    cityEl.innerHTML += `<option value="${safeAttr(value)}">${safeHtml(value)}</option>`;
+  });
+
   filterFriendlyPlaces();
 }
 
 function filterFriendlyPlaces() {
-  const country = document.getElementById("friendlyCountry").value;
-  const city = document.getElementById("friendlyCity").value;
-  const category = document.getElementById("friendlyCategory").value;
-  currentFriendly = friendlyPlaces.filter(p => (country === "all" || p.country === country) && (city === "all" || p.city === city) && (category === "all" || p.category === category));
+  const country = document.getElementById("friendlyCountry")?.value || "all";
+  const city = document.getElementById("friendlyCity")?.value || "all";
+  const category = document.getElementById("friendlyCategory")?.value || "all";
+
+  currentFriendly = friendlyPlaces.filter(p =>
+    (country === "all" || p.country === country) &&
+    (city === "all" || p.city === city) &&
+    (category === "all" || p.category === category)
+  );
+
   renderFriendlyPlaces();
 }
 
 function resetFriendlyFilters() {
-  document.getElementById("friendlyCountry").value = "all";
+  const country = document.getElementById("friendlyCountry");
+  const category = document.getElementById("friendlyCategory");
+  if (country) country.value = "all";
+  if (category) category.value = "all";
   updateFriendlyCities();
-  document.getElementById("friendlyCategory").value = "all";
-  filterFriendlyPlaces();
 }
 
 function renderFriendlyPlaces() {
   const box = document.getElementById("friendlyCards");
   const count = document.getElementById("friendlyCount");
   if (!box) return;
-  if (count) count.textContent = `Showing ${currentFriendly.length} evidence-first friendly place${currentFriendly.length > 1 ? "s" : ""}.`;
+
+  if (count) {
+    count.textContent = `Showing ${currentFriendly.length} approved friendly place${currentFriendly.length !== 1 ? "s" : ""} from Supabase.`;
+  }
+
+  if (currentFriendly.length === 0) {
+    box.innerHTML = `
+      <div class="friendly-empty">
+        <h3>No approved friendly places yet</h3>
+        <p>Your Supabase table <strong>friendly_places</strong> currently has no approved rows.</p>
+      </div>
+    `;
+    return;
+  }
+
   box.innerHTML = currentFriendly.map(place => `
     <article class="friendly-card">
-      <div class="friendly-image ${place.imageClass}"></div>
+      <div class="friendly-image ${safeAttr(place.imageClass)}"></div>
       <div class="friendly-content">
-        <div class="friendly-tags"><span class="friendly-badge ${place.badgeClass}">${place.badge}</span><span class="friendly-badge city">${place.city}</span></div>
-        <h3>${place.name}</h3>
-        <p>${place.summary}</p>
-        <div class="friendly-links"><button class="friendly-link" onclick="openFriendlyDetails('${place.id}')">Details</button><a class="friendly-link website" href="${place.website}" target="_blank" rel="noopener noreferrer">Website</a></div>
-        <div class="friendly-meta"><span>${place.country}</span><span>${place.category}</span></div>
+        <div class="friendly-tags">
+          <span class="friendly-badge ${safeAttr(place.badgeClass)}">${safeHtml(place.badge)}</span>
+          <span class="friendly-badge city">${safeHtml(place.city)}</span>
+        </div>
+        <h3>${safeHtml(place.name)}</h3>
+        <p>${safeHtml(place.summary)}</p>
+        <div class="friendly-links">
+          <button class="friendly-link" onclick="openFriendlyDetails('${safeAttr(place.id)}')">Details</button>
+          ${place.website && place.website !== "#" ? `<a class="friendly-link website" href="${safeAttr(place.website)}" target="_blank" rel="noopener noreferrer">Website</a>` : ""}
+        </div>
+        <div class="friendly-meta">
+          <span>${safeHtml(place.country)}</span>
+          <span>${safeHtml(place.category)}</span>
+        </div>
       </div>
-    </article>`).join("");
+    </article>
+  `).join("");
 }
 
 function openFriendlyDetails(id) {
-  const place = friendlyPlaces.find(p => p.id === id);
+  const place = friendlyPlaces.find(p => String(p.id) === String(id));
   if (!place) return;
+
   document.getElementById("friendlyModalContent").innerHTML = `
-    <div class="friendly-tags"><span class="friendly-badge ${place.badgeClass}">${place.badge}</span><span class="friendly-badge city">${place.city}, ${place.country}</span></div>
-    <h2>${place.name}</h2>
-    <p><strong>Category:</strong> ${place.category}</p>
-    <p>${place.details}</p>
-    <div class="source-box"><strong>Evidence / source</strong><p>${place.sourceLabel}</p><p><a href="${place.sourceUrl}" target="_blank" rel="noopener noreferrer">Open source</a></p><p><a href="${place.website}" target="_blank" rel="noopener noreferrer">Open website</a></p></div>`;
+    <div class="friendly-tags">
+      <span class="friendly-badge ${safeAttr(place.badgeClass)}">${safeHtml(place.badge)}</span>
+      <span class="friendly-badge city">${safeHtml(place.city)}, ${safeHtml(place.country)}</span>
+    </div>
+    <h2>${safeHtml(place.name)}</h2>
+    <p><strong>Category:</strong> ${safeHtml(place.category)}</p>
+    <p>${safeHtml(place.details)}</p>
+    <div class="source-box">
+      <strong>Evidence / source</strong>
+      <p>${safeHtml(place.sourceLabel)}</p>
+      ${place.sourceUrl && place.sourceUrl !== "#" ? `<p><a href="${safeAttr(place.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open source</a></p>` : ""}
+      ${place.website && place.website !== "#" ? `<p><a href="${safeAttr(place.website)}" target="_blank" rel="noopener noreferrer">Open website</a></p>` : ""}
+    </div>
+  `;
+
   document.getElementById("friendlyModalBackdrop").style.display = "flex";
 }
 
-function closeFriendlyModal() { document.getElementById("friendlyModalBackdrop").style.display = "none"; }
+function closeFriendlyModal() {
+  document.getElementById("friendlyModalBackdrop").style.display = "none";
+}
 
-document.addEventListener("DOMContentLoaded", () => {
+function safeHtml(value) {
+  return String(value || "").replace(/[<>&"]/g, c => ({ "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;" }[c]));
+}
+
+function safeAttr(value) {
+  return safeHtml(value).replace(/'/g, "&#39;");
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadFriendlyPlacesFromSupabase();
   initFriendlyFilters();
+  renderFriendlyPlaces();
+
   const backdrop = document.getElementById("friendlyModalBackdrop");
-  if (backdrop) backdrop.addEventListener("click", event => { if (event.target.id === "friendlyModalBackdrop") closeFriendlyModal(); });
+  if (backdrop) {
+    backdrop.addEventListener("click", event => {
+      if (event.target.id === "friendlyModalBackdrop") closeFriendlyModal();
+    });
+  }
 });
