@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Data | AntiBooking</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="stylesheet" href="/assets/css/header-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/footer-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/mobile-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/admin-data.css"/>
+</head>
+<body>
+  <div id="siteHeader"></div>
+  <main class="admin-data-page">
+    <section class="admin-data-hero">
+      <h1>Admin Data Manager</h1>
+      <p>Add and update Risks, Friendly Places and AI Leads directly from the website.</p>
+      <div id="adminAuthBox" class="admin-auth-box">Checking admin session...</div>
+    </section>
+    <section class="admin-tabs">
+      <button class="admin-tab active" onclick="switchAdminTable('incidents')">Risks / Incidents</button>
+      <button class="admin-tab" onclick="switchAdminTable('friendly_places')">Friendly Places</button>
+      <button class="admin-tab" onclick="switchAdminTable('ai_leads')">AI Leads</button>
+    </section>
+    <section class="admin-editor-grid">
+      <div class="admin-form-card">
+        <h2 id="adminFormTitle">New risk report</h2>
+        <form id="adminDataForm">
+          <input type="hidden" name="id"/>
+          <div class="admin-row"><label>Status</label><select name="status"><option value="approved">approved</option><option value="needs_verification">needs_verification</option><option value="draft">draft</option><option value="rejected">rejected</option></select></div>
+          <div class="admin-row"><label>Place name</label><input name="place_name" required/></div>
+          <div class="admin-row two"><div><label>Category</label><input name="category" required/></div><div><label>Country</label><input name="country" required/></div></div>
+          <div class="admin-row two"><div><label>City</label><input name="city"/></div><div><label>Incident date</label><input name="incident_date" type="date"/></div></div>
+          <div class="admin-row"><label>Confidence / badge</label><input name="confidence"/></div>
+          <div class="admin-row"><label>Summary</label><textarea name="summary" rows="3"></textarea></div>
+          <div class="admin-row"><label>Details</label><textarea name="details" rows="5"></textarea></div>
+          <div class="admin-row two"><div><label>Source label</label><input name="source_label"/></div><div><label>Source URL</label><input name="source_url"/></div></div>
+          <div class="admin-row friendly-only"><label>Website</label><input name="website"/></div>
+          <div class="admin-row friendly-only"><label>Friendly badge</label><input name="badge" placeholder="Verified Friendly"/></div>
+          <div class="admin-actions"><button class="btn btn-primary" type="submit">Save</button><button class="btn btn-light" type="button" onclick="clearAdminForm()">New</button><button class="btn btn-danger" type="button" onclick="deleteCurrentRecord()">Delete</button></div>
+          <p id="adminSaveStatus"></p>
+        </form>
+      </div>
+      <div class="admin-list-card">
+        <div class="admin-list-head"><h2 id="adminListTitle">Risks</h2><button class="btn btn-light" onclick="loadAdminRows()">Refresh</button></div>
+        <input class="admin-search" id="adminSearch" placeholder="Search..." oninput="renderAdminRows()"/>
+        <div id="adminRows" class="admin-rows">Loading...</div>
+      </div>
+    </section>
+  </main>
+  <div id="siteFooter"></div>
+  <script src="/assets/js/components.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script src="/assets/js/admin-data.js"></script>
+</body>
+</html>
