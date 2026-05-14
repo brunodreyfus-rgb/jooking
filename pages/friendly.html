@@ -7,70 +7,24 @@
   <link rel="stylesheet" href="/assets/css/style.css"/>
   <link rel="stylesheet" href="/assets/css/header-fix.css"/>
   <link rel="stylesheet" href="/assets/css/footer-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/mobile-fix.css"/>
   <link rel="stylesheet" href="/assets/css/friendly.css"/>
+  <link rel="stylesheet" href="/assets/css/friendly-supabase-empty.css"/>
 </head>
 <body>
-<div id="siteHeader"></div>
-<section class="friendly-hero">
-  <div class="friendly-grid">
-    <div>
-      <div class="friendly-eyebrow">Evidence-first recommendations</div>
-      <h1>Friendly places for Jewish & Israeli travelers.</h1>
-      <p>AntiBooking also highlights hotels, restaurants, communities and tourism services positively reviewed by Jewish and Israeli travelers using the same evidence-first methodology.</p>
-      <div class="friendly-actions">
-        <a class="btn btn-primary" href="#friendlySearch">Explore friendly places</a>
-        <a class="btn btn-light" href="/pages/report.html">Recommend a place</a>
-      </div>
-    </div>
-    <div class="confidence-card">
-      <div class="confidence-top"><span>🇫🇮 Finland Travel Confidence</span><strong>7.8 / 10</strong></div>
-      <div class="score-row"><label>Physical safety</label><div class="bar"><span style="width:85%"></span></div></div>
-      <div class="score-row"><label>Jewish infrastructure</label><div class="bar"><span style="width:72%"></span></div></div>
-      <div class="score-row"><label>Friendly places</label><div class="bar"><span style="width:81%"></span></div></div>
-      <div class="score-row"><label>Political atmosphere</label><div class="bar"><span style="width:55%"></span></div></div>
-    </div>
-  </div>
-</section>
-<main class="main">
-  <section class="methodology-band">
-    <div>
-      <h2>Evidence-first recommendations</h2>
-      <p>Friendly places are not ads. Recommendations require details, sources, website links where possible, traveler experience, community trust, Jewish infrastructure or verified assistance to travelers.</p>
-    </div>
-    <div class="badge-group">
-      <span class="friendly-badge verified">Verified Friendly</span>
-      <span class="friendly-badge trusted">Community Trusted</span>
-      <span class="friendly-badge safe">Safe Tourist Area</span>
-    </div>
-  </section>
-  <section class="friendly-search-panel" id="friendlySearch">
-    <div class="friendly-search-title">
-      <h2>Search friendly places</h2>
-      <p>Country, city and category filters work like the Risks section.</p>
-    </div>
-    <div class="friendly-search-grid">
-      <div class="friendly-field"><label for="friendlyCountry">Country</label><select id="friendlyCountry"><option value="all">All countries</option></select></div>
-      <div class="friendly-field"><label for="friendlyCity">City</label><select id="friendlyCity"><option value="all">All cities</option></select></div>
-      <div class="friendly-field"><label for="friendlyCategory">Category</label><select id="friendlyCategory"><option value="all">All categories</option></select></div>
-      <button class="btn btn-primary" onclick="filterFriendlyPlaces()">Search</button>
-    </div>
-  </section>
-  <section id="friendlyPlaces">
-    <div class="section-head">
-      <div><h2>Friendly places</h2><p id="friendlyCount">Loading friendly places...</p></div>
-      <button class="btn btn-light" onclick="resetFriendlyFilters()">Reset filters</button>
-    </div>
-    <div class="friendly-cards" id="friendlyCards"></div>
-  </section>
-</main>
-<div class="friendly-modal-backdrop" id="friendlyModalBackdrop">
-  <div class="friendly-modal">
-    <button class="friendly-close" onclick="closeFriendlyModal()">×</button>
-    <div id="friendlyModalContent"></div>
-  </div>
-</div>
-<div id="siteFooter"></div>
-<script src="/assets/js/components.js"></script>
-<script src="/assets/js/friendly.js"></script>
+  <div id="siteHeader"></div>
+  <section class="friendly-hero"><div class="friendly-grid"><div><div class="friendly-eyebrow">Evidence-first recommendations</div><h1>Friendly places for Jewish & Israeli travelers.</h1><p>AntiBooking highlights hotels, restaurants, communities and tourism services positively reviewed by Jewish and Israeli travelers using the same evidence-first methodology.</p><div class="friendly-actions"><a class="btn btn-primary" href="#friendlySearch">Explore friendly places</a><a class="btn btn-light" href="/pages/report.html">Recommend a place</a></div></div><div class="confidence-card"><div class="confidence-top"><span>Friendly Intelligence</span><strong id="friendlyHeroCount">Loading...</strong></div><div class="score-row"><label>Evidence-first listings</label><div class="bar"><span style="width:82%"></span></div></div><div class="score-row"><label>Community signal</label><div class="bar"><span style="width:74%"></span></div></div><div class="score-row"><label>Traveler usefulness</label><div class="bar"><span style="width:88%"></span></div></div></div></div></section>
+  <main class="main">
+    <section class="methodology-band"><div><h2>Evidence-first recommendations</h2><p>Friendly places are not ads. Recommendations require details, sources, website links where possible, traveler experience, community trust, Jewish infrastructure or verified assistance to travelers.</p></div><div class="badge-group"><span class="friendly-badge verified">Verified Friendly</span><span class="friendly-badge trusted">Community Trusted</span><span class="friendly-badge safe">Safe Tourist Area</span></div></section>
+    <section class="friendly-search-panel" id="friendlySearch"><div class="friendly-search-title"><h2>Search friendly places</h2><p>Country, city and category filters work like the Risks section.</p></div><div class="friendly-search-grid"><div class="friendly-field"><label for="friendlyCountry">Country</label><select id="friendlyCountry"><option value="all">All countries</option></select></div><div class="friendly-field"><label for="friendlyCity">City</label><select id="friendlyCity"><option value="all">All cities</option></select></div><div class="friendly-field"><label for="friendlyCategory">Category</label><select id="friendlyCategory"><option value="all">All categories</option></select></div><button class="btn btn-primary" onclick="filterFriendlyPlaces()">Search</button></div></section>
+    <section id="friendlyPlaces"><div class="section-head"><div><h2>Friendly places</h2><p id="friendlyCount">Loading friendly places...</p></div><button class="btn btn-light" onclick="resetFriendlyFilters()">Reset filters</button></div><div class="friendly-cards" id="friendlyCards"></div></section>
+  </main>
+  <div class="friendly-modal-backdrop" id="friendlyModalBackdrop"><div class="friendly-modal"><button class="friendly-close" onclick="closeFriendlyModal()">×</button><div id="friendlyModalContent"></div></div></div>
+  <div id="siteFooter"></div>
+  <script src="/assets/js/components.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script src="/assets/js/friendly.js"></script>
 </body>
 </html>
