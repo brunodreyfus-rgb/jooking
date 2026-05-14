@@ -1,18 +1,1 @@
-.friendly-empty {
-  grid-column: 1 / -1;
-  background: #ffffff;
-  border: 1px solid #d9e2ee;
-  border-radius: 18px;
-  padding: 28px;
-  box-shadow: 0 10px 24px rgba(16,24,32,.08);
-}
-.friendly-empty h3 {
-  margin: 0 0 8px;
-  color: #071A3D;
-  font-size: 26px;
-}
-.friendly-empty p {
-  margin: 0;
-  color: #475569;
-  font-weight: 700;
-}
+.friendly-empty{grid-column:1/-1;background:#fff;border:1px solid #d9e2ee;border-radius:18px;padding:28px;box-shadow:0 10px 24px rgba(16,24,32,.08)}.friendly-empty h3{margin:0 0 8px;color:#071A3D;font-size:26px}.friendly-empty p{margin:0;color:#475569;font-weight:700}
