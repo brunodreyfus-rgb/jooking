@@ -1,146 +1,21 @@
-let currentTable = "incidents";
-let adminRows = [];
-let currentRecordId = null;
-
-function getAdminClient() {
-  if (window.antibookingSupabase) return window.antibookingSupabase;
-  if (window.supabaseClient) return window.supabaseClient;
-  try { if (typeof antibookingSupabase !== "undefined") return antibookingSupabase; } catch(e) {}
-  return null;
-}
-
-function setAuthBox(message, type = "info") {
-  const box = document.getElementById("adminAuthBox");
-  if (!box) return;
-  box.textContent = message;
-  box.style.background = type === "error" ? "#fee2e2" : type === "success" ? "#dcfce7" : "#eef2ff";
-  box.style.color = type === "error" ? "#991b1b" : type === "success" ? "#166534" : "#1d4ed8";
-}
-
-async function checkAdminSession() {
-  const client = getAdminClient();
-  if (!client) return setAuthBox("Supabase client not found.", "error");
-  const { data } = await client.auth.getSession();
-  if (!data?.session) return setAuthBox("Not logged in. Log in through /pages/admin.html first.", "error");
-  setAuthBox(`Logged in as ${data.session.user.email}`, "success");
-}
-
-function switchAdminTable(table) {
-  currentTable = table;
-  currentRecordId = null;
-  document.querySelectorAll(".admin-tab").forEach(btn => btn.classList.remove("active"));
-  const label = table === "incidents" ? "risks" : table === "friendly_places" ? "friendly" : "ai";
-  [...document.querySelectorAll(".admin-tab")].find(btn => btn.textContent.toLowerCase().includes(label))?.classList.add("active");
-  document.body.classList.toggle("admin-friendly", table === "friendly_places");
-  document.getElementById("adminFormTitle").textContent = table === "friendly_places" ? "New friendly place" : table === "ai_leads" ? "AI lead" : "New risk report";
-  document.getElementById("adminListTitle").textContent = table === "friendly_places" ? "Friendly Places" : table === "ai_leads" ? "AI Leads" : "Risks / Incidents";
-  clearAdminForm();
-  loadAdminRows();
-}
-
-async function loadAdminRows() {
-  const client = getAdminClient();
-  const list = document.getElementById("adminRows");
-  if (!client || !list) return;
-  list.textContent = "Loading...";
-  const { data, error } = await client.from(currentTable).select("*").order("created_at", { ascending: false });
-  if (error) { list.textContent = `Error: ${error.message}`; return; }
-  adminRows = Array.isArray(data) ? data : [];
-  renderAdminRows();
-}
-
-function renderAdminRows() {
-  const list = document.getElementById("adminRows");
-  const search = String(document.getElementById("adminSearch")?.value || "").toLowerCase();
-  const rows = adminRows.filter(row => JSON.stringify(row).toLowerCase().includes(search));
-  if (!rows.length) { list.textContent = "No rows found."; return; }
-  list.innerHTML = rows.map(row => {
-    const name = row.place_name || row.name || "Unnamed";
-    const meta = [row.status, row.category, row.city, row.country].filter(Boolean).join(" · ");
-    return `<div class="admin-item" onclick="editAdminRecord('${row.id}')"><strong>${escapeHtml(name)}</strong><span>${escapeHtml(meta)}</span></div>`;
-  }).join("");
-}
-
-function editAdminRecord(id) {
-  const row = adminRows.find(r => String(r.id) === String(id));
-  if (!row) return;
-  currentRecordId = id;
-  const f = document.getElementById("adminDataForm");
-  f.elements.id.value = row.id || "";
-  f.elements.status.value = row.status || (currentTable === "ai_leads" ? "needs_verification" : "approved");
-  f.elements.place_name.value = row.place_name || row.name || "";
-  f.elements.category.value = row.category || "";
-  f.elements.country.value = row.country || "";
-  f.elements.city.value = row.city || "";
-  f.elements.incident_date.value = row.incident_date || "";
-  f.elements.confidence.value = row.confidence || row.evidence_quality || "";
-  f.elements.summary.value = row.summary || "";
-  f.elements.details.value = row.details || row.publish_recommendation || "";
-  f.elements.source_label.value = row.source_label || "";
-  f.elements.source_url.value = row.source_url || "";
-  f.elements.website.value = row.website || "";
-  f.elements.badge.value = row.badge || "";
-  document.getElementById("adminFormTitle").textContent = `Editing: ${row.place_name || row.name || "record"}`;
-}
-
-function clearAdminForm() {
-  currentRecordId = null;
-  const f = document.getElementById("adminDataForm");
-  if (!f) return;
-  f.reset();
-  f.elements.status.value = currentTable === "ai_leads" ? "needs_verification" : "approved";
-  f.elements.id.value = "";
-  document.getElementById("adminSaveStatus").textContent = "";
-}
-
-function formToPayload() {
-  const f = document.getElementById("adminDataForm");
-  if (currentTable === "friendly_places") return {
-    status:f.elements.status.value, place_name:f.elements.place_name.value, category:f.elements.category.value, country:f.elements.country.value, city:f.elements.city.value,
-    confidence:f.elements.confidence.value, summary:f.elements.summary.value, details:f.elements.details.value, source_label:f.elements.source_label.value, source_url:f.elements.source_url.value,
-    website:f.elements.website.value, badge:f.elements.badge.value
-  };
-  if (currentTable === "ai_leads") return {
-    status:f.elements.status.value, place_name:f.elements.place_name.value, category:f.elements.category.value, country:f.elements.country.value, city:f.elements.city.value, incident_date:f.elements.incident_date.value || null,
-    summary:f.elements.summary.value, details:f.elements.details.value, source_label:f.elements.source_label.value, source_url:f.elements.source_url.value, evidence_quality:f.elements.confidence.value, publish_recommendation:f.elements.details.value
-  };
-  return {
-    status:f.elements.status.value, tourism_type:"tourism_direct", confidence:f.elements.confidence.value, place_name:f.elements.place_name.value, category:f.elements.category.value, country:f.elements.country.value, city:f.elements.city.value,
-    incident_date:f.elements.incident_date.value || null, summary:f.elements.summary.value, details:f.elements.details.value, source_label:f.elements.source_label.value, source_url:f.elements.source_url.value
-  };
-}
-
-async function saveAdminRecord(event) {
-  event.preventDefault();
-  const client = getAdminClient();
-  const status = document.getElementById("adminSaveStatus");
-  const payload = formToPayload();
-  status.textContent = "Saving...";
-  const response = currentRecordId
-    ? await client.from(currentTable).update(payload).eq("id", currentRecordId).select()
-    : await client.from(currentTable).insert(payload).select();
-  if (response.error) { status.textContent = `Error: ${response.error.message}`; status.style.color = "#dc2626"; return; }
-  status.textContent = "Saved."; status.style.color = "#15803d";
-  await loadAdminRows();
-  if (!currentRecordId && response.data?.[0]?.id) editAdminRecord(response.data[0].id);
-}
-
-async function deleteCurrentRecord() {
-  if (!currentRecordId) return alert("Select a row first.");
-  if (!confirm("Delete this record?")) return;
-  const client = getAdminClient();
-  const { error } = await client.from(currentTable).delete().eq("id", currentRecordId);
-  if (error) return alert(error.message);
-  clearAdminForm();
-  await loadAdminRows();
-}
-
-function escapeHtml(value) {
-  return String(value || "").replace(/[<>&"]/g, c => ({ "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;" }[c]));
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-  document.getElementById("adminDataForm")?.addEventListener("submit", saveAdminRecord);
-  await checkAdminSession();
-  await loadAdminRows();
-});
+let currentTable = "incidents", adminRows = [], currentRecordId = null;
+function getAdminClient(){if(window.antibookingSupabase)return window.antibookingSupabase;if(window.supabaseClient)return window.supabaseClient;try{if(typeof antibookingSupabase!=="undefined")return antibookingSupabase}catch(e){}return null}
+function clean(v){return String(v||"").trim()}function safeHtml(v){return String(v||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))}function safeAttr(v){return safeHtml(v).replace(/'/g,"&#39;")}
+function setAuthBox(m,t="info"){const b=document.getElementById("adminAuthBox");if(!b)return;b.textContent=m;b.style.background=t==="error"?"#fee2e2":t==="success"?"#dcfce7":"#eef2ff";b.style.color=t==="error"?"#991b1b":t==="success"?"#166534":"#1d4ed8"}
+async function checkAdminSession(){const c=getAdminClient();if(!c)return setAuthBox("Supabase client not found.","error");const{data}=await c.auth.getSession();if(!data?.session)return setAuthBox("Not logged in. Log in through the Admin page first.","error");setAuthBox(`Logged in as ${data.session.user.email}`,"success")}
+function switchAdminTable(t){currentTable=t;currentRecordId=null;document.querySelectorAll(".admin-tab").forEach(b=>b.classList.remove("active"));const label=t==="incidents"?"risks":t==="friendly_places"?"friendly":"ai";[...document.querySelectorAll(".admin-tab")].find(b=>b.textContent.toLowerCase().includes(label))?.classList.add("active");document.body.classList.toggle("admin-friendly",t==="friendly_places");document.body.classList.toggle("admin-ai",t==="ai_leads");document.getElementById("adminFormTitle").textContent=t==="friendly_places"?"New friendly place":t==="ai_leads"?"AI lead":"New risk report";document.getElementById("adminListTitle").textContent=t==="friendly_places"?"Friendly Places":t==="ai_leads"?"AI Leads":"Risks / Incidents";clearAdminForm();loadAdminRows()}
+async function loadAdminRows(){const c=getAdminClient(),l=document.getElementById("adminRows");if(!c||!l)return;l.textContent="Loading...";const{data,error}=await c.from(currentTable).select("*").order("created_at",{ascending:false});if(error){l.textContent=`Error: ${error.message}`;return}adminRows=Array.isArray(data)?data:[];updateFilterOptions();renderAdminRows()}
+function updateFilterOptions(){const cat=document.getElementById("filterCategory"),country=document.getElementById("filterCountry");if(!cat||!country)return;const sc=cat.value,sy=country.value;cat.innerHTML='<option value="all">All categories</option>';[...new Set(adminRows.map(r=>r.category).filter(Boolean))].sort().forEach(v=>cat.innerHTML+=`<option value="${safeAttr(v)}">${safeHtml(v)}</option>`);if([...cat.options].some(o=>o.value===sc))cat.value=sc;country.innerHTML='<option value="all">All countries</option>';[...new Set(adminRows.map(r=>r.country).filter(Boolean))].sort().forEach(v=>country.innerHTML+=`<option value="${safeAttr(v)}">${safeHtml(v)}</option>`);if([...country.options].some(o=>o.value===sy))country.value=sy}
+function rowCompleteness(r){const m=[];if(!clean(r.city)||["unknown","city not specified"].includes(clean(r.city).toLowerCase()))m.push("city");if(currentTable!=="friendly_places"&&!clean(r.incident_date))m.push("date");if(!clean(r.source_url)||clean(r.source_url)==="#")m.push("url");if(!clean(r.details)||clean(r.details).length<40)m.push("details");if(!clean(r.source_label))m.push("source");return m}
+function passesCompleteness(r,f){const m=rowCompleteness(r);return f==="all"||f==="complete"&&m.length===0||f==="missing_city"&&m.includes("city")||f==="missing_date"&&m.includes("date")||f==="missing_url"&&m.includes("url")||f==="missing_details"&&m.includes("details")||f==="missing_source"&&m.includes("source")}
+function getFilteredRows(){const s=clean(document.getElementById("adminSearch")?.value).toLowerCase(),st=document.getElementById("filterStatus")?.value||"all",co=document.getElementById("filterCompleteness")?.value||"all",ca=document.getElementById("filterCategory")?.value||"all",cy=document.getElementById("filterCountry")?.value||"all";return adminRows.filter(r=>{if(s&&!JSON.stringify(r).toLowerCase().includes(s))return false;if(st!=="all"&&clean(r.status)!==st)return false;if(ca!=="all"&&clean(r.category)!==ca)return false;if(cy!=="all"&&clean(r.country)!==cy)return false;if(!passesCompleteness(r,co))return false;return true})}
+function renderAdminRows(){const l=document.getElementById("adminRows");if(!l)return;const rows=getFilteredRows();renderStats(rows);if(!rows.length){l.textContent="No rows match these filters.";return}l.innerHTML=rows.map(r=>{const name=r.place_name||r.name||"Unnamed",meta=[r.status,r.category,r.city,r.country].filter(Boolean).join(" · "),miss=rowCompleteness(r);const flags=[clean(r.status)==="approved"?`<span class="admin-flag ok">approved</span>`:`<span class="admin-flag warn">${safeHtml(r.status||"no status")}</span>`,...miss.map(m=>`<span class="admin-flag bad">missing ${m}</span>`)].join("");return`<div class="admin-item" onclick="editAdminRecord('${r.id}')"><strong>${safeHtml(name)}</strong><span>${safeHtml(meta)}</span><div class="admin-item-flags">${flags}</div></div>`}).join("")}
+function renderStats(rows){const el=document.getElementById("adminStats");if(!el)return;const approved=adminRows.filter(r=>clean(r.status)==="approved").length,needs=adminRows.filter(r=>clean(r.status)==="needs_verification").length,incomplete=adminRows.filter(r=>rowCompleteness(r).length>0).length;el.innerHTML=`<span class="admin-stat-pill green">${adminRows.length} total</span><span class="admin-stat-pill green">${approved} approved</span><span class="admin-stat-pill warn">${needs} needs verification</span><span class="admin-stat-pill red">${incomplete} incomplete</span><span class="admin-stat-pill">${rows.length} shown</span>`}
+function resetAdminFilters(){["adminSearch"].forEach(id=>document.getElementById(id).value="");["filterStatus","filterCompleteness","filterCategory","filterCountry"].forEach(id=>document.getElementById(id).value="all");renderAdminRows()}function showOnlyIncomplete(){document.getElementById("filterCompleteness").value="missing_url";renderAdminRows()}function showNeedsVerification(){document.getElementById("filterStatus").value="needs_verification";renderAdminRows()}
+function editAdminRecord(id){const r=adminRows.find(x=>String(x.id)===String(id));if(!r)return;currentRecordId=id;const f=document.getElementById("adminDataForm");f.elements.id.value=r.id||"";f.elements.status.value=r.status||(currentTable==="ai_leads"?"needs_verification":"approved");f.elements.place_name.value=r.place_name||r.name||"";f.elements.category.value=r.category||"";f.elements.country.value=r.country||"";f.elements.city.value=r.city||"";f.elements.incident_date.value=r.incident_date||"";f.elements.confidence.value=r.confidence||r.evidence_quality||"";f.elements.summary.value=r.summary||"";f.elements.details.value=r.details||r.publish_recommendation||"";f.elements.source_label.value=r.source_label||"";f.elements.source_url.value=r.source_url||"";f.elements.website.value=r.website||"";f.elements.badge.value=r.badge||"";document.getElementById("adminFormTitle").textContent=`Editing: ${r.place_name||r.name||"record"}`}
+function clearAdminForm(){currentRecordId=null;const f=document.getElementById("adminDataForm");if(!f)return;f.reset();f.elements.status.value=currentTable==="ai_leads"?"needs_verification":"approved";f.elements.id.value="";document.getElementById("adminSaveStatus").textContent=""}
+function formToPayload(){const f=document.getElementById("adminDataForm");if(currentTable==="friendly_places")return{status:f.elements.status.value,place_name:f.elements.place_name.value,category:f.elements.category.value,country:f.elements.country.value,city:f.elements.city.value,confidence:f.elements.confidence.value,summary:f.elements.summary.value,details:f.elements.details.value,source_label:f.elements.source_label.value,source_url:f.elements.source_url.value,website:f.elements.website.value,badge:f.elements.badge.value};if(currentTable==="ai_leads")return{status:f.elements.status.value,place_name:f.elements.place_name.value,category:f.elements.category.value,country:f.elements.country.value,city:f.elements.city.value,incident_date:f.elements.incident_date.value||null,summary:f.elements.summary.value,details:f.elements.details.value,source_label:f.elements.source_label.value,source_url:f.elements.source_url.value,evidence_quality:f.elements.confidence.value,publish_recommendation:f.elements.details.value};return{status:f.elements.status.value,tourism_type:"tourism_direct",confidence:f.elements.confidence.value,place_name:f.elements.place_name.value,category:f.elements.category.value,country:f.elements.country.value,city:f.elements.city.value,incident_date:f.elements.incident_date.value||null,summary:f.elements.summary.value,details:f.elements.details.value,source_label:f.elements.source_label.value,source_url:f.elements.source_url.value}}
+async function saveAdminRecord(e){e.preventDefault();const c=getAdminClient(),s=document.getElementById("adminSaveStatus");if(!c)return;const payload=formToPayload();s.textContent="Saving...";const res=currentRecordId?await c.from(currentTable).update(payload).eq("id",currentRecordId).select():await c.from(currentTable).insert(payload).select();if(res.error){s.textContent=`Error: ${res.error.message}`;s.style.color="#dc2626";return}s.textContent="Saved.";s.style.color="#15803d";await loadAdminRows();if(!currentRecordId&&res.data?.[0]?.id)editAdminRecord(res.data[0].id)}
+async function deleteCurrentRecord(){if(!currentRecordId)return alert("Select a row first.");if(!confirm("Delete this record?"))return;const c=getAdminClient(),{error}=await c.from(currentTable).delete().eq("id",currentRecordId);if(error)return alert(error.message);clearAdminForm();await loadAdminRows()}
+async function approveLeadToIncident(){if(currentTable!=="ai_leads"||!currentRecordId)return alert("Select an AI lead first.");const lead=adminRows.find(r=>String(r.id)===String(currentRecordId));if(!lead||!confirm("Approve this AI lead into public incidents?"))return;const c=getAdminClient();const payload={status:"approved",tourism_type:"tourism_direct",confidence:lead.evidence_quality||"Approved from AI lead",place_name:lead.place_name,category:lead.category,country:lead.country,city:lead.city,incident_date:lead.incident_date||null,summary:lead.summary,details:lead.details||lead.publish_recommendation||lead.summary,source_label:lead.source_label,source_url:lead.source_url};const ins=await c.from("incidents").insert(payload).select();if(ins.error)return alert(ins.error.message);await c.from("ai_leads").update({status:"approved"}).eq("id",currentRecordId);alert("Lead approved and inserted into incidents.");await loadAdminRows()}
+document.addEventListener("DOMContentLoaded",async()=>{document.getElementById("adminDataForm")?.addEventListener("submit",saveAdminRecord);await checkAdminSession();await loadAdminRows()});
