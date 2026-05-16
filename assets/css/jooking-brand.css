@@ -1,0 +1,14 @@
+/* Jooking brand overlay */
+.topbar .brand-logo,
+.footer .brand-logo {
+  object-fit: contain !important;
+  background: transparent !important;
+  mix-blend-mode: normal !important;
+}
+
+@media (max-width: 980px) {
+  .topbar .brand-logo,
+  .footer .brand-logo {
+    object-fit: contain !important;
+  }
+}
