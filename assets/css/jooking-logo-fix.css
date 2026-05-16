@@ -1,0 +1,49 @@
+/* Jooking V2.5.17 - logo fix only, keep current layout */
+.topbar .brand,
+.footer .brand {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.topbar .brand-logo,
+.footer .brand-logo,
+.brand-logo {
+  display: block !important;
+  width: auto !important;
+  object-fit: contain !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.topbar .brand::before,
+.topbar .brand::after,
+.footer .brand::before,
+.footer .brand::after {
+  content: none !important;
+}
+
+.topbar .brand-logo {
+  height: 120px !important;
+  max-width: 190px !important;
+}
+
+.footer .brand-logo {
+  height: 116px !important;
+  max-width: 190px !important;
+}
+
+@media (max-width: 900px) {
+  .topbar .brand-logo {
+    height: 86px !important;
+    max-width: 150px !important;
+  }
+
+  .footer .brand-logo {
+    height: 82px !important;
+    max-width: 150px !important;
+  }
+}
