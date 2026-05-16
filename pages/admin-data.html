@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Data | AntiBooking</title>
+  <title>Admin Data | Jooking</title>
   <link rel="stylesheet" href="/assets/css/style.css"/>
   <link rel="stylesheet" href="/assets/css/header-fix.css"/>
   <link rel="stylesheet" href="/assets/css/footer-fix.css"/>
@@ -15,16 +15,15 @@
   <main class="admin-data-page">
     <section class="admin-data-hero">
       <h1>Admin Data Manager</h1>
-      <p>Add, validate, update and clean AntiBooking records directly from the website.</p>
+      <p>Add, validate, update and clean Jooking records directly from the website.</p>
       <div id="adminAuthBox" class="admin-auth-box">Checking admin session...</div>
     </section>
-
     <section class="admin-tabs">
       <button class="admin-tab active" onclick="switchAdminTable('incidents')">Risks / Incidents</button>
       <button class="admin-tab" onclick="switchAdminTable('friendly_places')">Friendly Places</button>
       <button class="admin-tab" onclick="switchAdminTable('ai_leads')">AI Leads</button>
+      <button class="admin-tab" onclick="switchAdminTable('reports')">Submitted Reports</button>
     </section>
-
     <section class="admin-filter-card">
       <div class="admin-filter-grid">
         <div><label>Search</label><input id="adminSearch" placeholder="Place, city, country, source..." oninput="renderAdminRows()"/></div>
@@ -36,7 +35,6 @@
       </div>
       <div class="admin-stats" id="adminStats">Loading stats...</div>
     </section>
-
     <section class="admin-editor-grid">
       <div class="admin-form-card">
         <h2 id="adminFormTitle">New risk report</h2>
@@ -56,7 +54,7 @@
             <button class="btn btn-primary" type="submit">Save</button>
             <button class="btn btn-light" type="button" onclick="clearAdminForm()">New</button>
             <button class="btn btn-danger" type="button" onclick="deleteCurrentRecord()">Delete</button>
-            <button class="btn btn-light ai-only" type="button" onclick="approveLeadToIncident()">Approve lead → Incident</button>
+            <button class="btn btn-light ai-only" type="button" onclick="approveLeadToIncident()">Approve → Incident</button>
           </div>
           <p id="adminSaveStatus"></p>
         </form>
@@ -64,10 +62,7 @@
       <div class="admin-list-card">
         <div class="admin-list-head">
           <h2 id="adminListTitle">Risks</h2>
-          <div class="admin-small-actions">
-            <button class="btn btn-light" onclick="showOnlyIncomplete()">Incomplete only</button>
-            <button class="btn btn-light" onclick="showNeedsVerification()">Needs verification</button>
-          </div>
+          <div class="admin-small-actions"><button class="btn btn-light" onclick="showOnlyIncomplete()">Incomplete only</button><button class="btn btn-light" onclick="showNeedsVerification()">Needs verification</button></div>
         </div>
         <div id="adminRows" class="admin-rows">Loading...</div>
       </div>
