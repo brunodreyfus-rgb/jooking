@@ -1,14 +1,23 @@
-/* Jooking brand overlay */
-.topbar .brand-logo,
-.footer .brand-logo {
-  object-fit: contain !important;
+/* Jooking V2.5.14 - real transparent logo rendering */
+.topbar .brand,
+.footer .brand {
   background: transparent !important;
-  mix-blend-mode: normal !important;
+  box-shadow: none !important;
 }
 
-@media (max-width: 980px) {
-  .topbar .brand-logo,
-  .footer .brand-logo {
-    object-fit: contain !important;
-  }
+.topbar .brand-logo,
+.footer .brand-logo,
+.brand-logo {
+  background: transparent !important;
+  object-fit: contain !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.topbar .brand-logo {
+  max-height: 112px;
+}
+
+.footer .brand-logo {
+  max-height: 112px;
 }
