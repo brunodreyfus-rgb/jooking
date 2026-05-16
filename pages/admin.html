@@ -1,28 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard | AntiBooking</title>
-  <link rel="stylesheet" href="/assets/css/style.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin | Jooking</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="stylesheet" href="/assets/css/header-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/footer-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/mobile-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/admin-login.css"/>
 </head>
 <body>
   <div id="siteHeader"></div>
-  <section class="page-hero">
-    <div class="page-hero-inner">
-      <h1>Admin Dashboard</h1>
-      <p>Secure Supabase moderation back office.</p>
-    </div>
-  </section>
-  <main class="main">
-    <div id="adminApp"></div>
+
+  <main class="admin-login-page">
+    <section class="admin-login-card">
+      <h1>Admin</h1>
+      <p>Log in first, then open the data manager to approve reports and AI leads.</p>
+
+      <form id="adminLoginForm">
+        <label>Email</label>
+        <input type="email" id="adminEmail" required placeholder="admin@email.com"/>
+
+        <label>Password</label>
+        <input type="password" id="adminPassword" required placeholder="Password"/>
+
+        <button class="btn btn-primary" type="submit">Log in</button>
+      </form>
+
+      <p id="adminLoginStatus"></p>
+
+      <div class="admin-login-actions">
+        <a class="btn btn-light" href="/pages/admin-data.html">Open Admin Data Manager</a>
+      </div>
+    </section>
   </main>
+
   <div id="siteFooter"></div>
+
   <script src="/assets/js/components.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/assets/js/supabase-config.js"></script>
   <script src="/assets/js/supabase-client.js"></script>
-  <script src="/assets/js/admin-supabase.js"></script>
-  <script src="/assets/js/privacy-cleanup.js"></script>
+  <script src="/assets/js/admin-login.js"></script>
 </body>
 </html>
