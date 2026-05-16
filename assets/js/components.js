@@ -12,7 +12,7 @@ function siteHeader(current = "") {
   return `
     <header class="topbar">
       <a href="/index.html" class="brand" aria-label="Jooking home">
-        <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=jooking1" alt="Jooking logo" />
+        <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=2514" alt="Jooking logo" />
       </a>
 
       <nav class="nav">
@@ -43,7 +43,7 @@ function siteFooter() {
       <div class="footer-grid">
         <div>
           <div class="brand">
-            <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=jooking1" alt="Jooking logo" />
+            <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=2514" alt="Jooking logo" />
           </div>
           <p>Travel informed. Stay aware.</p>
         </div>
@@ -56,14 +56,11 @@ function siteFooter() {
 
 function jookingRebrandText(root = document.body) {
   if (!root) return;
-
   document.title = (document.title || "").replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking");
 
   document.querySelectorAll("meta").forEach(meta => {
     const content = meta.getAttribute("content");
-    if (content) {
-      meta.setAttribute("content", content.replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking"));
-    }
+    if (content) meta.setAttribute("content", content.replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking"));
   });
 
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -72,17 +69,8 @@ function jookingRebrandText(root = document.body) {
 
   nodes.forEach(node => {
     const oldValue = node.nodeValue;
-    const newValue = oldValue
-      .replace(/AntiBooking/g, "Jooking")
-      .replace(/antibooking/g, "jooking");
+    const newValue = oldValue.replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking");
     if (oldValue !== newValue) node.nodeValue = newValue;
-  });
-
-  document.querySelectorAll("[alt],[title],[aria-label],[placeholder]").forEach(el => {
-    ["alt", "title", "aria-label", "placeholder"].forEach(attr => {
-      const value = el.getAttribute(attr);
-      if (value) el.setAttribute(attr, value.replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking"));
-    });
   });
 }
 
