@@ -12,7 +12,7 @@ function siteHeader(current = "") {
   return `
     <header class="topbar">
       <a href="/index.html" class="brand" aria-label="Jooking home">
-        <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=2515" alt="Jooking logo" />
+        <img class="brand-logo" src="/assets/img/jooking-logo-j-black-v3.png?v=2516" alt="Jooking logo" />
       </a>
 
       <nav class="nav">
@@ -43,7 +43,7 @@ function siteFooter() {
       <div class="footer-grid">
         <div>
           <div class="brand">
-            <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=2515" alt="Jooking logo" />
+            <img class="brand-logo" src="/assets/img/jooking-logo-j-black-v3.png?v=2516" alt="Jooking logo" />
           </div>
           <p>Travel informed. Stay aware.</p>
         </div>
