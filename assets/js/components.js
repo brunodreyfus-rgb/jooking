@@ -11,29 +11,79 @@ function siteHeader(current = "") {
 
   return `
     <header class="topbar">
-      <a href="/index.html" class="brand" aria-label="AntiBooking home">
-        <img class="brand-logo" src="/assets/img/logo-header.png?v=2511" alt="AntiBooking logo" />
+      <a href="/index.html" class="brand" aria-label="Jooking home">
+        <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=jooking1" alt="Jooking logo" />
       </a>
+
       <nav class="nav">
-        ${nav.map(([label, href], index) => `<a class="${index === 0 ? "active" : ""}" href="${href}">${label}</a>`).join("")}
+        ${nav.map(([label, href], index) => `
+          <a class="${index === 0 ? "active" : ""}" href="${href}">
+            ${label}
+          </a>
+        `).join("")}
       </nav>
+
       <a class="btn btn-light report-cta" href="/pages/report.html">
         <span class="report-icon" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 5H7.8C6.7 5 6 5.7 6 6.8v12.4C6 20.3 6.7 21 7.8 21h8.4c1.1 0 1.8-.7 1.8-1.8V6.8C18 5.7 17.3 5 16.2 5H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9 5c0-1.1.9-2 2-2h2c1.1 0 2 .9 2 2v1H9V5Z" stroke="currentColor" stroke-width="2"/><path d="M9 11h6M9 15h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M9 5H7.8C6.7 5 6 5.7 6 6.8v12.4C6 20.3 6.7 21 7.8 21h8.4c1.1 0 1.8-.7 1.8-1.8V6.8C18 5.7 17.3 5 16.2 5H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M9 5c0-1.1.9-2 2-2h2c1.1 0 2 .9 2 2v1H9V5Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M9 11h6M9 15h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </span>
         Report Incident
       </a>
-    </header>`;
+    </header>
+  `;
 }
 
 function siteFooter() {
   return `
     <footer class="footer">
       <div class="footer-grid">
-        <div><div class="brand"><img class="brand-logo" src="/assets/img/logo-header.png?v=2511" alt="AntiBooking logo" /></div><p>Travel informed. Stay aware.</p></div>
-        <p>© 2026 AntiBooking. Evidence-first travel risk intelligence.</p>
+        <div>
+          <div class="brand">
+            <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=jooking1" alt="Jooking logo" />
+          </div>
+          <p>Travel informed. Stay aware.</p>
+        </div>
+
+        <p>© 2026 Jooking. Evidence-first travel intelligence.</p>
       </div>
-    </footer>`;
+    </footer>
+  `;
+}
+
+function jookingRebrandText(root = document.body) {
+  if (!root) return;
+
+  document.title = (document.title || "").replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking");
+
+  document.querySelectorAll("meta").forEach(meta => {
+    const content = meta.getAttribute("content");
+    if (content) {
+      meta.setAttribute("content", content.replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking"));
+    }
+  });
+
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  nodes.forEach(node => {
+    const oldValue = node.nodeValue;
+    const newValue = oldValue
+      .replace(/AntiBooking/g, "Jooking")
+      .replace(/antibooking/g, "jooking");
+    if (oldValue !== newValue) node.nodeValue = newValue;
+  });
+
+  document.querySelectorAll("[alt],[title],[aria-label],[placeholder]").forEach(el => {
+    ["alt", "title", "aria-label", "placeholder"].forEach(attr => {
+      const value = el.getAttribute(attr);
+      if (value) el.setAttribute(attr, value.replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking"));
+    });
+  });
 }
 
 function mountLayout() {
@@ -41,5 +91,7 @@ function mountLayout() {
   const footer = document.getElementById("siteFooter");
   if (header) header.innerHTML = siteHeader();
   if (footer) footer.innerHTML = siteFooter();
+  jookingRebrandText();
 }
+
 document.addEventListener("DOMContentLoaded", mountLayout);
