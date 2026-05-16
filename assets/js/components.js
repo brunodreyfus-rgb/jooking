@@ -6,13 +6,13 @@ function siteHeader(current = "") {
     ["Friendly Places", "/pages/friendly.html"],
     ["Risk Map", "/pages/country-risk.html"],
     ["Methodology", "/pages/methodology.html"],
-    ["Admin", "/pages/admin-data.html"]
+    ["Admin", "/pages/admin.html"]
   ];
 
   return `
     <header class="topbar">
       <a href="/index.html" class="brand" aria-label="Jooking home">
-        <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=2514" alt="Jooking logo" />
+        <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=2515" alt="Jooking logo" />
       </a>
 
       <nav class="nav">
@@ -43,11 +43,10 @@ function siteFooter() {
       <div class="footer-grid">
         <div>
           <div class="brand">
-            <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=2514" alt="Jooking logo" />
+            <img class="brand-logo" src="/assets/img/jooking-logo-transparent.png?v=2515" alt="Jooking logo" />
           </div>
           <p>Travel informed. Stay aware.</p>
         </div>
-
         <p>© 2026 Jooking. Evidence-first travel intelligence.</p>
       </div>
     </footer>
@@ -57,16 +56,9 @@ function siteFooter() {
 function jookingRebrandText(root = document.body) {
   if (!root) return;
   document.title = (document.title || "").replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking");
-
-  document.querySelectorAll("meta").forEach(meta => {
-    const content = meta.getAttribute("content");
-    if (content) meta.setAttribute("content", content.replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking"));
-  });
-
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const nodes = [];
   while (walker.nextNode()) nodes.push(walker.currentNode);
-
   nodes.forEach(node => {
     const oldValue = node.nodeValue;
     const newValue = oldValue.replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking");
