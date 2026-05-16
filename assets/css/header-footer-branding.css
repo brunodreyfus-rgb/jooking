@@ -1,0 +1,38 @@
+/* JOOKING BRANDING */
+
+.brand-logo {
+  height: 92px;
+  width: auto;
+  object-fit: contain;
+}
+
+.footer-logo {
+  height: 82px;
+  width: auto;
+  object-fit: contain;
+}
+
+.footer-tagline {
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.footer-copy {
+  color: #334155;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .brand-logo {
+    height: 64px;
+  }
+
+  .footer-logo {
+    height: 60px;
+  }
+}
