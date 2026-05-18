@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AntiBooking | Search before you book</title>
-  <meta name="description" content="AntiBooking helps travelers identify and report antisemitic incidents, discriminatory conduct or hostile atmosphere affecting Israeli and Jewish travelers." />
+  <title>Jooking | Search before you book</title>
+  <meta name="description" content="Jooking helps travelers identify and report antisemitic incidents, discriminatory conduct or hostile atmosphere affecting Israeli and Jewish travelers." />
   <link rel="stylesheet" href="/assets/css/style.css" />
   <link rel="stylesheet" href="/assets/css/header-fix.css" />
   <link rel="stylesheet" href="/assets/css/footer-fix.css" />
-  <link rel="stylesheet" href="/assets/css/reported-places-cleanup.css" />
+  <link rel="stylesheet" href="/assets/css/compact-layout-fix.css" />
+  <link rel="stylesheet" href="/assets/css/reported-places-final-cleanup.css" />
 </head>
 <body>
   <div id="siteHeader"></div>
@@ -17,7 +18,7 @@
     <div class="hero-grid">
       <div>
         <h1>Search before you book.</h1>
-        <p>AntiBooking helps travelers identify hotels, restaurants, attractions, transport companies and tourism services reported for antisemitic incidents, discriminatory conduct or hostile atmosphere affecting Israeli and Jewish travelers.</p>
+        <p>Jooking helps travelers identify hotels, restaurants, attractions, transport companies and tourism services reported for antisemitic incidents, discriminatory conduct or hostile atmosphere affecting Israeli and Jewish travelers.</p>
         <a class="btn btn-primary" href="#search">Start Searching</a>
         <a class="btn btn-light" href="/pages/report.html" style="margin-left:12px;">Submit a Report</a>
       </div>
@@ -58,7 +59,7 @@
     <section class="search-panel" id="search">
       <div class="search-title">
         <h2>Find approved incidents</h2>
-        <p>Live approved reports from Supabase + real-source cases. Fictional demo data is hidden.</p>
+        <p>Search verified travel reports. Results appear below.</p>
       </div>
       <div class="search-grid">
         <div class="field"><label for="countrySelect">Country</label><select id="countrySelect"><option value="all">All countries</option></select></div>
@@ -95,12 +96,12 @@
     <section class="info-band">
       <div>
         <h2>Evidence-first reporting</h2>
-        <p>AntiBooking avoids rumors and unsupported accusations. Each published report should include a precise description, date, location and supporting evidence where possible.</p>
+        <p>Jooking avoids rumors and unsupported accusations. Each published report should include a precise description, date, location and supporting evidence where possible.</p>
       </div>
       <div class="steps">
         <div class="step">1. User submits an incident</div>
         <div class="step">2. Admin checks details and evidence</div>
-        <div class="step">3. Admin approves in Supabase</div>
+        <div class="step">3. Admin approves</div>
         <div class="step">4. Approved reports appear here live</div>
       </div>
     </section>
@@ -123,5 +124,7 @@
   <script src="/assets/js/live-incidents.js"></script>
   <script src="/assets/js/search.js"></script>
   <script src="/assets/js/home-risk-map.js"></script>
+  <script src="/assets/js/search-ui-fix.js"></script>
+  <script src="/assets/js/reported-places-final-cleanup.js"></script>
 </body>
 </html>
