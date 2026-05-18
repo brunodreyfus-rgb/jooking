@@ -1,0 +1,237 @@
+/* Jooking V2.5.22
+   Strong override: remove Risk Signal UI + remove yellow/red report badges.
+   Keep blue category badge + green approved badge + buttons.
+*/
+
+/* REMOVE RISK SIGNAL */
+.result-actions h4,
+.risk-panel h4,
+.card-actions h4,
+.result-side h4,
+.result-actions p,
+.risk-panel p,
+.card-actions p,
+.result-side p,
+.risk-score,
+.score-box,
+.score,
+.risk-bars,
+.confidence-bars,
+.signal-bars,
+.source-confidence,
+.based-on-confidence,
+[class*="risk-score"],
+[class*="score-box"],
+[class*="risk-bars"],
+[class*="confidence"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.result-actions,
+.risk-panel,
+.card-actions,
+.result-side {
+  min-width: 190px !important;
+  width: 190px !important;
+  padding: 18px 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 10px !important;
+}
+
+.result-actions .btn,
+.risk-panel .btn,
+.card-actions .btn,
+.result-side .btn,
+.result-actions button,
+.risk-panel button,
+.card-actions button,
+.result-side button,
+.result-actions a.btn,
+.risk-panel a.btn,
+.card-actions a.btn,
+.result-side a.btn {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 46px !important;
+  padding: 11px 14px !important;
+  margin: 0 !important;
+  border-radius: 10px !important;
+  font-weight: 900 !important;
+  font-size: 16px !important;
+}
+
+/* REMOVE YELLOW / RED BADGES.
+   Keep category badge and green Approved badge. */
+.badge.media,
+.badge.source,
+.badge.report-type,
+.badge.evidence,
+.badge.warning,
+.badge.pending,
+.badge.needs,
+.badge.needs-verification,
+.badge.needs_verification,
+.badge.approved-report,
+.badge.approved_report,
+.badge.rejected,
+.tag.media,
+.tag.source,
+.tag.report-type,
+.tag.evidence,
+.tag.warning,
+.tag.pending,
+.tag.needs,
+.tag.needs-verification,
+.tag.needs_verification,
+.tag.approved-report,
+.tag.approved_report,
+.tag.rejected,
+.pill.media,
+.pill.source,
+.pill.report-type,
+.pill.evidence,
+.pill.warning,
+.pill.pending,
+.pill.needs,
+.pill.needs-verification,
+.pill.needs_verification,
+.pill.approved-report,
+.pill.approved_report,
+.pill.rejected,
+[class*="media-report"],
+[class*="approved-report"],
+[class*="needs-verification"],
+[class*="needs_verification"] {
+  display: none !important;
+}
+
+.badge[style*="yellow"],
+.tag[style*="yellow"],
+.pill[style*="yellow"],
+.badge[style*="red"],
+.tag[style*="red"],
+.pill[style*="red"] {
+  display: none !important;
+}
+
+/* Target amber/red inline badge colors */
+.result-card span[style*="856404"],
+.incident-card span[style*="856404"],
+.place-card span[style*="856404"],
+.result-card span[style*="92400e"],
+.incident-card span[style*="92400e"],
+.place-card span[style*="92400e"],
+.result-card span[style*="991b1b"],
+.incident-card span[style*="991b1b"],
+.place-card span[style*="991b1b"] {
+  display: none !important;
+}
+
+/* COMPACT CARDS */
+.results-grid {
+  gap: 14px !important;
+}
+
+.results-grid > article,
+.results-grid > div:not(.empty-state),
+.result-card,
+.incident-card,
+.place-card {
+  min-height: 178px !important;
+  max-height: 200px !important;
+  overflow: hidden !important;
+}
+
+.result-card .card-image,
+.incident-card .card-image,
+.place-card .card-image,
+.result-icon-panel,
+.result-image,
+.card-left {
+  height: 178px !important;
+  min-height: 178px !important;
+  max-height: 178px !important;
+  padding: 12px !important;
+}
+
+.result-card .card-image img,
+.incident-card .card-image img,
+.place-card .card-image img,
+.result-icon-panel img,
+.result-image img,
+.card-left img,
+.result-card svg,
+.incident-card svg,
+.place-card svg {
+  max-width: 82px !important;
+  max-height: 82px !important;
+}
+
+.result-card .card-body,
+.incident-card .card-body,
+.place-card .card-body,
+.result-content,
+.card-content {
+  padding-top: 14px !important;
+  padding-bottom: 12px !important;
+  min-height: 178px !important;
+}
+
+.result-card h3,
+.incident-card h3,
+.place-card h3,
+.result-content h3,
+.card-content h3 {
+  font-size: 23px !important;
+  line-height: 1.08 !important;
+  margin: 5px 0 7px !important;
+}
+
+/* RESPONSIVE */
+@media (max-width: 980px) {
+  .result-actions,
+  .risk-panel,
+  .card-actions,
+  .result-side {
+    width: 100% !important;
+    min-width: 100% !important;
+    flex-direction: row !important;
+    border-top: 1px solid #d9e2ee !important;
+    border-left: 0 !important;
+  }
+
+  .result-actions .btn,
+  .risk-panel .btn,
+  .card-actions .btn,
+  .result-side .btn,
+  .result-actions button,
+  .risk-panel button,
+  .card-actions button,
+  .result-side button {
+    flex: 1 1 160px !important;
+  }
+
+  .results-grid > article,
+  .results-grid > div:not(.empty-state),
+  .result-card,
+  .incident-card,
+  .place-card {
+    max-height: none !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .result-actions,
+  .risk-panel,
+  .card-actions,
+  .result-side {
+    flex-direction: column !important;
+  }
+}
