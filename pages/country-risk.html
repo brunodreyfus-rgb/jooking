@@ -1,1 +1,59 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Risk Map | Jooking</title><meta name="description" content="Live country-level risk overview based on approved Jooking travel reports from Supabase."/><link rel="stylesheet" href="/assets/css/style.css"/><link rel="stylesheet" href="/assets/css/header-fix.css"/><link rel="stylesheet" href="/assets/css/footer-fix.css"/><link rel="stylesheet" href="/assets/css/mobile-fix.css"/><link rel="stylesheet" href="/assets/css/map-clicks.css"/><link rel="stylesheet" href="/assets/css/country-risk.css"/></head><body><div id="siteHeader"></div><main class="risk-dashboard-page"><section class="risk-hero"><div><div class="risk-eyebrow">Supabase live dashboard</div><h1>Risk Map</h1><p>Live country-level risk overview based on approved Jooking reports from Supabase.</p></div><div class="risk-summary" id="riskSummary">Loading risk dashboard...</div></section><section class="risk-map-card"><div class="risk-world-map" id="riskWorldMap"><div class="risk-map-legend"><strong>Risk level</strong><span><i class="dot high"></i> High</span><span><i class="dot medium"></i> Medium</span><span><i class="dot low"></i> Low</span></div></div></section><section class="risk-country-section"><div class="section-head"><div><h2>Countries</h2><p id="countryCount">Loading countries...</p></div></div><div class="country-grid" id="countryGrid"></div></section></main><div id="siteFooter"></div><script src="/assets/js/components.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/assets/js/supabase-config.js"></script><script src="/assets/js/supabase-client.js"></script><script src="/assets/js/risk-map-shared.js"></script><script src="/assets/js/country-risk.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Risk Map | Jooking</title>
+  <meta name="description" content="Live country-level risk overview based on approved Jooking travel reports from Supabase."/>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="stylesheet" href="/assets/css/header-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/footer-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/mobile-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/map-clicks.css"/>
+  <link rel="stylesheet" href="/assets/css/country-risk.css"/>
+</head>
+<body>
+  <div id="siteHeader"></div>
+
+  <main class="risk-dashboard-page">
+    <section class="risk-hero">
+      <div>
+        <div class="risk-eyebrow">Supabase live dashboard</div>
+        <h1>Risk Map</h1>
+        <p>Live country-level risk overview based on approved Jooking reports from Supabase.</p>
+      </div>
+      <div class="risk-summary" id="riskSummary">Loading risk dashboard...</div>
+    </section>
+
+    <section class="risk-map-card">
+      <div class="risk-world-map" id="riskWorldMap">
+        <div class="risk-map-legend">
+          <strong>Risk level</strong>
+          <span><i class="dot high"></i> High</span>
+          <span><i class="dot medium"></i> Medium</span>
+          <span><i class="dot low"></i> Low</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="risk-country-section">
+      <div class="section-head">
+        <div>
+          <h2>Countries</h2>
+          <p id="countryCount">Loading countries...</p>
+        </div>
+      </div>
+      <div class="country-grid" id="countryGrid"></div>
+    </section>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <script src="/assets/js/components.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script src="/assets/js/risk-map-shared.js"></script>
+  <script src="/assets/js/country-risk.js"></script>
+</body>
+</html>
