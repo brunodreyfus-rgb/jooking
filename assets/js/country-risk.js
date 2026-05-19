@@ -1,13 +1,86 @@
-/* AntiBooking V2.5.11 - Risk Map Supabase-only */
-const countryCoordinates={"Argentina / Spain":[43,54],Australia:[82,82],Austria:[51,35],Colombia:[29,56],Finland:[53,23],France:[48,37],Germany:[51,34],Greece:[53,42],Italy:[50,42],Japan:[84,43],Kyrgyzstan:[67,41],Norway:[50,25],Spain:[47,40],Thailand:[74,56],"United Kingdom":[47,33],"United States":[22,43],Vietnam:[76,56]};
-function getRiskClient(){if(window.antibookingSupabase)return window.antibookingSupabase;if(window.supabaseClient)return window.supabaseClient;try{if(typeof antibookingSupabase!=="undefined")return antibookingSupabase;}catch(e){}return null;}
-async function loadRiskRows(){const c=getRiskClient();if(!c)throw new Error("Supabase client missing");const{data,error}=await c.from("incidents").select("id,country,city,category,status,tourism_type,incident_date,created_at").eq("status","approved");if(error)throw error;return Array.isArray(data)?data:[];}
-function groupCountries(rows){const g={};rows.forEach(r=>{const country=r.country||"Unknown";if(!g[country])g[country]={country,count:0,direct:0,related:0,categories:{},latest:null};g[country].count++;if(String(r.tourism_type||"").includes("related"))g[country].related++;else g[country].direct++;const cat=r.category||"Other";g[country].categories[cat]=(g[country].categories[cat]||0)+1;const d=r.incident_date||r.created_at;if(d&&(!g[country].latest||new Date(d)>new Date(g[country].latest)))g[country].latest=d;});return Object.values(g).map(c=>({...c,score:c.direct*4+c.related*2})).sort((a,b)=>b.score-a.score);}
-function riskLevel(score){if(score>=12)return"high";if(score>=5)return"medium";return"low";}
-function esc(v){return String(v||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));}
-function slug(v){return String(v||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
-function fmt(v){const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleDateString("en-US",{year:"numeric",month:"short",day:"numeric"});}
-function renderRiskSummary(rows,countries){const el=document.getElementById("riskSummary");if(!el)return;el.innerHTML=`<div class="risk-summary-grid"><div class="risk-kpi"><strong>${rows.length}</strong><span>Approved reports</span></div><div class="risk-kpi"><strong>${countries.length}</strong><span>Countries</span></div><div class="risk-kpi"><strong>${countries.filter(c=>riskLevel(c.score)==="high").length}</strong><span>High-risk countries</span></div></div>`;}
-function renderRiskMap(countries){const map=document.getElementById("riskWorldMap");if(!map)return;map.querySelectorAll(".country-pin").forEach(p=>p.remove());countries.forEach(item=>{const coords=countryCoordinates[item.country];if(!coords)return;const pin=document.createElement("button");pin.className=`country-pin ${riskLevel(item.score)}`;pin.style.left=`${coords[0]}%`;pin.style.top=`${coords[1]}%`;pin.title=`${item.country}: ${item.count} reports, score ${item.score}`;pin.onclick=()=>document.getElementById(`country-${slug(item.country)}`)?.scrollIntoView({behavior:"smooth",block:"center"});map.appendChild(pin);});}
-function renderCountryCards(countries){const grid=document.getElementById("countryGrid"),count=document.getElementById("countryCount");if(!grid)return;if(count)count.textContent=`${countries.length} countries with approved Supabase reports.`;if(countries.length===0){grid.innerHTML='<div class="country-card"><h3>No approved reports</h3><p>No approved incidents found in Supabase.</p></div>';return;}grid.innerHTML=countries.map(item=>{const level=riskLevel(item.score);const cats=Object.entries(item.categories).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([c,n])=>`${c} (${n})`).join(", ");return `<article class="country-card" id="country-${slug(item.country)}"><span class="risk-pill ${level}">${level.toUpperCase()}</span><h3>${esc(item.country)}</h3><p>${item.count} approved report${item.count===1?"":"s"}</p><p>Risk score: ${item.score}</p><p>Top categories: ${esc(cats||"N/A")}</p><p>Latest: ${item.latest?fmt(item.latest):"N/A"}</p></article>`;}).join("");}
-document.addEventListener("DOMContentLoaded",async()=>{try{const rows=await loadRiskRows();const countries=groupCountries(rows);renderRiskSummary(rows,countries);renderRiskMap(countries);renderCountryCards(countries);console.info(`Risk map loaded ${rows.length} approved reports from Supabase.`);}catch(error){console.error("Risk map failed",error);const el=document.getElementById("riskSummary");if(el)el.textContent="Could not load risk dashboard. Check Supabase connection.";}});
+/* Risk Map page.
+   Uses the same shared country coordinates/scoring as the Home map.
+*/
+
+function renderRiskSummary(rows, countries) {
+  const helpers = window.JookingRiskMap;
+  const element = document.getElementById("riskSummary");
+  if (!element) return;
+
+  element.innerHTML = `
+    <div class="risk-summary-grid">
+      <div class="risk-kpi"><strong>${rows.length}</strong><span>Approved reports</span></div>
+      <div class="risk-kpi"><strong>${countries.length}</strong><span>Countries</span></div>
+      <div class="risk-kpi"><strong>${countries.filter(country => helpers.riskLevel(country.score) === "high").length}</strong><span>High-risk countries</span></div>
+    </div>
+  `;
+}
+
+function renderRiskMap(countries) {
+  const map = document.getElementById("riskWorldMap");
+  if (!map || !window.JookingRiskMap) return;
+  window.JookingRiskMap.renderPins(map, countries, { type: "risk" });
+}
+
+function renderCountryCards(countries) {
+  const helpers = window.JookingRiskMap;
+  const grid = document.getElementById("countryGrid");
+  const count = document.getElementById("countryCount");
+  if (!grid) return;
+
+  if (count) count.textContent = `${countries.length} countries with approved Supabase reports.`;
+
+  if (!countries.length) {
+    grid.innerHTML = `
+      <div class="country-card">
+        <h3>No approved reports</h3>
+        <p>No approved incidents found in Supabase.</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = countries.map(item => {
+    const level = helpers.riskLevel(item.score);
+    const categories = Object.entries(item.categories || {})
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([category, total]) => `${category} (${total})`)
+      .join(", ");
+
+    return `
+      <article class="country-card" id="country-${helpers.slug(item.country)}">
+        <span class="risk-pill ${level}">${level.toUpperCase()}</span>
+        <h3>${helpers.esc(item.country)}</h3>
+        <p>${item.count} approved report${item.count === 1 ? "" : "s"}</p>
+        <p>Risk score: ${item.score}</p>
+        <p>Top categories: ${helpers.esc(categories || "N/A")}</p>
+        <p>Latest: ${item.latest ? helpers.formatDate(item.latest) : "N/A"}</p>
+      </article>
+    `;
+  }).join("");
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    if (!window.JookingRiskMap) throw new Error("risk-map-shared.js missing");
+
+    const rows = await window.JookingRiskMap.loadRiskRows();
+    const countries = window.JookingRiskMap.groupCountries(rows);
+
+    renderRiskSummary(rows, countries);
+    renderRiskMap(countries);
+    renderCountryCards(countries);
+
+    if (window.location.hash) {
+      setTimeout(() => {
+        document.querySelector(window.location.hash)
+          ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 500);
+    }
+  } catch (error) {
+    console.error("Risk map failed", error);
+    const element = document.getElementById("riskSummary");
+    if (element) element.textContent = "Could not load risk dashboard. Check Supabase connection.";
+  }
+});
