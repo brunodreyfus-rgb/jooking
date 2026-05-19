@@ -8,21 +8,15 @@ function siteHeader(current = "") {
     ["Methodology", "/pages/methodology.html"],
     ["Admin", "/pages/admin.html"]
   ];
-
+  const active = (label, href) => current === label || current === href;
   return `
     <header class="topbar">
       <a href="/index.html" class="brand" aria-label="Jooking home">
         <img class="brand-logo" src="/assets/img/jooking-logo-final-transparent.png?v=2517" alt="Jooking" />
       </a>
-
       <nav class="nav">
-        ${nav.map(([label, href], index) => `
-          <a class="${index === 0 ? "active" : ""}" href="${href}">
-            ${label}
-          </a>
-        `).join("")}
+        ${nav.map(([label, href]) => `<a class="${active(label, href) ? "active" : ""}" href="${href}">${label}</a>`).join("")}
       </nav>
-
       <a class="btn btn-light report-cta" href="/pages/report.html">
         <span class="report-icon" aria-hidden="true">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -33,64 +27,41 @@ function siteHeader(current = "") {
         </span>
         Report Incident
       </a>
-    </header>
-  `;
+    </header>`;
 }
-
 function siteFooter() {
-  return `
-    <footer class="footer">
-      <div class="footer-grid">
-        <div>
-          <div class="brand">
-            <img class="brand-logo" src="/assets/img/jooking-logo-final-transparent.png?v=2517" alt="Jooking" />
-          </div>
-          <p>Travel informed. Stay aware.</p>
-        </div>
-
-        <p>© 2026 Jooking. Evidence-first travel intelligence.</p>
-      </div>
-    </footer>
-  `;
+  return `<footer class="footer"><div class="footer-grid"><div><div class="brand"><img class="brand-logo" src="/assets/img/jooking-logo-final-transparent.png?v=2517" alt="Jooking" /></div><p>Travel informed. Stay aware.</p></div><p>© 2026 Jooking. Evidence-first travel intelligence.</p></div></footer>`;
 }
-
 function replaceBrandText(root = document.body) {
   if (!root) return;
-
-  document.title = (document.title || "")
-    .replace(/AntiBooking/g, "Jooking")
-    .replace(/antibooking/g, "jooking");
-
+  document.title = (document.title || "").replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking");
   document.querySelectorAll("meta").forEach(meta => {
     const content = meta.getAttribute("content");
-    if (content) {
-      meta.setAttribute("content", content
-        .replace(/AntiBooking/g, "Jooking")
-        .replace(/antibooking/g, "jooking"));
-    }
+    if (content) meta.setAttribute("content", content.replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking"));
   });
-
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const nodes = [];
   while (walker.nextNode()) nodes.push(walker.currentNode);
-
   nodes.forEach(node => {
     const oldValue = node.nodeValue;
-    const newValue = oldValue
-      .replace(/AntiBooking/g, "Jooking")
-      .replace(/antibooking/g, "jooking");
+    const newValue = oldValue.replace(/AntiBooking/g, "Jooking").replace(/antibooking/g, "jooking");
     if (oldValue !== newValue) node.nodeValue = newValue;
   });
 }
-
+function getCurrentNavLabel() {
+  const path = window.location.pathname;
+  if (path.includes("country-risk")) return "Risk Map";
+  if (path.includes("methodology")) return "Methodology";
+  if (path.includes("friendly")) return "Friendly Places";
+  if (path.includes("admin")) return "Admin";
+  return "Home";
+}
 function mountLayout() {
   const header = document.getElementById("siteHeader");
   const footer = document.getElementById("siteFooter");
-
-  if (header) header.innerHTML = siteHeader();
+  if (header) header.innerHTML = siteHeader(getCurrentNavLabel());
   if (footer) footer.innerHTML = siteFooter();
-
   replaceBrandText();
 }
-
 document.addEventListener("DOMContentLoaded", mountLayout);
+
