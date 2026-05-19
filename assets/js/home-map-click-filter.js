@@ -1,23 +1,24 @@
-/* Jooking V2.5.26 - dynamic country map pins
+/* Jooking V2.5.28 - dynamic country map pins + corrected positions
    - reads approved incidents from Supabase
    - creates one pin per country with known coordinates
-   - red/orange/yellow levels based on report count
+   - red/orange/blue levels based on report count
    - hover tooltip: Country - X reports
    - click pin: selects country in search filters, runs search, scrolls to results
+   - fixed US/Canada/Australia positions and prevents pins escaping map
 */
 
 (function () {
   const COUNTRY_COORDS = {
     "Argentina": [30, 72],
     "Argentina / Spain": [43, 54],
-    "Australia": [84, 82],
+    "Australia": [78, 56],
     "Austria": [50.5, 36],
     "Belgium": [48.5, 34],
     "Bosnia": [51.5, 39],
     "Bosnia and Herzegovina": [51.5, 39],
     "Brazil": [33, 68],
     "Bulgaria": [53, 40],
-    "Canada": [22, 26],
+    "Canada": [21, 20],
     "Chile": [29, 78],
     "Colombia": [29, 58],
     "Croatia": [50.5, 38],
@@ -52,10 +53,22 @@
     "Turkey": [56, 41],
     "United Arab Emirates": [62, 49],
     "United Kingdom": [47, 33],
-    "United States": [22, 43],
-    "USA": [22, 43],
+    "United States": [19, 33],
+    "USA": [19, 33],
     "Vietnam": [76, 56]
   };
+
+  function clampPosition(left, top) {
+    const SAFE_LEFT = 5;
+    const SAFE_RIGHT = 82;
+    const SAFE_TOP = 8;
+    const SAFE_BOTTOM = 82;
+
+    return {
+      left: Math.max(SAFE_LEFT, Math.min(left, SAFE_RIGHT)),
+      top: Math.max(SAFE_TOP, Math.min(top, SAFE_BOTTOM))
+    };
+  }
 
   function normalize(value) {
     return String(value || "").trim();
@@ -229,19 +242,21 @@
       const tooltip = createTooltip(map);
 
       countries.forEach(item => {
-        const coords = COUNTRY_COORDS[item.country];
-        if (!coords) {
+        const rawCoords = COUNTRY_COORDS[item.country];
+        if (!rawCoords) {
           console.warn("Jooking map: missing coordinates for", item.country);
           return;
         }
+
+        const pos = clampPosition(rawCoords[0], rawCoords[1]);
 
         const pin = document.createElement("button");
         pin.type = "button";
         pin.className = `map-pin jooking-dynamic-map-pin ${level(item.count)}`;
         pin.dataset.country = item.country;
         pin.dataset.count = String(item.count);
-        pin.style.left = `${coords[0]}%`;
-        pin.style.top = `${coords[1]}%`;
+        pin.style.left = `${pos.left}%`;
+        pin.style.top = `${pos.top}%`;
         pin.title = `${item.country} — ${item.count} reported place${item.count === 1 ? "" : "s"}`;
         pin.setAttribute("aria-label", pin.title);
 
