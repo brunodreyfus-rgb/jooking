@@ -1,131 +1,299 @@
-/* Jooking V2.5.24 - clickable world-map pins
-   Clicking a map marker selects a country, runs the existing search,
-   and scrolls to the first matching reported place.
+/* Jooking V2.5.26 - dynamic country map pins
+   - reads approved incidents from Supabase
+   - creates one pin per country with known coordinates
+   - red/orange/yellow levels based on report count
+   - hover tooltip: Country - X reports
+   - click pin: selects country in search filters, runs search, scrolls to results
 */
+
 (function () {
-  const regionCandidates = [
-    { match: 'north america', countries: ['United States', 'Canada'] },
-    { match: 'mexico / usa', countries: ['United States', 'Mexico'] },
-    { match: 'south america', countries: ['Argentina', 'Chile', 'Brazil'] },
-    { match: 'north africa', countries: ['Morocco', 'Tunisia', 'Egypt'] },
-    { match: 'middle east', countries: ['Israel', 'United Arab Emirates', 'Turkey'] },
-    { match: 'southeast asia', countries: ['Vietnam', 'Thailand'] },
-    { match: 'japan / east asia', countries: ['Japan'] },
-    { match: 'southern africa', countries: ['South Africa'] },
-    { match: 'australia', countries: ['Australia'] }
-  ];
+  const COUNTRY_COORDS = {
+    "Argentina": [30, 72],
+    "Argentina / Spain": [43, 54],
+    "Australia": [84, 82],
+    "Austria": [50.5, 36],
+    "Belgium": [48.5, 34],
+    "Bosnia": [51.5, 39],
+    "Bosnia and Herzegovina": [51.5, 39],
+    "Brazil": [33, 68],
+    "Bulgaria": [53, 40],
+    "Canada": [22, 26],
+    "Chile": [29, 78],
+    "Colombia": [29, 58],
+    "Croatia": [50.5, 38],
+    "Cyprus": [56, 43],
+    "Czech Republic": [51, 35],
+    "Denmark": [50, 30],
+    "Egypt": [55, 47],
+    "Finland": [54, 23],
+    "France": [48, 37],
+    "Germany": [50, 34],
+    "Greece": [54, 43],
+    "Hungary": [52, 37],
+    "Israel": [57.5, 45],
+    "Italy": [50.5, 42],
+    "Japan": [84, 43],
+    "Kyrgyzstan": [67, 41],
+    "Maldives": [67, 63],
+    "Mexico": [20, 49],
+    "Morocco": [47, 48],
+    "Netherlands": [49, 33],
+    "Norway": [50, 24],
+    "Poland": [52, 34],
+    "Portugal": [46, 41],
+    "Romania": [53.5, 38],
+    "Serbia": [52, 39],
+    "South Africa": [53, 82],
+    "Spain": [47, 41],
+    "Sweden": [51.5, 25],
+    "Switzerland": [49.5, 37],
+    "Thailand": [74, 57],
+    "Tunisia": [50, 46],
+    "Turkey": [56, 41],
+    "United Arab Emirates": [62, 49],
+    "United Kingdom": [47, 33],
+    "United States": [22, 43],
+    "USA": [22, 43],
+    "Vietnam": [76, 56]
+  };
 
-  const europeWest = ['France', 'Spain', 'Germany', 'Norway', 'Switzerland', 'Austria'];
-  const europeEast = ['Italy', 'Greece', 'Bosnia and Herzegovina', 'Austria'];
-
-  function normalize(value) { return String(value || '').trim().toLowerCase(); }
-
-  function getCountryOptions() {
-    const select = document.getElementById('countrySelect');
-    if (!select) return [];
-    return Array.from(select.options)
-      .map(option => ({ value: option.value, label: option.textContent.trim() }))
-      .filter(option => option.value && option.value !== 'all');
+  function normalize(value) {
+    return String(value || "").trim();
   }
 
-  function optionExists(country) {
-    const options = getCountryOptions();
-    return options.find(option => normalize(option.value) === normalize(country) || normalize(option.label) === normalize(country));
+  function canonicalCountry(value) {
+    const v = normalize(value);
+    if (!v) return "";
+    if (["US", "U.S.", "U.S.A.", "USA", "United States of America"].includes(v)) return "United States";
+    if (v === "UK") return "United Kingdom";
+    if (v === "Bosnia & Herzegovina") return "Bosnia and Herzegovina";
+    return v;
   }
 
-  function firstAvailable(countries) {
-    for (const country of countries) {
-      const option = optionExists(country);
-      if (option) return option.value;
-    }
+  function getClient() {
+    if (window.antibookingSupabase) return window.antibookingSupabase;
+    if (window.supabaseClient) return window.supabaseClient;
+    try { if (typeof antibookingSupabase !== "undefined") return antibookingSupabase; } catch(e) {}
     return null;
   }
 
-  function parseLeftPercent(pin) {
-    const style = pin.getAttribute('style') || '';
-    const match = style.match(/left\s*:\s*([0-9.]+)%/i);
-    return match ? Number(match[1]) : null;
+  function level(count) {
+    if (count >= 5) return "high";
+    if (count >= 2) return "medium";
+    return "low";
   }
 
-  function inferCountryForPin(pin) {
-    const explicit = pin.getAttribute('data-country') || pin.getAttribute('aria-label') || pin.getAttribute('title');
-    const title = normalize(explicit);
-    const direct = optionExists(explicit);
-    if (direct) return direct.value;
-    if (title === 'europe') {
-      const left = parseLeftPercent(pin);
-      return firstAvailable(left !== null && left < 52 ? europeWest : europeEast);
+  async function loadRows() {
+    const client = getClient();
+    if (!client) return [];
+
+    const { data, error } = await client
+      .from("incidents")
+      .select("id,country,status,city,category,place_name")
+      .eq("status", "approved");
+
+    if (error) {
+      console.error("Jooking map: could not load incidents", error);
+      return [];
     }
-    for (const item of regionCandidates) {
-      if (title.includes(item.match)) return firstAvailable(item.countries);
+
+    return Array.isArray(data) ? data : [];
+  }
+
+  function groupByCountry(rows) {
+    const grouped = {};
+
+    rows.forEach(row => {
+      const country = canonicalCountry(row.country);
+      if (!country) return;
+
+      if (!grouped[country]) {
+        grouped[country] = {
+          country,
+          count: 0,
+          cities: new Set(),
+          categories: new Set()
+        };
+      }
+
+      grouped[country].count += 1;
+      if (row.city) grouped[country].cities.add(row.city);
+      if (row.category) grouped[country].categories.add(row.category);
+    });
+
+    return Object.values(grouped)
+      .map(item => ({
+        ...item,
+        cities: Array.from(item.cities),
+        categories: Array.from(item.categories)
+      }))
+      .sort((a, b) => b.count - a.count || a.country.localeCompare(b.country));
+  }
+
+  function removeExistingPins(map) {
+    map.querySelectorAll(".map-pin, .jooking-dynamic-map-pin, .jooking-map-tooltip").forEach(el => el.remove());
+  }
+
+  function getCountrySelectValue(country) {
+    const select = document.getElementById("countrySelect");
+    if (!select) return null;
+
+    const match = Array.from(select.options).find(option => {
+      const value = canonicalCountry(option.value);
+      const label = canonicalCountry(option.textContent);
+      return value === country || label === country;
+    });
+
+    return match ? match.value : null;
+  }
+
+  function runSearch(country) {
+    const countrySelect = document.getElementById("countrySelect");
+    const citySelect = document.getElementById("citySelect");
+    const categorySelect = document.getElementById("categorySelect");
+    const selectValue = getCountrySelectValue(country);
+
+    if (!countrySelect || !selectValue) return;
+
+    countrySelect.value = selectValue;
+    countrySelect.dispatchEvent(new Event("change", { bubbles: true }));
+
+    if (citySelect) {
+      citySelect.value = "all";
+      citySelect.dispatchEvent(new Event("change", { bubbles: true }));
     }
-    return null;
-  }
 
-  function setSelectValue(select, value) {
-    if (!select || !value) return false;
-    const exists = Array.from(select.options).some(option => option.value === value);
-    if (!exists) return false;
-    select.value = value;
-    select.dispatchEvent(new Event('change', { bubbles: true }));
-    return true;
-  }
-
-  function scrollToFirstReport() {
-    const first = document.querySelector('#resultsGrid > article') || document.querySelector('#resultsGrid > div:not(.empty-state)') || document.getElementById('resultsGrid');
-    if (!first) return;
-    first.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    first.classList.add('jooking-report-highlight');
-    setTimeout(() => first.classList.remove('jooking-report-highlight'), 1800);
-  }
-
-  function updateHint(country) {
-    const title = document.querySelector('.search-title');
-    if (!title) return;
-    let hint = title.querySelector('.search-result-hint');
-    if (!hint) {
-      hint = document.createElement('div');
-      hint.className = 'search-result-hint';
-      title.appendChild(hint);
+    if (categorySelect) {
+      categorySelect.value = "all";
+      categorySelect.dispatchEvent(new Event("change", { bubbles: true }));
     }
-    const countText = document.getElementById('resultCount')?.textContent || '';
-    const number = (countText.match(/\d+/) || [''])[0];
-    hint.textContent = number ? `${number} reported place${number === '1' ? '' : 's'} below for ${country}` : `Showing reported places below for ${country}`;
+
+    if (typeof window.filterIncidents === "function") {
+      window.filterIncidents();
+    } else {
+      document.querySelector(".search-grid .btn")?.click();
+    }
+
+    setTimeout(() => {
+      const first =
+        document.querySelector("#resultsGrid > article") ||
+        document.querySelector("#resultsGrid > div:not(.empty-state)") ||
+        document.getElementById("resultsGrid");
+
+      first?.scrollIntoView({ behavior: "smooth", block: "start" });
+      first?.classList.add("jooking-report-highlight");
+      setTimeout(() => first?.classList.remove("jooking-report-highlight"), 1800);
+
+      const hint = document.querySelector(".search-title .search-result-hint");
+      const countText = document.getElementById("resultCount")?.textContent || "";
+      const n = (countText.match(/\d+/) || [""])[0];
+      if (hint) hint.textContent = n ? `${n} reported place${n === "1" ? "" : "s"} below for ${country}` : `Reported places below for ${country}`;
+    }, 250);
+
+    if (typeof window.jookingTrack === "function") {
+      window.jookingTrack("map_country_click", { country });
+    }
   }
 
-  function runCountrySearch(country) {
-    const countrySelect = document.getElementById('countrySelect');
-    const citySelect = document.getElementById('citySelect');
-    const categorySelect = document.getElementById('categorySelect');
-    if (!setSelectValue(countrySelect, country)) return;
-    if (citySelect) { citySelect.value = 'all'; citySelect.dispatchEvent(new Event('change', { bubbles: true })); }
-    if (categorySelect) { categorySelect.value = 'all'; categorySelect.dispatchEvent(new Event('change', { bubbles: true })); }
-    if (typeof window.filterIncidents === 'function') window.filterIncidents();
-    else document.querySelector('.search-grid .btn')?.click();
-    setTimeout(() => { updateHint(country); scrollToFirstReport(); }, 250);
-    if (typeof window.jookingTrack === 'function') window.jookingTrack('map_pin_country_search', { country });
+  function createTooltip(map) {
+    let tooltip = map.querySelector(".jooking-map-tooltip");
+    if (tooltip) return tooltip;
+
+    tooltip = document.createElement("div");
+    tooltip.className = "jooking-map-tooltip";
+    tooltip.setAttribute("aria-hidden", "true");
+    map.appendChild(tooltip);
+    return tooltip;
   }
 
-  function makePinsClickable() {
-    const pins = document.querySelectorAll('.hero-map .map-pin, #worldRiskMap .map-pin, [data-country]');
-    pins.forEach(pin => {
-      if (pin.dataset.jookingClickable === '1') return;
-      pin.dataset.jookingClickable = '1';
-      pin.setAttribute('role', 'button');
-      pin.setAttribute('tabindex', '0');
-      pin.style.cursor = 'pointer';
-      const handler = event => {
-        event.preventDefault();
-        const country = inferCountryForPin(pin);
-        if (!country) return;
-        runCountrySearch(country);
-      };
-      pin.addEventListener('click', handler);
-      pin.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') handler(event); });
+  function positionTooltip(map, tooltip, pin, text) {
+    const mapRect = map.getBoundingClientRect();
+    const pinRect = pin.getBoundingClientRect();
+
+    tooltip.textContent = text;
+    tooltip.style.opacity = "1";
+
+    const left = pinRect.left - mapRect.left + pinRect.width / 2;
+    const top = pinRect.top - mapRect.top - 12;
+
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
+  }
+
+  function renderPins(countries) {
+    const maps = document.querySelectorAll(".hero-map, #worldRiskMap");
+    if (!maps.length) return;
+
+    maps.forEach(map => {
+      removeExistingPins(map);
+      const tooltip = createTooltip(map);
+
+      countries.forEach(item => {
+        const coords = COUNTRY_COORDS[item.country];
+        if (!coords) {
+          console.warn("Jooking map: missing coordinates for", item.country);
+          return;
+        }
+
+        const pin = document.createElement("button");
+        pin.type = "button";
+        pin.className = `map-pin jooking-dynamic-map-pin ${level(item.count)}`;
+        pin.dataset.country = item.country;
+        pin.dataset.count = String(item.count);
+        pin.style.left = `${coords[0]}%`;
+        pin.style.top = `${coords[1]}%`;
+        pin.title = `${item.country} — ${item.count} reported place${item.count === 1 ? "" : "s"}`;
+        pin.setAttribute("aria-label", pin.title);
+
+        pin.addEventListener("click", event => {
+          event.preventDefault();
+          event.stopPropagation();
+          runSearch(item.country);
+        });
+
+        pin.addEventListener("mouseenter", () => {
+          positionTooltip(map, tooltip, pin, pin.title);
+        });
+
+        pin.addEventListener("mousemove", () => {
+          positionTooltip(map, tooltip, pin, pin.title);
+        });
+
+        pin.addEventListener("mouseleave", () => {
+          tooltip.style.opacity = "0";
+        });
+
+        pin.addEventListener("focus", () => {
+          positionTooltip(map, tooltip, pin, pin.title);
+        });
+
+        pin.addEventListener("blur", () => {
+          tooltip.style.opacity = "0";
+        });
+
+        map.appendChild(pin);
+      });
+
+      const legend = map.querySelector(".map-legend");
+      if (legend && !legend.querySelector(".live-count")) {
+        const total = countries.reduce((sum, item) => sum + item.count, 0);
+        const live = document.createElement("div");
+        live.className = "legend-row live-count";
+        live.innerHTML = `<span class="legend-pin na"></span> Live: ${total} reports`;
+        legend.appendChild(live);
+      }
     });
   }
-  document.addEventListener('DOMContentLoaded', makePinsClickable);
-  window.addEventListener('load', makePinsClickable);
-  setTimeout(makePinsClickable, 800);
-  setInterval(makePinsClickable, 2000);
+
+  async function init() {
+    const rows = await loadRows();
+    const countries = groupByCountry(rows);
+    renderPins(countries);
+
+    window.jookingMapCountries = countries;
+    console.info("Jooking map countries:", countries.map(c => `${c.country}: ${c.count}`).join(", "));
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+  window.addEventListener("load", () => setTimeout(init, 500));
 })();
