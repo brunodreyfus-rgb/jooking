@@ -1,9 +1,10 @@
-/* Jooking V2.5.26 - dynamic map pins + hover country tooltip */
+/* Jooking V2.5.28 - dynamic map pins + corrected safe map area */
 
 .hero-map,
 #worldRiskMap {
   position: relative !important;
   pointer-events: auto !important;
+  overflow: hidden !important;
 }
 
 .hero-map .map-pin,
@@ -19,11 +20,11 @@
   position: absolute !important;
   border: 0 !important;
   padding: 0 !important;
-  width: 18px !important;
-  height: 18px !important;
+  width: 17px !important;
+  height: 17px !important;
   border-radius: 999px !important;
   transform: translate(-50%, -50%) !important;
-  box-shadow: 0 0 0 6px rgba(255,255,255,.72), 0 8px 18px rgba(15, 23, 42, .22) !important;
+  box-shadow: 0 0 0 5px rgba(255,255,255,.72), 0 8px 18px rgba(15, 23, 42, .22) !important;
 }
 
 .jooking-dynamic-map-pin.high {
