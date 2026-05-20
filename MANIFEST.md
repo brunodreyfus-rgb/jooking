@@ -1,64 +1,40 @@
-# Jooking AntiBooking V1 - Verified Patch
+# Jooking patch - menu cleanup + reports moderation queue
 
-This package contains explicit updated/new files for the requested fixes.
+## Changed files
 
-## Included files
+- `assets/js/components.js`
+  - Removed `Search` and `Risks` from the top navigation menu.
+  - Keeps `Home`, `Friendly Places`, `Risk Map`, `Methodology`, `Admin`, and the `Report Incident` CTA.
 
-- `components/Navbar.js`
-  - Fixes Search and Risks links so they no longer point to Home.
+- `pages/admin-data.html`
+  - Makes `Submitted Reports` the first/default admin tab.
+  - Adds report statuses: `pending`, `needs_info`, `approved`, `rejected`.
+  - Renames the quick filter button to `Needs review`.
 
-- `components/JookingLogo.js`
-  - Adds reusable Jooking text logo fallback.
+- `assets/js/admin-data.js`
+  - Loads the `reports` table by default so pending reviews are visible immediately.
+  - Correctly maps report fields:
+    - `description` -> details shown in the admin panel
+    - `evidence_link` / `evidence_file_url` -> source/evidence URL
+    - `pending` / `needs_info` statuses now display and save correctly
+  - Approval now inserts the selected report into `incidents`, links `source_report_id`, and marks the report as `approved`.
 
-- `components/WorldRiskMap.js`
-  - Adds responsive full-world SVG map component.
-  - Keeps the legend bottom-left.
-  - Uses a single coordinate projection function for both Home and Risk Map.
+## How to verify
 
-- `lib/mapProjection.js`
-  - Centralizes latitude/longitude to SVG coordinate projection.
-
-- `lib/reportedEventsImport.js`
-  - Adds helper to compare reported events against existing platform events.
-  - Returns only missing reports to import.
-
-- `pages/search.js`
-  - New Search page content.
-
-- `pages/risks.js`
-  - New Risks page content.
-
-- `pages/risk-map.js`
-  - Updates wording from “Supabase live dashboard” to “Live dashboard”.
-  - Uses fixed map component.
-
-- `pages/methodology.js`
-  - Adds anonymity guarantee wording.
-
-- `pages/report-incident.js`
-  - Applies grey background.
-  - Removes obsolete V2 Supabase sentence.
-  - Uses Jooking logo/header/footer fallback.
-
-- `styles/jooking-pages.css`
-  - Shared page/card styling used by the new pages.
-
-## How to apply
-
-Copy the folders from this ZIP into the root of your Next.js project, preserving folder names.
-
-Example:
+1. Apply at repo root:
 
 ```bash
-cp -R components lib pages styles /path/to/your/repo/
+unzip -o jooking-menu-reports-patch.zip -d .
 ```
 
-Or from the project root after unzipping:
+2. Deploy to Vercel.
 
-```bash
-cp -R ./components ./lib ./pages ./styles YOUR_REPO_ROOT/
-```
+3. Open `/pages/admin.html`, log in, then open `/pages/admin-data.html`.
 
-## Important
+4. The first tab should now be `Submitted Reports`. New reports submitted through `/pages/report.html` should appear there with status `pending`.
 
-If your project already has these files with different component names or routes, merge manually rather than blindly overwriting.
+5. Select a report and click `Approve -> Incident` to publish it to the public incidents table.
+
+## If Submitted Reports is still empty
+
+That means there are no rows in the Supabase `reports` table, or the logged-in user is blocked by RLS. Check that the login email matches the `is_admin()` function in `pages/setup-supabase.sql`.
