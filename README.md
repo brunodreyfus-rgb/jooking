@@ -1,26 +1,46 @@
-# AntiBooking V1.2
+# Jooking / AntiBooking V1 patch package
 
-Static multi-page prototype for GitHub + Vercel.
+This zip contains updated/new files for the latest requested fixes:
 
-## Structure
+- Fixed Home and Risk Map point projection alignment using a shared map component.
+- Added Search and Risks pages so menu links no longer redirect to Home.
+- Updated Risk Map wording from “Supabase live dashboard” to “Live dashboard”.
+- Added anonymity guarantee wording to Methodology.
+- Cleaned Report Incident page: grey background, correct Jooking logo references, removed obsolete V2 Supabase text.
+- Added `lib/reportedEventsImport.js` helper to identify reported events that are not already in the platform before import.
 
-- `index.html` — homepage, search and results
-- `pages/report.html` — incident submission form
-- `pages/contact.html` — contact form
-- `pages/resources.html` — legal/editorial principles and AI Watch
-- `pages/admin.html` — admin dashboard prototype
-- `assets/css/style.css` — full design system
-- `assets/js/data.js` — real starter cases + fictional seed incidents
-- `assets/js/search.js` — country/city/category filtering
-- `assets/js/forms.js` — Web3Forms key placeholder
-- `assets/img/` — logo and category SVG illustrations
+## How to apply
 
-## Important setup
+Copy these files into your Next.js project, preserving paths.
 
-Open `assets/js/forms.js` and replace:
+If you already have equivalent files, compare and merge manually:
 
-YOUR_NEW_WEB3FORMS_KEY_HERE
+```txt
+components/JookingWorldMap.js
+components/Layout.js
+lib/reportedEventsImport.js
+pages/index.js
+pages/risk-map.js
+pages/search.js
+pages/risks.js
+pages/methodology.js
+pages/report-incident.js
+styles/globals.css
+```
 
-with your real Web3Forms key.
+## Notes
 
-Do not publish fictional seed incidents as real reports. Replace demo items with verified cases only.
+The map component expects incidents with this shape:
+
+```js
+{
+  id: 'unique-id',
+  title: 'Incident title',
+  country: 'France',
+  lat: 46.2276,
+  lng: 2.2137,
+  severity: 'high' // low | medium | high | critical
+}
+```
+
+The import helper deduplicates by normalized `externalId`, `bookingReference`, or a fallback fingerprint made from title/country/date.
