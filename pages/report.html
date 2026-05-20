@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Report Incident | AntiBooking</title>
+  <title>Report Incident | Jooking</title>
   <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/header-fix.css" />
+  <link rel="stylesheet" href="/assets/css/footer-fix.css" />
+  <link rel="stylesheet" href="/assets/css/jooking-logo-fix.css" />
+  <link rel="stylesheet" href="/assets/css/mobile-fix.css" />
 </head>
 <body>
   <div id="siteHeader"></div>
@@ -18,7 +22,7 @@
     <section class="form-section">
       <div class="panel">
         <h2>Submit a factual report</h2>
-        <p>V2: this form now writes directly to Supabase instead of sending only an email.</p>
+        <p>Share a precise, factual report. Jooking keeps submitters anonymous in all public listings and reviews every report before publication.</p>
         <div class="notice">Reports are reviewed before publication.</div>
       </div>
       <form class="panel" id="reportForm">
@@ -32,7 +36,7 @@
           <div class="input-box full"><label>Evidence link</label><input name="evidence_link" placeholder="News article, social post, Google Drive, screenshot URL..." /></div>
           <div class="input-box full"><label>Evidence file</label><input type="file" name="evidence_file" accept="image/*,.pdf,.doc,.docx" /></div>
           <div class="input-box full"><label>Description</label><textarea name="description" required></textarea></div>
-          <div class="input-box full"><label>Publication consent</label><select name="publication_consent" required><option>I agree that AntiBooking may review and publish a moderated version of this report</option><option>Review only - contact me before publication</option></select></div>
+          <div class="input-box full"><label>Publication consent</label><select name="publication_consent" required><option>I agree that Jooking may review and publish a moderated, anonymous version of this report</option><option>Review only - contact me before publication</option></select></div>
           <div class="full"><button class="btn btn-primary" id="submitReportButton" type="submit" style="width:100%; padding:16px;">Submit report for moderation</button></div>
           <p id="reportStatus" class="full" style="font-weight:900;"></p>
         </div>

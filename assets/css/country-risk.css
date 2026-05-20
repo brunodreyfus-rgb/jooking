@@ -19,3 +19,22 @@
 .country-card h3{color:#071A3D;font-size:24px;margin:0 0 10px}.country-card p{margin:6px 0;color:#475569;font-weight:700}
 .risk-pill{display:inline-flex;border-radius:999px;padding:7px 11px;font-weight:900;font-size:12px}.risk-pill.high{background:#fee2e2;color:#991b1b}.risk-pill.medium{background:#fef3c7;color:#92400e}.risk-pill.low{background:#dbeafe;color:#1d4ed8}
 @media(max-width:900px){.risk-hero{grid-template-columns:1fr}.risk-hero h1{font-size:46px}.risk-summary-grid{grid-template-columns:1fr}.risk-world-map{min-height:280px}}
+
+
+/* V2.6 Risk Map full-world visibility and legend placement */
+.risk-world-map{
+  height: min(58vw, 720px) !important;
+  min-height: 470px !important;
+  background-size: 100% 100% !important;
+  background-position: center center !important;
+  overflow: visible !important;
+}
+.risk-map-legend{
+  left: 18px !important;
+  right: auto !important;
+  bottom: 18px !important;
+}
+.country-pin{
+  transform: translate(-50%, -50%) rotate(-45deg) !important;
+}
+@media(max-width:900px){.risk-world-map{height:62vw !important;min-height:280px !important}}

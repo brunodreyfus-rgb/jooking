@@ -3,23 +3,7 @@
   if (window.__JOOKING_SINGLE_MAP_RENDERER_V2529__) return;
   window.__JOOKING_SINGLE_MAP_RENDERER_V2529__ = true;
 
-  const COUNTRY_POS = {
-    "United States": [22, 39], "USA": [22, 39], "Canada": [22, 24], "Mexico": [20, 48],
-    "Colombia": [31, 58], "Brazil": [35, 67], "Argentina": [31, 78], "Chile": [29, 78],
-    "United Kingdom": [47.2, 33.5], "Ireland": [46, 34.5], "Portugal": [46.4, 41.2],
-    "Spain": [47.8, 41], "France": [49, 38], "Belgium": [49.6, 35.8],
-    "Netherlands": [49.9, 34.5], "Germany": [51, 36.4], "Switzerland": [50.5, 39],
-    "Austria": [52, 39], "Italy": [51.8, 43], "Norway": [50.8, 27],
-    "Sweden": [52.4, 28.5], "Finland": [54.3, 26.5], "Denmark": [51, 32],
-    "Poland": [53.3, 36], "Czech Republic": [52.1, 37], "Hungary": [53.2, 39.8],
-    "Romania": [55, 40], "Bulgaria": [55.4, 42], "Croatia": [52.7, 41],
-    "Serbia": [53.6, 41.2], "Bosnia": [52.4, 40.8], "Bosnia and Herzegovina": [52.4, 40.8],
-    "Greece": [54.8, 45.2], "Cyprus": [57.8, 47], "Turkey": [58, 43.5],
-    "Israel": [58.8, 47], "United Arab Emirates": [64.2, 51], "Egypt": [56.2, 50],
-    "Morocco": [47.2, 49], "Tunisia": [51.5, 48], "South Africa": [53.2, 82],
-    "Kyrgyzstan": [68, 42], "Maldives": [67, 64], "Thailand": [75, 58],
-    "Vietnam": [77.5, 57], "Japan": [84, 43], "Australia": [82, 76]
-  };
+  const COUNTRY_POS = window.JOOKING_COUNTRY_COORDINATES || {};
 
   function canonicalCountry(value) {
     const v = String(value || "").trim();
@@ -156,7 +140,7 @@
       const tooltip = tooltipFor(map);
 
       countries.forEach(item => {
-        const coords = COUNTRY_POS[item.country];
+        const coords = (window.JookingRiskMap && window.JookingRiskMap.getCoordinates) ? window.JookingRiskMap.getCoordinates(item.country) : COUNTRY_POS[item.country];
         if (!coords) {
           console.warn("Jooking map: missing coordinates for country:", item.country);
           return;

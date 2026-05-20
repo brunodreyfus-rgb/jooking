@@ -71,3 +71,27 @@
   outline: 4px solid rgba(0, 77, 190, .24) !important;
   box-shadow: 0 0 0 8px rgba(0, 77, 190, .10) !important;
 }
+
+
+/* V2.6 static HTML map alignment overrides */
+.hero-map,
+#worldRiskMap,
+.risk-world-map {
+  background-position: center center !important;
+  background-size: 100% 100% !important;
+  overflow: visible !important;
+}
+
+.hero-map::before,
+.world-map-wrap::before {
+  background-size: 100% 100% !important;
+  background-position: center center !important;
+}
+
+.hero-map .map-legend {
+  left: 14px !important;
+  right: auto !important;
+  bottom: 14px !important;
+}
+
+.jooking-dynamic-map-pin.low { background: #0038A8 !important; }
