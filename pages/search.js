@@ -1,16 +1,26 @@
-import Layout from '../components/Layout';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import '../styles/jooking-pages.css';
 
 export default function SearchPage() {
   return (
-    <Layout>
-      <section className="max-w-5xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold tracking-tight">Search</h1>
-        <p className="text-neutral-600 mt-3">Search reported incidents by country, city, platform, risk level, or keyword.</p>
-        <div className="mt-8 bg-white border border-neutral-200 rounded-2xl shadow-sm p-6">
-          <label className="block text-sm font-medium text-neutral-700 mb-2">Search incidents</label>
-          <input className="w-full rounded-xl border border-neutral-300 px-4 py-3 outline-none focus:ring-2 focus:ring-neutral-900" placeholder="Example: refund, cancellation, France, host pressure..." />
-        </div>
-      </section>
-    </Layout>
+    <div className="jooking-page grey-bg">
+      <Navbar />
+      <main className="jooking-main narrow">
+        <section className="hero-card">
+          <p className="eyebrow">Search</p>
+          <h1>Search incident reports and risk signals</h1>
+          <p>
+            Search will help users explore anonymized reports, destinations, providers and risk patterns.
+            This page is now routed correctly instead of redirecting to the home page.
+          </p>
+          <div className="search-shell">
+            <input aria-label="Search reports" placeholder="Search by country, city, supplier, risk type..." />
+            <button type="button">Search</button>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
   );
 }

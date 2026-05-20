@@ -1,28 +1,33 @@
-import Layout from '../components/Layout';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import '../styles/jooking-pages.css';
 
 const risks = [
-  'Unauthorized or last-minute cancellation',
-  'Misleading listing information',
-  'Refund or payment dispute',
-  'Host or guest pressure behavior',
-  'Unsafe check-in or access issue',
+  'Booking fraud or suspicious payment behavior',
+  'Unsafe accommodation or destination conditions',
+  'Repeated supplier cancellation patterns',
+  'Guest harassment, threats or abuse',
+  'Operational failures impacting traveler safety',
 ];
 
 export default function RisksPage() {
   return (
-    <Layout>
-      <section className="max-w-5xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold tracking-tight">Risks</h1>
-        <p className="text-neutral-600 mt-3">A structured view of the main incident categories tracked by Jooking.</p>
-        <div className="grid md:grid-cols-2 gap-4 mt-8">
-          {risks.map((risk) => (
-            <div key={risk} className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm">
-              <h2 className="font-semibold">{risk}</h2>
-              <p className="text-sm text-neutral-600 mt-2">Reports are anonymized, categorized, and aggregated before being shown publicly.</p>
-            </div>
-          ))}
-        </div>
-      </section>
-    </Layout>
+    <div className="jooking-page grey-bg">
+      <Navbar />
+      <main className="jooking-main narrow">
+        <section className="hero-card">
+          <p className="eyebrow">Risks</p>
+          <h1>Risk categories tracked by Jooking</h1>
+          <p>
+            This page explains the main risk categories monitored by the platform and is now connected
+            to the navigation menu instead of sending users back to Home.
+          </p>
+          <ul className="risk-list">
+            {risks.map((risk) => <li key={risk}>{risk}</li>)}
+          </ul>
+        </section>
+      </main>
+      <Footer />
+    </div>
   );
 }

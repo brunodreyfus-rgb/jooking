@@ -1,42 +1,75 @@
-import Layout from '../components/Layout';
+import { useMemo, useState } from 'react';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import { filterNewReportedEvents } from '../lib/reportedEventsImport';
+import '../styles/jooking-pages.css';
 
 export default function ReportIncidentPage() {
-  return (
-    <Layout>
-      <section className="bg-neutral-100 min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 py-12 grid lg:grid-cols-[0.85fr_1.15fr] gap-8">
-          <aside className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm h-fit">
-            <img src="/logo-jooking.svg" alt="Jooking" className="h-10 w-auto mb-6" />
-            <h1 className="text-3xl font-bold tracking-tight">Report an incident</h1>
-            <p className="text-neutral-600 mt-4">Share what happened so Jooking can identify recurring risks and help protect other travellers.</p>
-            <div className="mt-6 rounded-xl bg-neutral-50 border border-neutral-200 p-4 text-sm text-neutral-700">
-              Reports can be submitted anonymously. Jooking does not publicly display personal identifiers from submitted reports.
-            </div>
-          </aside>
+  const [existingEvents] = useState([]);
+  const [pendingEvents, setPendingEvents] = useState([]);
 
-          <form className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">Incident title</label>
-              <input className="w-full rounded-xl border border-neutral-300 px-4 py-3" placeholder="Brief summary" />
-            </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">Country</label>
-                <input className="w-full rounded-xl border border-neutral-300 px-4 py-3" placeholder="Country" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">City</label>
-                <input className="w-full rounded-xl border border-neutral-300 px-4 py-3" placeholder="City" />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">Description</label>
-              <textarea className="w-full rounded-xl border border-neutral-300 px-4 py-3 min-h-36" placeholder="Describe the incident" />
-            </div>
-            <button type="submit" className="rounded-xl bg-neutral-900 text-white px-5 py-3 font-medium hover:bg-neutral-700">Submit report</button>
+  const newEvents = useMemo(() => filterNewReportedEvents(pendingEvents, existingEvents), [pendingEvents, existingEvents]);
+
+  return (
+    <div className="jooking-page grey-bg">
+      <Navbar />
+      <main className="jooking-main wide report-grid">
+        <aside className="hero-card left-panel">
+          <p className="eyebrow">Report incident</p>
+          <h1>Share an anonymous report</h1>
+          <p>
+            Submit a report to help Jooking identify repeated risks and protect other users. Your identity
+            is protected and the public platform only uses anonymized information.
+          </p>
+          <p>
+            You can also prepare a batch of reported events and import only the ones that are not already
+            present in the platform.
+          </p>
+        </aside>
+
+        <section className="content-card">
+          <h2>Incident details</h2>
+          <form className="incident-form">
+            <label>
+              Location
+              <input name="location" placeholder="City, country" />
+            </label>
+            <label>
+              Risk type
+              <select name="riskType" defaultValue="">
+                <option value="" disabled>Select a risk type</option>
+                <option>Fraud</option>
+                <option>Safety</option>
+                <option>Cancellation</option>
+                <option>Harassment</option>
+                <option>Operational issue</option>
+              </select>
+            </label>
+            <label>
+              Description
+              <textarea name="description" rows="6" placeholder="Describe what happened without sharing personal details." />
+            </label>
+            <button type="button">Submit report</button>
           </form>
-        </div>
-      </section>
-    </Layout>
+        </section>
+
+        <section className="content-card import-card">
+          <h2>Import reported events not yet in the platform</h2>
+          <p>
+            Use `filterNewReportedEvents(reportedEvents, existingEvents)` from `lib/reportedEventsImport.js`
+            before sending events to Supabase. It removes duplicates based on id or normalized event fields.
+          </p>
+          <div className="metric-row">
+            <span>Pending events</span>
+            <strong>{pendingEvents.length}</strong>
+          </div>
+          <div className="metric-row">
+            <span>New events ready to import</span>
+            <strong>{newEvents.length}</strong>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
   );
 }

@@ -1,25 +1,37 @@
-import Layout from '../components/Layout';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import '../styles/jooking-pages.css';
 
 export default function MethodologyPage() {
   return (
-    <Layout>
-      <section className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold tracking-tight">Methodology</h1>
-        <div className="mt-8 space-y-6">
-          <article className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm">
-            <h2 className="text-xl font-semibold">How reports are processed</h2>
-            <p className="text-neutral-600 mt-3">Jooking reviews submitted reports, groups them into risk categories, and displays aggregated signals to help users understand recurring patterns.</p>
-          </article>
-          <article className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm">
-            <h2 className="text-xl font-semibold">Anonymity guarantee</h2>
-            <p className="text-neutral-600 mt-3">Jooking guarantees the anonymity and confidentiality of individuals submitting incident reports. Personal identifiers are not publicly exposed, and public dashboards focus on aggregated risk signals rather than individual identities.</p>
-          </article>
-          <article className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm">
-            <h2 className="text-xl font-semibold">Risk levels</h2>
-            <p className="text-neutral-600 mt-3">Risk levels are based on report frequency, severity, recency, and corroborating signals. They are designed as guidance indicators, not legal conclusions.</p>
-          </article>
-        </div>
-      </section>
-    </Layout>
+    <div className="jooking-page grey-bg">
+      <Navbar />
+      <main className="jooking-main narrow">
+        <section className="hero-card">
+          <p className="eyebrow">Methodology</p>
+          <h1>How Jooking processes reports</h1>
+          <p>
+            Jooking collects incident reports, removes identifying information, groups similar signals,
+            and converts verified patterns into risk indicators.
+          </p>
+        </section>
+        <section className="content-card">
+          <h2>Anonymity guarantee</h2>
+          <p>
+            Jooking guarantees the anonymity and confidentiality of people who submit reports. Personal
+            information is not displayed publicly, and reports are used only as anonymized signals to help
+            identify risk patterns.
+          </p>
+        </section>
+        <section className="content-card">
+          <h2>Signal validation</h2>
+          <p>
+            Reports are reviewed for consistency, duplicates and severity before contributing to public risk
+            indicators or dashboard metrics.
+          </p>
+        </section>
+      </main>
+      <Footer />
+    </div>
   );
 }
