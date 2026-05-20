@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 set -e
-unzip -o jooking-static-html-real-patch.zip -d .
-echo "Jooking static HTML patch applied. Check git status, then deploy."
+cp assets/js/components.js ./assets/js/components.js
+cp assets/js/admin-data.js ./assets/js/admin-data.js
+cp pages/admin-data.html ./pages/admin-data.html
+echo "Patch applied: menu cleaned, admin default restored to incidents."

@@ -1,13 +1,10 @@
-# Jooking menu patch
+# Jooking data restore + menu cleanup patch
 
-Change included:
-- Removed `Search` from the shared header menu.
-- Removed `Risks` from the shared header menu.
+This patch does two things:
 
-File to replace:
-- `assets/js/components.js`
+1. Removes Search and Risks from the header menu in `assets/js/components.js`.
+2. Restores the Admin Data Manager default table to `incidents`, so existing platform data appears again.
 
-Apply at repo root:
-```bash
-unzip -o jooking-menu-remove-search-risks.zip -d .
-```
+It also keeps `Submitted Reports` available as a tab, but it is not the default because your Supabase screenshot shows `reports` has 0 rows.
+
+Apply at the root of the GitHub repo.
