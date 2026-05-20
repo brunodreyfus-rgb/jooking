@@ -1,13 +1,13 @@
-# Jooking admin Supabase diagnostic patch
+# Jooking Supabase Restore Patch
 
 Files included:
-- assets/js/components.js: removes Search and Risks from menu.
-- pages/admin.html: removes the Open Admin Data Manager button.
-- assets/js/supabase-config.js: restores Supabase URL/key from the uploaded repo.
-- assets/js/supabase-client.js: exposes the client on window and shows clear errors.
-- assets/js/admin-login.js: catches Supabase/network/login errors instead of failing silently.
-- assets/js/admin-data.js: restores default table to incidents.
-- pages/admin-data.html: restores admin data page structure.
-- pages/supabase-test.html: new diagnostic page.
+- assets/js/supabase-config.js: restores SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY constants.
+- assets/js/supabase-client.js: restores antibookingSupabase client creation.
+- assets/js/admin-login.js: restores admin login redirect after success.
+- assets/js/admin-data.js: restores incidents as default admin data table.
+- assets/js/components.js: removes Search and Risks from the menu.
+- pages/admin.html: removes Open Admin Data Manager button.
+- pages/admin-data.html: restored from original repo.
+- pages/supabase-test.html: diagnostic page.
 
-After deploy, open /pages/supabase-test.html. If it says FAILED: Failed to fetch, the issue is network/domain/Supabase project access, not the menu/admin HTML.
+Apply at the root of the GitHub repo, commit, deploy, then test /pages/supabase-test.html.
