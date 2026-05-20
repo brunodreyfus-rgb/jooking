@@ -1,18 +1,7 @@
 const antibookingSupabase = window.supabase.createClient(
   SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY,
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-      storage: window.localStorage
-    }
-  }
+  SUPABASE_PUBLISHABLE_KEY
 );
-
-window.antibookingSupabase = antibookingSupabase;
-window.supabaseClient = antibookingSupabase;
 
 function byId(id) {
   return document.getElementById(id);

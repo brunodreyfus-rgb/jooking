@@ -1,19 +1,25 @@
-# Jooking emergency restore patch
+# Jooking admin restore + menu cleanup v2
 
-This patch restores the Admin login/data files from the original GitHub repo you uploaded, with only one intentional UI change:
+This patch is based on the uploaded GitHub ZIP `jooking-main.zip`.
 
-- removes `Search` and `Risks` from the menu in `assets/js/components.js`
+It does only these changes:
 
-It also reinforces `assets/js/supabase-client.js` so the Supabase client is exposed as both `window.antibookingSupabase` and `window.supabaseClient`, which helps the admin login/data pages find the same client reliably.
+1. Removes `Search` and `Risks` from the shared header menu in `assets/js/components.js`.
+2. Removes the `Open Admin Data Manager` button from `pages/admin.html`.
+3. Restores the original working admin/Supabase files from the uploaded repo:
+   - `assets/js/admin-login.js`
+   - `assets/js/admin-data.js`
+   - `assets/js/supabase-client.js`
+   - `assets/js/supabase-config.js`
+   - `pages/admin-data.html`
 
-Files included:
+Admin data stays on the `incidents` table by default.
+The `reports` table is not made default because your Supabase screenshot shows `reports = 0 rows`.
 
-- assets/js/components.js
-- assets/js/admin-login.js
-- assets/js/admin-data.js
-- assets/js/supabase-config.js
-- assets/js/supabase-client.js
-- pages/admin.html
-- pages/admin-data.html
+Apply at the repo root:
 
-Apply at the repo root, commit, deploy on Vercel, then hard refresh.
+```bash
+unzip -o jooking-admin-restore-menu-v2.zip -d .
+```
+
+Then commit and redeploy on Vercel.
