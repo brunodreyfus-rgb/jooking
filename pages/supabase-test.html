@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supabase Test | Jooking</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/header-fix.css" />
+  <link rel="stylesheet" href="/assets/css/footer-fix.css" />
+</head>
+<body>
+  <div id="siteHeader"></div>
+  <main class="main">
+    <section class="search-panel">
+      <h1>Supabase Connection Test</h1>
+      <p>This page tests whether the public website can reach Supabase and read the incidents table.</p>
+      <pre id="testOutput" style="white-space:pre-wrap;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:16px;line-height:1.5;">Running test...</pre>
+      <button class="btn btn-primary" onclick="runSupabaseTest()">Run again</button>
+    </section>
+  </main>
+  <div id="siteFooter"></div>
+  <script src="/assets/js/components.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script>
+    async function runSupabaseTest() {
+      const out = document.getElementById('testOutput');
+      const lines = [];
+      function add(label, value) { lines.push(label + ': ' + value); out.textContent = lines.join('\n'); }
+      add('Current URL', window.location.href);
+      add('Supabase library loaded', !!window.supabase);
+      add('SUPABASE_URL', window.SUPABASE_URL || 'missing');
+      add('SUPABASE_KEY prefix', window.SUPABASE_PUBLISHABLE_KEY ? window.SUPABASE_PUBLISHABLE_KEY.slice(0, 18) + '...' : 'missing');
+      add('Client created', !!window.antibookingSupabase);
+      if (!window.antibookingSupabase) return;
+      try {
+        const session = await window.antibookingSupabase.auth.getSession();
+        add('Auth session check', session.error ? 'ERROR: ' + session.error.message : 'OK');
+      } catch (e) {
+        add('Auth session check', 'FAILED: ' + (e.message || e));
+      }
+      try {
+        const res = await window.antibookingSupabase.from('incidents').select('id,place_name,status').limit(3);
+        add('Incidents read', res.error ? 'ERROR: ' + res.error.message : 'OK, rows returned=' + (res.data || []).length);
+        if (res.data && res.data.length) add('First row', JSON.stringify(res.data[0]));
+      } catch (e) {
+        add('Incidents read', 'FAILED: ' + (e.message || e));
+      }
+    }
+    document.addEventListener('DOMContentLoaded', runSupabaseTest);
+  </script>
+</body>
+</html>

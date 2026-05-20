@@ -1,25 +1,13 @@
-# Jooking admin restore + menu cleanup v2
+# Jooking admin Supabase diagnostic patch
 
-This patch is based on the uploaded GitHub ZIP `jooking-main.zip`.
+Files included:
+- assets/js/components.js: removes Search and Risks from menu.
+- pages/admin.html: removes the Open Admin Data Manager button.
+- assets/js/supabase-config.js: restores Supabase URL/key from the uploaded repo.
+- assets/js/supabase-client.js: exposes the client on window and shows clear errors.
+- assets/js/admin-login.js: catches Supabase/network/login errors instead of failing silently.
+- assets/js/admin-data.js: restores default table to incidents.
+- pages/admin-data.html: restores admin data page structure.
+- pages/supabase-test.html: new diagnostic page.
 
-It does only these changes:
-
-1. Removes `Search` and `Risks` from the shared header menu in `assets/js/components.js`.
-2. Removes the `Open Admin Data Manager` button from `pages/admin.html`.
-3. Restores the original working admin/Supabase files from the uploaded repo:
-   - `assets/js/admin-login.js`
-   - `assets/js/admin-data.js`
-   - `assets/js/supabase-client.js`
-   - `assets/js/supabase-config.js`
-   - `pages/admin-data.html`
-
-Admin data stays on the `incidents` table by default.
-The `reports` table is not made default because your Supabase screenshot shows `reports = 0 rows`.
-
-Apply at the repo root:
-
-```bash
-unzip -o jooking-admin-restore-menu-v2.zip -d .
-```
-
-Then commit and redeploy on Vercel.
+After deploy, open /pages/supabase-test.html. If it says FAILED: Failed to fetch, the issue is network/domain/Supabase project access, not the menu/admin HTML.

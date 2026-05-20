@@ -18,13 +18,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const form = document.getElementById("adminLoginForm");
 
   if (!client) {
-    setLoginStatus("Supabase client missing.", false);
+    setLoginStatus("Supabase client missing. Open /pages/supabase-test.html to diagnose.", false);
     return;
   }
 
-  const { data } = await client.auth.getSession();
-  if (data?.session) {
-    setLoginStatus(`Already logged in as ${data.session.user.email}.`);
+  try {
+    const { data, error } = await client.auth.getSession();
+    if (error) setLoginStatus("Session check error: " + error.message, false);
+    if (data?.session) setLoginStatus(`Already logged in as ${data.session.user.email}.`);
+  } catch (error) {
+    setLoginStatus("Session check failed: " + (error.message || error), false);
   }
 
   form?.addEventListener("submit", async (event) => {
@@ -34,14 +37,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     setLoginStatus("Logging in...");
 
-    const { data, error } = await client.auth.signInWithPassword({ email, password });
-
-    if (error) {
-      setLoginStatus(error.message, false);
-      return;
+    try {
+      const { data, error } = await client.auth.signInWithPassword({ email, password });
+      if (error) {
+        setLoginStatus(error.message, false);
+        return;
+      }
+      setLoginStatus(`Logged in as ${data.user.email}. Opening Admin Data...`);
+      window.location.href = "/pages/admin-data.html";
+    } catch (error) {
+      setLoginStatus("Login failed: " + (error.message || error) + ". Open /pages/supabase-test.html.", false);
     }
-
-    setLoginStatus(`Logged in as ${data.user.email}. Opening Admin Data...`);
-    window.location.href = "/pages/admin-data.html";
   });
 });
