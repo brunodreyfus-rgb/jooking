@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import JookingLogo from './JookingLogo';
 
-const navItems = [
+const links = [
   { href: '/', label: 'Home' },
   { href: '/search', label: 'Search' },
   { href: '/risks', label: 'Risks' },
@@ -12,14 +13,13 @@ const navItems = [
 export default function Navbar() {
   return (
     <header className="jooking-header">
-      <Link href="/" className="jooking-brand" aria-label="Jooking home">
-        <span className="jooking-logo-mark">J</span>
-        <span>Jooking</span>
+      <Link href="/" className="jooking-brand-link" aria-label="Go to Jooking home">
+        <JookingLogo />
       </Link>
       <nav className="jooking-nav" aria-label="Main navigation">
-        {navItems.map((item) => (
-          <Link key={item.href} href={item.href} className="jooking-nav-link">
-            {item.label}
+        {links.map((link) => (
+          <Link key={link.href} href={link.href} className="jooking-nav-link">
+            {link.label}
           </Link>
         ))}
       </nav>

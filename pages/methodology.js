@@ -1,37 +1,25 @@
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import '../styles/jooking-pages.css';
 
 export default function MethodologyPage() {
   return (
-    <div className="jooking-page grey-bg">
+    <main className="jooking-page grey-bg">
       <Navbar />
-      <main className="jooking-main narrow">
-        <section className="hero-card">
+      <section className="jooking-container">
+        <div className="jooking-card">
           <p className="eyebrow">Methodology</p>
           <h1>How Jooking processes reports</h1>
           <p>
-            Jooking collects incident reports, removes identifying information, groups similar signals,
-            and converts verified patterns into risk indicators.
+            Jooking collects incident reports to identify risk patterns while protecting contributors.
+            Reports are reviewed, categorized, and mapped only when they contain enough reliable context.
           </p>
-        </section>
-        <section className="content-card">
           <h2>Anonymity guarantee</h2>
           <p>
-            Jooking guarantees the anonymity and confidentiality of people who submit reports. Personal
-            information is not displayed publicly, and reports are used only as anonymized signals to help
-            identify risk patterns.
+            Jooking guarantees the anonymity of people submitting reports. Personal identifying details
+            are not displayed publicly and are not required for a report to contribute to the risk map.
           </p>
-        </section>
-        <section className="content-card">
-          <h2>Signal validation</h2>
-          <p>
-            Reports are reviewed for consistency, duplicates and severity before contributing to public risk
-            indicators or dashboard metrics.
-          </p>
-        </section>
-      </main>
-      <Footer />
-    </div>
+        </div>
+      </section>
+    </main>
   );
 }

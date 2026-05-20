@@ -1,26 +1,24 @@
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import '../styles/jooking-pages.css';
 
 export default function SearchPage() {
   return (
-    <div className="jooking-page grey-bg">
+    <main className="jooking-page grey-bg">
       <Navbar />
-      <main className="jooking-main narrow">
-        <section className="hero-card">
+      <section className="jooking-container">
+        <div className="jooking-card">
           <p className="eyebrow">Search</p>
-          <h1>Search incident reports and risk signals</h1>
+          <h1>Search incident reports</h1>
           <p>
-            Search will help users explore anonymized reports, destinations, providers and risk patterns.
-            This page is now routed correctly instead of redirecting to the home page.
+            Search is dedicated to finding anonymous reports by country, city, category, risk level,
+            or keyword. This page no longer redirects to Home.
           </p>
-          <div className="search-shell">
-            <input aria-label="Search reports" placeholder="Search by country, city, supplier, risk type..." />
+          <div className="search-placeholder">
+            <input aria-label="Search reports" placeholder="Search by city, country, risk or keyword" />
             <button type="button">Search</button>
           </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+        </div>
+      </section>
+    </main>
   );
 }

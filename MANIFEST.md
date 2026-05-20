@@ -1,33 +1,64 @@
-# Jooking AntiBooking V1 - Patch réel
+# Jooking AntiBooking V1 - Verified Patch
 
-Ce package contient des fichiers directement utilisables pour remplacer/ajouter dans le repo Next.js.
+This package contains explicit updated/new files for the requested fixes.
 
-## Fichiers inclus
+## Included files
 
-- `pages/search.js` — nouvelle page Search
-- `pages/risks.js` — nouvelle page Risks
-- `pages/risk-map.js` — page Risk Map corrigée, wording "Live dashboard"
-- `pages/methodology.js` — ajout anonymat des personnes qui soumettent les reports
-- `pages/report-incident.js` — background gris, suppression texte V2, branding Jooking
-- `components/Navbar.js` — liens menu corrigés vers `/search`, `/risks`, `/risk-map`, `/report-incident`
-- `components/Footer.js` — branding footer Jooking
-- `components/WorldRiskMap.js` — carte monde SVG responsive avec points alignés et légende en bas à gauche
-- `lib/reportedEventsImport.js` — helper pour filtrer les reported events pas encore ajoutés à la plateforme
-- `styles/jooking-pages.css` — styles partagés gris / cartes / layout
-- `apply-patch.sh` — copie les fichiers dans un repo local
+- `components/Navbar.js`
+  - Fixes Search and Risks links so they no longer point to Home.
 
-## Application
+- `components/JookingLogo.js`
+  - Adds reusable Jooking text logo fallback.
 
-Depuis la racine de ton repo :
+- `components/WorldRiskMap.js`
+  - Adds responsive full-world SVG map component.
+  - Keeps the legend bottom-left.
+  - Uses a single coordinate projection function for both Home and Risk Map.
+
+- `lib/mapProjection.js`
+  - Centralizes latitude/longitude to SVG coordinate projection.
+
+- `lib/reportedEventsImport.js`
+  - Adds helper to compare reported events against existing platform events.
+  - Returns only missing reports to import.
+
+- `pages/search.js`
+  - New Search page content.
+
+- `pages/risks.js`
+  - New Risks page content.
+
+- `pages/risk-map.js`
+  - Updates wording from “Supabase live dashboard” to “Live dashboard”.
+  - Uses fixed map component.
+
+- `pages/methodology.js`
+  - Adds anonymity guarantee wording.
+
+- `pages/report-incident.js`
+  - Applies grey background.
+  - Removes obsolete V2 Supabase sentence.
+  - Uses Jooking logo/header/footer fallback.
+
+- `styles/jooking-pages.css`
+  - Shared page/card styling used by the new pages.
+
+## How to apply
+
+Copy the folders from this ZIP into the root of your Next.js project, preserving folder names.
+
+Example:
 
 ```bash
-unzip jooking-antibooking-v1-real-patch.zip -d patch
-cd patch
-bash apply-patch.sh /chemin/vers/ton/repo
+cp -R components lib pages styles /path/to/your/repo/
 ```
 
-Ou copie manuellement les dossiers `pages`, `components`, `lib`, `styles` dans ton repo.
+Or from the project root after unzipping:
+
+```bash
+cp -R ./components ./lib ./pages ./styles YOUR_REPO_ROOT/
+```
 
 ## Important
 
-Si ton projet utilise déjà certains de ces fichiers avec une structure différente, compare avant remplacement.
+If your project already has these files with different component names or routes, merge manually rather than blindly overwriting.

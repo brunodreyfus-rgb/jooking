@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
-TARGET="${1:-.}"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-for dir in pages components lib styles; do
-  mkdir -p "$TARGET/$dir"
-  cp -R "$SCRIPT_DIR/$dir/." "$TARGET/$dir/"
-done
-echo "Patch Jooking AntiBooking V1 applied to: $TARGET"
+
+TARGET_DIR="${1:-.}"
+
+cp -R components "$TARGET_DIR/"
+cp -R lib "$TARGET_DIR/"
+cp -R pages "$TARGET_DIR/"
+cp -R styles "$TARGET_DIR/"
+
+echo "Patch copied to $TARGET_DIR"
+echo "Review MANIFEST.md for the list of updated/new files."
