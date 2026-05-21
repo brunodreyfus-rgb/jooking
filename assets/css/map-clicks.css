@@ -73,13 +73,16 @@
 }
 
 
-/* V2.6 static HTML map alignment overrides */
+/* V2.6.1 map clipping fix: keep live pins inside the actual map box.
+   The previous overflow: visible let pins escape over the search panel. */
 .hero-map,
 #worldRiskMap,
 .risk-world-map {
   background-position: center center !important;
   background-size: 100% 100% !important;
-  overflow: visible !important;
+  overflow: hidden !important;
+  contain: paint !important;
+  isolation: isolate !important;
 }
 
 .hero-map::before,
@@ -95,3 +98,9 @@
 }
 
 .jooking-dynamic-map-pin.low { background: #0038A8 !important; }
+
+
+/* Keep map markers behind the search card if sections overlap. */
+.jooking-dynamic-map-pin { z-index: 4 !important; }
+.jooking-map-tooltip { z-index: 8 !important; }
+.search-panel { position: relative !important; z-index: 30 !important; }
