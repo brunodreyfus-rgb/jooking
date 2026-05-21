@@ -1,0 +1,33 @@
+{
+  "rewrites": [
+    {
+      "source": "/rest/v1/:path*",
+      "destination": "https://rkknttzzrrjavbyymvws.supabase.co/rest/v1/:path*"
+    },
+    {
+      "source": "/auth/v1/:path*",
+      "destination": "https://rkknttzzrrjavbyymvws.supabase.co/auth/v1/:path*"
+    },
+    {
+      "source": "/storage/v1/:path*",
+      "destination": "https://rkknttzzrrjavbyymvws.supabase.co/storage/v1/:path*"
+    },
+    {
+      "source": "/functions/v1/:path*",
+      "destination": "https://rkknttzzrrjavbyymvws.supabase.co/functions/v1/:path*"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.jooking.org"
+        }
+      ],
+      "destination": "https://jooking.org/:path*",
+      "permanent": true
+    }
+  ]
+}
