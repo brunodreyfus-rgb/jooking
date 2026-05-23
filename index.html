@@ -11,8 +11,54 @@
   <link rel="stylesheet" href="/assets/css/compact-layout-fix.css" />
   <link rel="stylesheet" href="/assets/css/reported-places-final-cleanup.css" />
   <link rel="stylesheet" href="/assets/css/map-clicks.css" />
+
+  <style>
+    .community-banner {
+      width: 100%;
+      background: #f7f3ee;
+      color: #2b2140;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      position: relative;
+      z-index: 9999;
+      flex-wrap: wrap;
+    }
+
+    .banner-bug {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .banner-separator {
+      opacity: 0.35;
+    }
+
+    .community-banner a {
+      color: #2b2140;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .community-banner a:hover {
+      opacity: 0.8;
+    }
+  </style>
 </head>
 <body>
+
+  <div class="community-banner">
+    <span class="banner-bug">🪳</span>
+    <strong>100 signalements déjà publiés</strong>
+    <span class="banner-separator">|</span>
+    <span>Merci à notre communauté pour sa vigilance.</span>
+    <a href="/pages/country-risk.html">Voir la carte</a>
+  </div>
+
   <div id="siteHeader"></div>
 
   <section class="hero" id="home">
