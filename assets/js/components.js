@@ -4,6 +4,7 @@ function siteHeader(current = "") {
     ["Friendly Places", "/pages/friendly.html"],
     ["Risk Map", "/pages/country-risk.html"],
     ["Methodology", "/pages/methodology.html"],
+    ["Partners", "/pages/partners.html"],
     ["Admin", "/pages/admin.html"]
   ];
   const active = (label, href) => current === label || current === href;
@@ -28,7 +29,7 @@ function siteHeader(current = "") {
     </header>`;
 }
 function siteFooter() {
-  return `<footer class="footer"><div class="footer-grid"><div><div class="brand"><img class="brand-logo" src="/assets/img/jooking-logo-final-transparent.png?v=2517" alt="Jooking" /></div><p>Travel informed. Stay aware.</p></div><p>© 2026 Jooking. Evidence-first travel intelligence.</p></div></footer>`;
+  return `<footer class="footer"><div class="footer-grid"><div><div class="brand"><img class="brand-logo" src="/assets/img/jooking-logo-final-transparent.png?v=2517" alt="Jooking" /></div><p>Travel informed. Stay aware.</p><p><a href="https://x.com/JookingRadar" target="_blank" rel="noopener">@JookingRadar</a> · <a href="mailto:jookingradar@gmail.com">jookingradar@gmail.com</a></p></div><p>© 2026 Jooking. Evidence-first travel intelligence.</p></div></footer>`;
 }
 function replaceBrandText(root = document.body) {
   if (!root) return;
@@ -51,6 +52,7 @@ function getCurrentNavLabel() {
   if (path.includes("country-risk")) return "Risk Map";
   if (path.includes("methodology")) return "Methodology";
   if (path.includes("friendly")) return "Friendly Places";
+  if (path.includes("partners")) return "Partners";
   if (path.includes("admin")) return "Admin";
   return "Home";
 }
@@ -62,4 +64,3 @@ function mountLayout() {
   replaceBrandText();
 }
 document.addEventListener("DOMContentLoaded", mountLayout);
-
