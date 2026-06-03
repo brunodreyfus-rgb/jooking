@@ -7,10 +7,45 @@ const resultCount = document.getElementById("resultCount");
 
 let currentPublicIncidents = [];
 
+function normalizeText(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function canonicalCategory(rawCategory, item = {}) {
+  const category = normalizeText(rawCategory);
+  const tourismType = normalizeText(item.tourism_type);
+  const name = normalizeText(item.name);
+  const summary = normalizeText(item.summary);
+  const details = normalizeText(item.details);
+  const combined = `${category} ${tourismType} ${name} ${summary} ${details}`;
+
+  if (combined.match(/\b(store|stores|shop|shops|shopping|retail|mall|market|boutique)\b/)) return "Store";
+  if (combined.match(/\b(hotel|hotels|hostel|resort|accommodation)\b/)) return "Hotel";
+  if (combined.match(/\b(restaurant|restaurants|cafe|bar|food|dining)\b/)) return "Restaurant";
+  if (combined.match(/\b(taxi|transport|uber|driver|bus|train|metro|car rental|shuttle)\b/)) return "Taxi / Transport";
+  if (combined.match(/\b(airbnb|rental|rentals|apartment|flat|short[- ]term)\b/)) return "Airbnb / Rental";
+  if (combined.match(/\b(airport|airline|security|border|check[- ]in)\b/)) return "Airport Service";
+  if (combined.match(/\b(harassment|atmosphere|hostile|street|public space)\b/)) return "Harassment / Atmosphere";
+  if (combined.match(/\b(attraction|attractions|museum|museums|tour|tours|monument|site|park|gallery|experience)\b/)) return "Attraction";
+
+  if (category === "museum / attraction") return "Attraction";
+  if (category === "hotels") return "Hotel";
+  if (category === "attractions") return "Attraction";
+  if (category === "shops" || category === "retail") return "Store";
+
+  return rawCategory || "Other";
+}
+
+function normalizeIncident(item) {
+  const normalized = { ...item };
+  normalized.category = canonicalCategory(item.category, item);
+  return normalized;
+}
+
 async function initFilters() {
   if (!countrySelect || !citySelect || !categorySelect || !resultsGrid) return;
   resultsGrid.innerHTML = '<div class="panel"><h2>Loading approved incidents...</h2></div>';
-  currentPublicIncidents = await getPublicIncidents();
+  currentPublicIncidents = (await getPublicIncidents()).map(normalizeIncident);
 
   const countries = [...new Set(currentPublicIncidents.map(item => item.country))].sort();
   countrySelect.innerHTML = '<option value="all">All countries</option>';
@@ -21,7 +56,17 @@ async function initFilters() {
     countrySelect.appendChild(option);
   });
 
-  ensureCategoryOption("Harassment / Atmosphere", "Harassment / Atmosphere");
+  [
+    ["Hotel", "Hotels"],
+    ["Restaurant", "Restaurants"],
+    ["Taxi / Transport", "Taxi / Transport"],
+    ["Attraction", "Attractions"],
+    ["Store", "Stores"],
+    ["Airbnb / Rental", "Airbnb / Rentals"],
+    ["Airport Service", "Airport Services"],
+    ["Harassment / Atmosphere", "Harassment / Atmosphere"]
+  ].forEach(([value, label]) => ensureCategoryOption(value, label));
+
   countrySelect.addEventListener("change", updateCities);
   categorySelect.addEventListener("change", filterIncidents);
   updateCities();
@@ -58,7 +103,7 @@ function filterIncidents() {
   renderResults(currentPublicIncidents.filter(item =>
     (country === "all" || item.country === country) &&
     (city === "all" || item.city === city) &&
-    (category === "all" || item.category === category)
+    (category === "all" || canonicalCategory(item.category, item) === category)
   ));
 }
 
@@ -110,7 +155,16 @@ function renderResults(items) {
 function renderCategoryTiles() {
   const box = document.getElementById("categoryStrip");
   if (!box) return;
-  const cats = [["Hotel","Hotels"],["Restaurant","Restaurants"],["Taxi / Transport","Taxi / Transport"],["Museum / Attraction","Attractions"],["Airbnb / Rental","Rentals"],["Airport Service","Airport Services"],["Harassment / Atmosphere","Harassment / Atmosphere"]];
+  const cats = [
+    ["Hotel","Hotels"],
+    ["Restaurant","Restaurants"],
+    ["Taxi / Transport","Taxi / Transport"],
+    ["Attraction","Attractions"],
+    ["Store","Stores"],
+    ["Airbnb / Rental","Rentals"],
+    ["Airport Service","Airport Services"],
+    ["Harassment / Atmosphere","Harassment / Atmosphere"]
+  ];
   box.innerHTML = cats.map(([value, label]) => `
     <button class="category-tile" onclick="selectCategory('${value.replace(/'/g, "\\'")}')">
       <img src="${getCategoryImage(value)}" alt="${safeHtml(label)}" />
@@ -183,13 +237,15 @@ async function submitComment(event, incidentId) {
 }
 
 function getCategoryImage(category) {
-  if (category === "Hotel") return "/assets/img/categories/hotel.svg";
-  if (category === "Restaurant") return "/assets/img/categories/restaurant.svg";
-  if (category === "Taxi / Transport") return "/assets/img/categories/transport.svg";
-  if (category === "Museum / Attraction") return "/assets/img/categories/museum.svg";
-  if (category === "Airbnb / Rental") return "/assets/img/categories/airbnb.svg";
-  if (category === "Airport Service") return "/assets/img/categories/airport.svg";
-  if (category === "Harassment / Atmosphere") return "/assets/img/categories/atmosphere.svg";
+  const canonical = canonicalCategory(category);
+  if (canonical === "Hotel") return "/assets/img/categories/hotel.svg";
+  if (canonical === "Restaurant") return "/assets/img/categories/restaurant.svg";
+  if (canonical === "Taxi / Transport") return "/assets/img/categories/transport.svg";
+  if (canonical === "Attraction") return "/assets/img/categories/museum.svg";
+  if (canonical === "Store") return "/assets/img/categories/store.svg";
+  if (canonical === "Airbnb / Rental") return "/assets/img/categories/airbnb.svg";
+  if (canonical === "Airport Service") return "/assets/img/categories/airport.svg";
+  if (canonical === "Harassment / Atmosphere") return "/assets/img/categories/atmosphere.svg";
   return "/assets/img/categories/atmosphere.svg";
 }
 
