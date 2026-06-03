@@ -23,12 +23,11 @@
       <button class="admin-tab" onclick="switchAdminTable('friendly_places')">Friendly Places</button>
       <button class="admin-tab" onclick="switchAdminTable('ai_leads')">AI Leads</button>
       <button class="admin-tab" onclick="switchAdminTable('reports')">Submitted Reports</button>
-      <button class="admin-tab" onclick="switchAdminTable('comments')">Comments Moderation</button>
     </section>
     <section class="admin-filter-card">
       <div class="admin-filter-grid">
         <div><label>Search</label><input id="adminSearch" placeholder="Place, city, country, source..." oninput="renderAdminRows()"/></div>
-        <div><label>Status</label><select id="filterStatus" onchange="renderAdminRows()"><option value="all">All</option><option value="approved">approved</option><option value="needs_verification">needs_verification</option><option value="draft">draft</option><option value="rejected">rejected</option><option value="pending">pending</option><option value="hidden">hidden</option></select></div>
+        <div><label>Status</label><select id="filterStatus" onchange="renderAdminRows()"><option value="all">All</option><option value="approved">approved</option><option value="needs_verification">needs_verification</option><option value="draft">draft</option><option value="rejected">rejected</option></select></div>
         <div><label>Completeness</label><select id="filterCompleteness" onchange="renderAdminRows()"><option value="all">All records</option><option value="missing_city">Missing city</option><option value="missing_date">Missing date</option><option value="missing_url">Missing URL</option><option value="missing_details">Missing details</option><option value="missing_source">Missing source label</option><option value="complete">Complete enough</option></select></div>
         <div><label>Category</label><select id="filterCategory" onchange="renderAdminRows()"><option value="all">All categories</option></select></div>
         <div><label>Country</label><select id="filterCountry" onchange="renderAdminRows()"><option value="all">All countries</option></select></div>
@@ -41,9 +40,9 @@
         <h2 id="adminFormTitle">New risk report</h2>
         <form id="adminDataForm">
           <input type="hidden" name="id"/>
-          <div class="admin-row"><label>Status</label><select name="status"><option value="approved">approved</option><option value="needs_verification">needs_verification</option><option value="draft">draft</option><option value="rejected">rejected</option><option value="pending">pending</option><option value="hidden">hidden</option></select></div>
+          <div class="admin-row"><label>Status</label><select name="status"><option value="approved">approved</option><option value="needs_verification">needs_verification</option><option value="draft">draft</option><option value="rejected">rejected</option></select></div>
           <div class="admin-row"><label>Place name</label><input name="place_name" required/></div>
-          <div class="admin-row two"><div><label>Category</label><input name="category" required/></div><div><label>Country</label><input name="country" required/></div></div>
+          <div class="admin-row two"><div><label>Category</label><input name="category" list="adminCategoryOptions" required/><datalist id="adminCategoryOptions"><option value="Hotel"></option><option value="Restaurant"></option><option value="Taxi / Transport"></option><option value="Attraction"></option><option value="Store"></option><option value="Airbnb / Rental"></option><option value="Airport Service"></option><option value="Harassment / Atmosphere"></option></datalist></div><div><label>Country</label><input name="country" required/></div></div>
           <div class="admin-row two"><div><label>City</label><input name="city"/></div><div><label>Incident date</label><input name="incident_date" type="date"/></div></div>
           <div class="admin-row"><label>Confidence / evidence quality / badge</label><input name="confidence"/></div>
           <div class="admin-row"><label>Summary</label><textarea name="summary" rows="3"></textarea></div>
@@ -56,8 +55,6 @@
             <button class="btn btn-light" type="button" onclick="clearAdminForm()">New</button>
             <button class="btn btn-danger" type="button" onclick="deleteCurrentRecord()">Delete</button>
             <button class="btn btn-light ai-only" type="button" onclick="approveLeadToIncident()">Approve → Incident</button>
-            <button class="btn btn-light" type="button" onclick="approveCurrentComment()">Approve comment</button>
-            <button class="btn btn-light" type="button" onclick="hideCurrentComment()">Hide comment</button>
           </div>
           <p id="adminSaveStatus"></p>
         </form>
