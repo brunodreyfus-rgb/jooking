@@ -1,4 +1,4 @@
-/* AntiBooking V2.5.8 - Robust Supabase-only public incidents */
+/* AntiBooking / Jooking - Robust Supabase public incidents */
 
 function getAntiBookingSupabaseClient() {
   if (window.antibookingSupabase) return window.antibookingSupabase;
@@ -13,8 +13,20 @@ function getAntiBookingSupabaseClient() {
     if (typeof supabaseClient !== "undefined") return supabaseClient;
   } catch (e) {}
 
-  console.error("AntiBooking: Supabase client not found.");
+  console.error("Jooking: Supabase client not found.");
   return null;
+}
+
+function isPublicIncidentStatus(status) {
+  const value = String(status || "").trim().toLowerCase();
+  return [
+    "approved",
+    "validated",
+    "valid",
+    "published",
+    "live",
+    "active"
+  ].includes(value);
 }
 
 function mapSupabaseIncident(row) {
@@ -43,29 +55,32 @@ async function getPublicIncidents() {
   const client = getAntiBookingSupabaseClient();
 
   if (!client) {
-    console.error("AntiBooking: cannot load incidents because Supabase client is missing.");
+    console.error("Jooking: cannot load incidents because Supabase client is missing.");
     return [];
   }
 
   const { data, error } = await client
     .from("incidents")
     .select("*")
-    .eq("status", "approved");
+    .or("status.eq.approved,status.eq.Approved,status.eq.APPROVED,status.eq.validated,status.eq.Validated,status.eq.VALIDATED,status.eq.published,status.eq.Published,status.eq.PUBLISHED,status.eq.live,status.eq.Live,status.eq.active,status.eq.Active")
+    .order("created_at", { ascending: false })
+    .range(0, 999);
 
   if (error) {
-    console.error("AntiBooking: could not load approved incidents from Supabase.", error);
+    console.error("Jooking: could not load public incidents from Supabase.", error);
     return [];
   }
 
   const rows = Array.isArray(data) ? data : [];
+  const publicRows = rows.filter(row => isPublicIncidentStatus(row.status));
 
-  rows.sort((a, b) => {
+  publicRows.sort((a, b) => {
     const da = new Date(a.created_at || a.incident_date || 0).getTime();
     const db = new Date(b.created_at || b.incident_date || 0).getTime();
     return db - da;
   });
 
-  console.info(`AntiBooking: loaded ${rows.length} approved incidents from Supabase.`);
+  console.info(`Jooking: loaded ${publicRows.length} public incidents from Supabase.`);
 
-  return rows.map(mapSupabaseIncident);
+  return publicRows.map(mapSupabaseIncident);
 }
