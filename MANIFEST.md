@@ -1,13 +1,14 @@
-# Jooking Supabase Restore Patch
+# Jooking category/search fix
 
 Files included:
-- assets/js/supabase-config.js: restores SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY constants.
-- assets/js/supabase-client.js: restores antibookingSupabase client creation.
-- assets/js/admin-login.js: restores admin login redirect after success.
-- assets/js/admin-data.js: restores incidents as default admin data table.
-- assets/js/components.js: removes Search and Risks from the menu.
-- pages/admin.html: removes Open Admin Data Manager button.
-- pages/admin-data.html: restored from original repo.
-- pages/supabase-test.html: diagnostic page.
+- index.html
+- assets/js/search.js
+- assets/img/categories/store.svg
 
-Apply at the root of the GitHub repo, commit, deploy, then test /pages/supabase-test.html.
+Changes:
+- Fixes search category matching by normalizing category variants.
+- Hotels now match Hotel / Hotels / hotel-like variants.
+- Attractions now use canonical category: Attraction.
+- Adds new Store category with its own icon.
+- Splits Store from Attraction in dropdown and category tiles.
+- Keeps the existing header banner and all existing scripts.
