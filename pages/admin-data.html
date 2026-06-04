@@ -42,7 +42,22 @@
           <input type="hidden" name="id"/>
           <div class="admin-row"><label>Status</label><select name="status"><option value="approved">approved</option><option value="needs_verification">needs_verification</option><option value="draft">draft</option><option value="rejected">rejected</option></select></div>
           <div class="admin-row"><label>Place name</label><input name="place_name" required/></div>
-          <div class="admin-row two"><div><label>Category</label><input name="category" list="adminCategoryOptions" required/><datalist id="adminCategoryOptions"><option value="Hotel"></option><option value="Restaurant"></option><option value="Taxi / Transport"></option><option value="Attraction"></option><option value="Store"></option><option value="Airbnb / Rental"></option><option value="Airport Service"></option><option value="Harassment / Atmosphere"></option></datalist></div><div><label>Country</label><input name="country" required/></div></div>
+          <div class="admin-row two">
+            <div>
+              <label>Category</label>
+              <select name="category" required>
+                <option value="Hotel">Hotel</option>
+                <option value="Restaurant">Restaurant</option>
+                <option value="Taxi / Transport">Taxi / Transport</option>
+                <option value="Attraction">Attraction</option>
+                <option value="Store">Store</option>
+                <option value="Airbnb / Rental">Airbnb / Rental</option>
+                <option value="Airport Service">Airport Service</option>
+                <option value="Harassment / Atmosphere">Harassment / Atmosphere</option>
+              </select>
+            </div>
+            <div><label>Country</label><input name="country" required/></div>
+          </div>
           <div class="admin-row two"><div><label>City</label><input name="city"/></div><div><label>Incident date</label><input name="incident_date" type="date"/></div></div>
           <div class="admin-row"><label>Confidence / evidence quality / badge</label><input name="confidence"/></div>
           <div class="admin-row"><label>Summary</label><textarea name="summary" rows="3"></textarea></div>
