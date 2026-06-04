@@ -5,7 +5,18 @@ function getAdminClient(){if(window.antibookingSupabase)return window.antibookin
 function clean(v){return String(v||"").trim()}
 function safeHtml(v){return String(v||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))}
 function safeAttr(v){return safeHtml(v).replace(/'/g,"&#39;")}
-function normalizeAdminCategory(value){const v=clean(value);const l=v.toLowerCase();if(["store","stores","shop","shops","retail","shopping","mall","market","boutique"].includes(l))return "Store";if(["attraction","attractions","museum","museums","museum / attraction"].includes(l))return "Attraction";if(l==="hotels")return "Hotel";if(l==="restaurants")return "Restaurant";return v}
+function normalizeAdminCategory(value){
+  const v = clean(value).toLowerCase();
+  if(["store","stores","shop","shops","retail","mall","shopping","boutique"].includes(v)) return "Store";
+  if(["museum / attraction","museum","museums","attraction","attractions","tour","tours","monument","gallery"].includes(v)) return "Attraction";
+  if(["hotel","hotels","hostel","resort"].includes(v)) return "Hotel";
+  if(["restaurant","restaurants","cafe","bar","dining"].includes(v)) return "Restaurant";
+  if(["taxi","transport","taxi / transport","uber","driver","bus","train"].includes(v)) return "Taxi / Transport";
+  if(["airbnb","rental","rentals","airbnb / rental","apartment"].includes(v)) return "Airbnb / Rental";
+  if(["airport","airport service","airline"].includes(v)) return "Airport Service";
+  if(["harassment","atmosphere","harassment / atmosphere","hostile atmosphere"].includes(v)) return "Harassment / Atmosphere";
+  return clean(value);
+}
 
 function setAuthBox(m,t="info"){const b=document.getElementById("adminAuthBox");if(!b)return;b.textContent=m;b.style.background=t==="error"?"#fee2e2":t==="success"?"#dcfce7":"#eef2ff";b.style.color=t==="error"?"#991b1b":t==="success"?"#166534":"#1d4ed8"}
 async function checkAdminSession(){const c=getAdminClient();if(!c)return setAuthBox("Supabase client not found.","error");const{data}=await c.auth.getSession();if(!data?.session)return setAuthBox("Not logged in. Log in through the Admin page first.","error");setAuthBox(`Logged in as ${data.session.user.email}`,"success")}
