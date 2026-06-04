@@ -11,39 +11,37 @@ function normalizeText(value) {
   return String(value || "").trim().toLowerCase();
 }
 
-function canonicalCategory(rawCategory, item = {}) {
-  const category = normalizeText(rawCategory);
-  const tourismType = normalizeText(item.tourism_type);
-  const name = normalizeText(item.name);
-  const summary = normalizeText(item.summary);
-  const details = normalizeText(item.details);
-  const combined = `${category} ${tourismType} ${name} ${summary} ${details}`;
+/*
+  Category rule:
+  Public display must follow the category stored in Supabase/Admin.
+  We only normalize aliases of the category value itself.
+  We DO NOT inspect name, summary, details or tourism_type.
+*/
+function canonicalCategory(rawCategory) {
+  const c = normalizeText(rawCategory);
 
-  if (combined.match(/\b(store|stores|shop|shops|shopping|retail|mall|market|boutique)\b/)) return "Store";
-  if (combined.match(/\b(hotel|hotels|hostel|resort|accommodation)\b/)) return "Hotel";
-  if (combined.match(/\b(restaurant|restaurants|cafe|bar|food|dining)\b/)) return "Restaurant";
-  if (combined.match(/\b(taxi|transport|uber|driver|bus|train|metro|car rental|shuttle)\b/)) return "Taxi / Transport";
-  if (combined.match(/\b(airbnb|rental|rentals|apartment|flat|short[- ]term)\b/)) return "Airbnb / Rental";
-  if (combined.match(/\b(airport|airline|security|border|check[- ]in)\b/)) return "Airport Service";
-  if (combined.match(/\b(harassment|atmosphere|hostile|street|public space)\b/)) return "Harassment / Atmosphere";
-  if (combined.match(/\b(attraction|attractions|museum|museums|tour|tours|monument|site|park|gallery|experience)\b/)) return "Attraction";
-
-  if (category === "museum / attraction") return "Attraction";
-  if (category === "hotels") return "Hotel";
-  if (category === "attractions") return "Attraction";
-  if (category === "shops" || category === "retail") return "Store";
+  if (["hotel", "hotels", "hostel", "resort"].includes(c)) return "Hotel";
+  if (["restaurant", "restaurants", "cafe", "bar"].includes(c)) return "Restaurant";
+  if (["taxi / transport", "taxi", "transport", "uber", "driver", "bus", "train"].includes(c)) return "Taxi / Transport";
+  if (["museum / attraction", "museum", "museums", "attraction", "attractions", "tour", "tours", "monument", "gallery"].includes(c)) return "Attraction";
+  if (["store", "stores", "shop", "shops", "retail", "mall", "shopping", "boutique"].includes(c)) return "Store";
+  if (["airbnb / rental", "airbnb", "rental", "rentals", "apartment"].includes(c)) return "Airbnb / Rental";
+  if (["airport service", "airport", "airline"].includes(c)) return "Airport Service";
+  if (["harassment / atmosphere", "harassment", "atmosphere", "hostile atmosphere", "street", "public space"].includes(c)) return "Harassment / Atmosphere";
 
   return rawCategory || "Other";
 }
 
 function normalizeIncident(item) {
-  const normalized = { ...item };
-  normalized.category = canonicalCategory(item.category, item);
-  return normalized;
+  return {
+    ...item,
+    category: canonicalCategory(item.category)
+  };
 }
 
 async function initFilters() {
   if (!countrySelect || !citySelect || !categorySelect || !resultsGrid) return;
+
   resultsGrid.innerHTML = '<div class="panel"><h2>Loading approved incidents...</h2></div>';
   currentPublicIncidents = (await getPublicIncidents()).map(normalizeIncident);
 
@@ -56,19 +54,18 @@ async function initFilters() {
     countrySelect.appendChild(option);
   });
 
-  [
-    ["Hotel", "Hotels"],
-    ["Restaurant", "Restaurants"],
-    ["Taxi / Transport", "Taxi / Transport"],
-    ["Attraction", "Attractions"],
-    ["Store", "Stores"],
-    ["Airbnb / Rental", "Airbnb / Rentals"],
-    ["Airport Service", "Airport Services"],
-    ["Harassment / Atmosphere", "Harassment / Atmosphere"]
-  ].forEach(([value, label]) => ensureCategoryOption(value, label));
+  ensureCategoryOption("Hotel", "Hotels");
+  ensureCategoryOption("Restaurant", "Restaurants");
+  ensureCategoryOption("Taxi / Transport", "Taxi / Transport");
+  ensureCategoryOption("Attraction", "Attractions");
+  ensureCategoryOption("Store", "Stores");
+  ensureCategoryOption("Airbnb / Rental", "Airbnb / Rentals");
+  ensureCategoryOption("Airport Service", "Airport Services");
+  ensureCategoryOption("Harassment / Atmosphere", "Harassment / Atmosphere");
 
   countrySelect.addEventListener("change", updateCities);
   categorySelect.addEventListener("change", filterIncidents);
+
   updateCities();
   renderCategoryTiles();
   renderResults(currentPublicIncidents);
@@ -85,7 +82,12 @@ function ensureCategoryOption(value, label) {
 
 function updateCities() {
   const selectedCountry = countrySelect.value;
-  const cities = [...new Set(currentPublicIncidents.filter(item => selectedCountry === "all" || item.country === selectedCountry).map(item => item.city))].sort();
+  const cities = [...new Set(
+    currentPublicIncidents
+      .filter(item => selectedCountry === "all" || item.country === selectedCountry)
+      .map(item => item.city)
+  )].sort();
+
   citySelect.innerHTML = '<option value="all">All cities</option>';
   cities.forEach(city => {
     const option = document.createElement("option");
@@ -93,6 +95,7 @@ function updateCities() {
     option.textContent = city;
     citySelect.appendChild(option);
   });
+
   filterIncidents();
 }
 
@@ -100,20 +103,23 @@ function filterIncidents() {
   const country = countrySelect.value;
   const city = citySelect.value;
   const category = categorySelect.value;
+
   renderResults(currentPublicIncidents.filter(item =>
     (country === "all" || item.country === country) &&
     (city === "all" || item.city === city) &&
-    (category === "all" || canonicalCategory(item.category, item) === category)
+    (category === "all" || item.category === category)
   ));
 }
 
 function renderResults(items) {
   resultsGrid.innerHTML = "";
+
   if (!items.length) {
     emptyState.style.display = "block";
     resultCount.textContent = "No approved incidents found yet.";
     return;
   }
+
   emptyState.style.display = "none";
   resultCount.textContent = `Showing ${items.length} approved / real-source result${items.length > 1 ? "s" : ""}.`;
 
@@ -155,16 +161,18 @@ function renderResults(items) {
 function renderCategoryTiles() {
   const box = document.getElementById("categoryStrip");
   if (!box) return;
+
   const cats = [
-    ["Hotel","Hotels"],
-    ["Restaurant","Restaurants"],
-    ["Taxi / Transport","Taxi / Transport"],
-    ["Attraction","Attractions"],
-    ["Store","Stores"],
-    ["Airbnb / Rental","Rentals"],
-    ["Airport Service","Airport Services"],
-    ["Harassment / Atmosphere","Harassment / Atmosphere"]
+    ["Hotel", "Hotels"],
+    ["Restaurant", "Restaurants"],
+    ["Taxi / Transport", "Taxi / Transport"],
+    ["Attraction", "Attractions"],
+    ["Store", "Stores"],
+    ["Airbnb / Rental", "Rentals"],
+    ["Airport Service", "Airport Services"],
+    ["Harassment / Atmosphere", "Harassment / Atmosphere"]
   ];
+
   box.innerHTML = cats.map(([value, label]) => `
     <button class="category-tile" onclick="selectCategory('${value.replace(/'/g, "\\'")}')">
       <img src="${getCategoryImage(value)}" alt="${safeHtml(label)}" />
@@ -181,7 +189,13 @@ function selectCategory(category) {
 function openIncident(id) {
   const item = currentPublicIncidents.find(i => String(i.id) === String(id));
   if (!item) return;
-  const sources = (item.sources || []).map(source => !source.url || source.url === "#" ? `<li>${safeHtml(source.label)}</li>` : `<li><a href="${safeAttr(source.url)}" target="_blank" rel="noopener noreferrer">${safeHtml(source.label)}</a></li>`).join("");
+
+  const sources = (item.sources || [])
+    .map(source => !source.url || source.url === "#"
+      ? `<li>${safeHtml(source.label)}</li>`
+      : `<li><a href="${safeAttr(source.url)}" target="_blank" rel="noopener noreferrer">${safeHtml(source.label)}</a></li>`)
+    .join("");
+
   document.getElementById("modalContent").innerHTML = `
     <div class="tag-row"><span class="tag">${safeHtml(item.category)}</span><span class="tag ${trustClass(item.confidence)}">${safeHtml(trustLabel(item.confidence))}</span><span class="tag tag-green">Approved</span></div>
     <h2>${safeHtml(item.name)}</h2>
@@ -191,12 +205,14 @@ function openIncident(id) {
     <div class="notice">Harassment / Atmosphere cases may describe traveler risk even when the venue owner was not the actor.</div>
     <div class="modal-proof"><strong>Sources / evidence</strong><ul class="source-list">${sources}</ul></div>
     <div style="margin-top:16px;"><button class="btn btn-primary" onclick="openCommentModal('${item.id}')">Add experience comment</button></div>`;
+
   document.getElementById("modalBackdrop").style.display = "flex";
 }
 
 function openCommentModal(id) {
   const item = currentPublicIncidents.find(i => String(i.id) === String(id));
   if (!item) return;
+
   document.getElementById("modalContent").innerHTML = `
     <h2>Comment on ${safeHtml(item.name)}</h2>
     <p>Tell the moderation team if you had the same experience, a different experience, or useful context. Comments are reviewed before publication.</p>
@@ -209,6 +225,7 @@ function openCommentModal(id) {
         <button class="btn btn-primary full" type="submit">Submit comment for moderation</button><p id="commentStatus" class="full" style="font-weight:900;"></p>
       </div>
     </form>`;
+
   document.getElementById("modalBackdrop").style.display = "flex";
 }
 
@@ -216,6 +233,7 @@ async function submitComment(event, incidentId) {
   event.preventDefault();
   const status = document.getElementById("commentStatus");
   status.textContent = "Submitting...";
+
   try {
     const form = new FormData(event.target);
     const { error } = await antibookingSupabase.from("comments").insert({
@@ -226,7 +244,9 @@ async function submitComment(event, incidentId) {
       comment: form.get("comment"),
       status: "pending"
     });
+
     if (error) throw error;
+
     status.textContent = "Thanks. Your comment is pending moderation.";
     status.style.color = "#15803d";
     event.target.reset();
@@ -237,20 +257,30 @@ async function submitComment(event, incidentId) {
 }
 
 function getCategoryImage(category) {
-  const canonical = canonicalCategory(category);
-  if (canonical === "Hotel") return "/assets/img/categories/hotel.svg";
-  if (canonical === "Restaurant") return "/assets/img/categories/restaurant.svg";
-  if (canonical === "Taxi / Transport") return "/assets/img/categories/transport.svg";
-  if (canonical === "Attraction") return "/assets/img/categories/museum.svg";
-  if (canonical === "Store") return "/assets/img/categories/store.svg";
-  if (canonical === "Airbnb / Rental") return "/assets/img/categories/airbnb.svg";
-  if (canonical === "Airport Service") return "/assets/img/categories/airport.svg";
-  if (canonical === "Harassment / Atmosphere") return "/assets/img/categories/atmosphere.svg";
+  const c = canonicalCategory(category);
+
+  if (c === "Hotel") return "/assets/img/categories/hotel.svg";
+  if (c === "Restaurant") return "/assets/img/categories/restaurant.svg";
+  if (c === "Taxi / Transport") return "/assets/img/categories/transport.svg";
+  if (c === "Attraction") return "/assets/img/categories/museum.svg";
+  if (c === "Store") return "/assets/img/categories/store-v4.svg";
+  if (c === "Airbnb / Rental") return "/assets/img/categories/airbnb.svg";
+  if (c === "Airport Service") return "/assets/img/categories/airport.svg";
+  if (c === "Harassment / Atmosphere") return "/assets/img/categories/atmosphere.svg";
+
   return "/assets/img/categories/atmosphere.svg";
 }
 
-function closeModal() { document.getElementById("modalBackdrop").style.display = "none"; }
-function resetFilters() { countrySelect.value = "all"; updateCities(); categorySelect.value = "all"; filterIncidents(); }
+function closeModal() {
+  document.getElementById("modalBackdrop").style.display = "none";
+}
+
+function resetFilters() {
+  countrySelect.value = "all";
+  updateCities();
+  categorySelect.value = "all";
+  filterIncidents();
+}
 
 function riskScore(item) {
   const c = String(item.confidence || "").toLowerCase();
@@ -260,7 +290,11 @@ function riskScore(item) {
   if (c.includes("verification")) return 2;
   return 2;
 }
-function riskBars(score) { return `<div class="risk-bars">${[1,2,3,4,5].map(n => `<span class="${score >= n ? (score >= 4 ? "on high" : score >= 3 ? "on mid" : "on low") : ""}"></span>`).join("")}</div>`; }
+
+function riskBars(score) {
+  return `<div class="risk-bars">${[1,2,3,4,5].map(n => `<span class="${score >= n ? (score >= 4 ? "on high" : score >= 3 ? "on mid" : "on low") : ""}"></span>`).join("")}</div>`;
+}
+
 function trustLabel(confidence) {
   const c = String(confidence || "").toLowerCase();
   if (c.includes("embassy") || c.includes("official")) return "Official / embassy";
@@ -270,22 +304,32 @@ function trustLabel(confidence) {
   if (c.includes("verification")) return "Needs verification";
   return "Approved report";
 }
+
 function trustClass(confidence) {
   const c = String(confidence || "").toLowerCase();
   if (c.includes("embassy") || c.includes("official") || c.includes("verified") || c.includes("media")) return "tag-green";
   if (c.includes("verification") || c.includes("medium")) return "tag-gold";
   return "tag-red";
 }
+
 function formatDate(dateString) {
   if (!dateString) return "Date unknown";
   const date = new Date(dateString + "T00:00:00");
   return Number.isNaN(date.getTime()) ? dateString : date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 }
-function safeHtml(value) { return String(value || "").replace(/[<>&"]/g, c => ({ "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;" }[c])); }
-function safeAttr(value) { return safeHtml(value).replace(/'/g, "&#39;"); }
+
+function safeHtml(value) {
+  return String(value || "").replace(/[<>&"]/g, c => ({ "<":"&lt;", ">":"&gt;", "&":"&amp;", '"':"&quot;" }[c]));
+}
+
+function safeAttr(value) {
+  return safeHtml(value).replace(/'/g, "&#39;");
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   initFilters();
   const backdrop = document.getElementById("modalBackdrop");
-  if (backdrop) backdrop.addEventListener("click", event => { if (event.target.id === "modalBackdrop") closeModal(); });
+  if (backdrop) backdrop.addEventListener("click", event => {
+    if (event.target.id === "modalBackdrop") closeModal();
+  });
 });
