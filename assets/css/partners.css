@@ -1,0 +1,139 @@
+/* Jooking Partners page */
+.partners-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 42px 24px 72px;
+}
+
+.partners-hero {
+  background: linear-gradient(135deg, #f7f3ee, #ffffff);
+  border: 1px solid #d8e2f1;
+  border-radius: 28px;
+  padding: 36px;
+  box-shadow: 0 18px 45px rgba(24, 58, 104, 0.08);
+}
+
+.partners-hero .eyebrow {
+  color: #1e66d0;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: 12px;
+  margin: 0 0 8px;
+}
+
+.partners-hero h1 {
+  margin: 0 0 14px;
+  font-size: clamp(32px, 4.8vw, 54px);
+  line-height: 1.05;
+  color: #06152b;
+}
+
+.partners-hero p {
+  max-width: 850px;
+  color: #53617a;
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 28px;
+}
+
+.partner-card {
+  background: #ffffff;
+  border: 1px solid #d8e2f1;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 14px 38px rgba(24, 58, 104, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-logo {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border-bottom: 1px solid #d8e2f1;
+  padding: 24px;
+}
+
+.partner-logo img {
+  max-width: 100%;
+  max-height: 170px;
+  object-fit: contain;
+}
+
+.partner-logo-surmavie {
+  background: #fff4eb;
+}
+
+.partner-logo-surmavie img {
+  max-height: 185px;
+  border-radius: 999px;
+}
+
+.partner-logo-cam {
+  background: #f7fbff;
+}
+
+.partner-logo-cam img {
+  max-height: 150px;
+}
+
+.partner-content {
+  padding: 24px;
+}
+
+.partner-content h2 {
+  margin: 0 0 12px;
+  color: #06152b;
+  font-size: 26px;
+}
+
+.partner-content p {
+  color: #53617a;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+
+.partner-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.partner-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef6ff;
+  color: #183a68;
+  border: 1px solid #d8e2f1;
+  border-radius: 999px;
+  padding: 9px 13px;
+  font-size: 13px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.partner-links a:hover {
+  background: #183a68;
+  color: #ffffff;
+}
+
+@media (max-width: 820px) {
+  .partners-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-logo {
+    min-height: 180px;
+  }
+}

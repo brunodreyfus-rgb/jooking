@@ -1,39 +1,15 @@
-# Jooking Artists hidden/admin patch
-
-This patch creates the Artists feature but does NOT add it to the public menu.
+# Jooking Partners page patch
 
 Files included:
-- pages/artists.html
-- pages/admin-artists.html
-- pages/admin-data.html
-- pages/setup-artists.sql
-- assets/js/artists.js
-- assets/js/admin-artists.js
-- assets/css/artists.css
+- pages/partners.html
+- assets/css/partners.css
+- assets/img/partners/cam.png
+- assets/img/partners/surmavie.png
 
-How to use:
-1. Upload/replace these files in GitHub.
-2. Deploy on Vercel.
-3. In Supabase SQL Editor, run:
-   pages/setup-artists.sql
-4. Open:
-   /pages/admin-artists.html
-5. Add artist records with:
-   - artist name
-   - photo URL
-   - country
-   - profession
-   - category
-   - bio / known works
-   - statement summary
-   - exact quote optional
-   - position type
-   - source label / URL / date
-   - status
-6. Public preview page exists at:
-   /pages/artists.html
+Partners included:
+- Combat Antisemitism Movement (CAM)
+- Sur Ma Vie
 
 Important:
-- The page is hidden because it is not linked in the menu.
-- Only records with status = approved appear publicly.
-- Use factual, source-based wording only.
+This patch creates/updates the Partners page. It does NOT modify the public menu.
+To expose it later, add a menu link to /pages/partners.html in assets/js/components.js.
