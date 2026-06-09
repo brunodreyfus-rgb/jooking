@@ -23,13 +23,14 @@
       <button class="admin-tab" onclick="switchAdminTable('friendly_places')">Friendly Places</button>
       <button class="admin-tab" onclick="switchAdminTable('ai_leads')">AI Leads</button>
       <button class="admin-tab" onclick="switchAdminTable('reports')">Submitted Reports</button>
+      <button class="admin-tab" onclick="window.location.href='/pages/admin-artists.html'">Artists</button>
     </section>
     <section class="admin-filter-card">
       <div class="admin-filter-grid">
         <div><label>Search</label><input id="adminSearch" placeholder="Place, city, country, source..." oninput="renderAdminRows()"/></div>
         <div><label>Status</label><select id="filterStatus" onchange="renderAdminRows()"><option value="all">All</option><option value="approved">approved</option><option value="needs_verification">needs_verification</option><option value="draft">draft</option><option value="rejected">rejected</option></select></div>
         <div><label>Completeness</label><select id="filterCompleteness" onchange="renderAdminRows()"><option value="all">All records</option><option value="missing_city">Missing city</option><option value="missing_date">Missing date</option><option value="missing_url">Missing URL</option><option value="missing_details">Missing details</option><option value="missing_source">Missing source label</option><option value="complete">Complete enough</option></select></div>
-        <div><label>Category</label><select id="filterCategory" onchange="renderAdminRows()"><option value="all">All categories</option></select></div>
+        <div><label>Category</label><select id="filterCategory" onchange="renderAdminRows()"><option value="all">All categories</option><option value="Hotel">Hotel</option><option value="Restaurant">Restaurant</option><option value="Taxi / Transport">Taxi / Transport</option><option value="Attraction">Attraction</option><option value="Store">Store</option><option value="Airbnb / Rental">Airbnb / Rental</option><option value="Airport Service">Airport Service</option><option value="Harassment / Atmosphere">Harassment / Atmosphere</option></select></div>
         <div><label>Country</label><select id="filterCountry" onchange="renderAdminRows()"><option value="all">All countries</option></select></div>
         <div class="admin-filter-actions"><button class="btn btn-light" onclick="resetAdminFilters()">Reset</button><button class="btn btn-primary" onclick="loadAdminRows()">Refresh</button></div>
       </div>

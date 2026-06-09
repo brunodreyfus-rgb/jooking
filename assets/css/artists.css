@@ -1,0 +1,177 @@
+/* Jooking Artists page */
+.artists-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 42px 24px 70px;
+}
+
+.artists-hero {
+  background: linear-gradient(135deg, #f7f3ee, #ffffff);
+  border: 1px solid #d8e2f1;
+  border-radius: 28px;
+  padding: 34px;
+  box-shadow: 0 18px 45px rgba(24, 58, 104, 0.08);
+}
+
+.artists-hero .eyebrow {
+  color: #1e66d0;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: 12px;
+}
+
+.artists-hero h1 {
+  margin: 8px 0 12px;
+  font-size: clamp(34px, 5vw, 58px);
+  color: #06152b;
+}
+
+.artists-hero p {
+  max-width: 820px;
+  color: #53617a;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.artists-search {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 260px;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.artists-search input,
+.artists-search select {
+  border: 1px solid #d8e2f1;
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-weight: 700;
+  background: #fff;
+}
+
+.artists-list-head {
+  margin: 34px 0 18px;
+}
+
+.artists-list-head h2 {
+  margin: 0;
+  color: #06152b;
+}
+
+.artists-list-head p {
+  color: #53617a;
+  font-weight: 800;
+}
+
+.artists-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.artist-card {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 22px;
+  background: #fff;
+  border: 1px solid #d8e2f1;
+  border-radius: 22px;
+  padding: 20px;
+  box-shadow: 0 12px 35px rgba(24, 58, 104, 0.07);
+}
+
+.artist-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #eef3fa;
+  border: 1px solid #d8e2f1;
+}
+
+.artist-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.artist-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.artist-tags span {
+  background: #eef6ff;
+  color: #183a68;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.artist-content h3 {
+  margin: 0 0 8px;
+  color: #06152b;
+  font-size: 26px;
+}
+
+.artist-bio {
+  color: #53617a;
+  line-height: 1.55;
+}
+
+.artist-statement {
+  margin-top: 14px;
+  padding: 14px;
+  background: #f8fafc;
+  border-radius: 14px;
+  border: 1px solid #e5edf7;
+}
+
+.artist-statement p {
+  margin: 8px 0 0;
+}
+
+.artist-card blockquote {
+  margin: 14px 0;
+  padding-left: 14px;
+  border-left: 4px solid #1e66d0;
+  color: #253653;
+  font-weight: 700;
+}
+
+.artist-source {
+  margin-top: 12px;
+  color: #53617a;
+  font-weight: 700;
+}
+
+.artist-source a {
+  color: #005ed8;
+}
+
+.artists-empty {
+  display: none;
+  padding: 26px;
+  background: #fff;
+  border: 1px solid #d8e2f1;
+  border-radius: 18px;
+  font-weight: 800;
+}
+
+@media (max-width: 720px) {
+  .artists-search {
+    grid-template-columns: 1fr;
+  }
+
+  .artist-card {
+    grid-template-columns: 1fr;
+  }
+
+  .artist-photo {
+    width: 100%;
+    height: 240px;
+  }
+}

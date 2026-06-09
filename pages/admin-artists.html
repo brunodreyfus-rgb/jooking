@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Artists | Jooking</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="stylesheet" href="/assets/css/header-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/footer-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/admin-data.css"/>
+  <link rel="stylesheet" href="/assets/css/artists.css"/>
+</head>
+<body>
+  <div id="siteHeader"></div>
+
+  <main class="admin-data-page">
+    <section class="admin-data-hero">
+      <h1>Admin Artists</h1>
+      <p>Create and validate source-based artist records before publishing them.</p>
+      <div id="artistAdminAuthBox" class="admin-auth-box">Checking admin session...</div>
+      <p><a class="btn btn-light" href="/pages/admin-data.html">Back to Admin Data</a> <a class="btn btn-light" href="/pages/artists.html">Preview hidden Artists page</a></p>
+    </section>
+
+    <section class="admin-filter-card">
+      <div class="admin-filter-grid">
+        <div><label>Search</label><input id="artistAdminSearch" placeholder="Artist, country, profession..." oninput="renderArtistAdminRows()"/></div>
+        <div><label>Status</label><select id="artistAdminStatusFilter" onchange="renderArtistAdminRows()"><option value="all">All</option><option value="approved">approved</option><option value="needs_verification">needs_verification</option><option value="draft">draft</option><option value="rejected">rejected</option></select></div>
+        <div><label>Position</label><select id="artistAdminPositionFilter" onchange="renderArtistAdminRows()"><option value="all">All positions</option><option value="Boycott Israel">Boycott Israel</option><option value="BDS support">BDS support</option><option value="Genocide accusation">Genocide accusation</option><option value="Anti-Israel statement">Anti-Israel statement</option><option value="Cancelled Israel event">Cancelled Israel event</option><option value="Other">Other</option></select></div>
+        <div class="admin-filter-actions"><button class="btn btn-light" onclick="clearArtistAdminForm()">New</button><button class="btn btn-primary" onclick="loadArtistAdminRows()">Refresh</button></div>
+      </div>
+      <div id="artistAdminStats" class="admin-stats">Loading stats...</div>
+    </section>
+
+    <section class="admin-editor-grid">
+      <div class="admin-form-card">
+        <h2 id="artistAdminFormTitle">New artist record</h2>
+        <form id="artistAdminForm">
+          <input type="hidden" name="id"/>
+          <div class="admin-row"><label>Status</label><select name="status"><option value="needs_verification">needs_verification</option><option value="approved">approved</option><option value="draft">draft</option><option value="rejected">rejected</option></select></div>
+          <div class="admin-row"><label>Artist name</label><input name="artist_name" required/></div>
+          <div class="admin-row two"><div><label>Photo URL</label><input name="photo_url" placeholder="https://..."/></div><div><label>Country</label><input name="country"/></div></div>
+          <div class="admin-row two"><div><label>Profession</label><input name="profession" placeholder="Actor, singer, director..."/></div><div><label>Category</label><input name="category" placeholder="Music, Film, TV, Comedy..."/></div></div>
+          <div class="admin-row"><label>Position type</label><select name="position_type"><option value="Boycott Israel">Boycott Israel</option><option value="BDS support">BDS support</option><option value="Genocide accusation">Genocide accusation</option><option value="Anti-Israel statement">Anti-Israel statement</option><option value="Cancelled Israel event">Cancelled Israel event</option><option value="Other">Other</option></select></div>
+          <div class="admin-row"><label>Biography / known works</label><textarea name="bio" rows="4" placeholder="Films, songs, albums, shows, awards..."></textarea></div>
+          <div class="admin-row"><label>Statement summary</label><textarea name="statement_summary" rows="4" placeholder="Short factual summary of the public statement or action."></textarea></div>
+          <div class="admin-row"><label>Exact quote optional</label><textarea name="exact_quote" rows="3" placeholder="Use only if sourced and keep it short."></textarea></div>
+          <div class="admin-row two"><div><label>Source label</label><input name="source_label" placeholder="Article, video, post..."/></div><div><label>Source date</label><input name="source_date" type="date"/></div></div>
+          <div class="admin-row"><label>Source URL</label><input name="source_url" placeholder="https://..."/></div>
+          <div class="admin-actions">
+            <button class="btn btn-primary" type="submit">Save artist</button>
+            <button class="btn btn-light" type="button" onclick="clearArtistAdminForm()">New</button>
+            <button class="btn btn-danger" type="button" onclick="deleteArtistRecord()">Delete</button>
+          </div>
+          <p id="artistAdminSaveStatus"></p>
+        </form>
+      </div>
+
+      <div class="admin-list-card">
+        <div class="admin-list-head">
+          <h2>Artists</h2>
+        </div>
+        <div id="artistAdminRows" class="admin-rows">Loading...</div>
+      </div>
+    </section>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <script src="/assets/js/components.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script src="/assets/js/admin-artists.js"></script>
+</body>
+</html>

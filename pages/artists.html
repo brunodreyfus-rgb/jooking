@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artists | Jooking</title>
+  <meta name="description" content="Jooking documents public artist statements and actions related to Israel, boycotts and genocide allegations, based on verifiable public sources."/>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="stylesheet" href="/assets/css/header-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/footer-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/artists.css"/>
+</head>
+<body>
+  <div id="siteHeader"></div>
+
+  <main class="artists-page">
+    <section class="artists-hero">
+      <p class="eyebrow">Source-based public records</p>
+      <h1>Artists & Public Positions</h1>
+      <p>
+        This page documents public statements and actions related to Israel, boycotts and genocide allegations.
+        Records are displayed only when supported by public sources.
+      </p>
+      <div class="artists-search">
+        <input id="artistSearch" placeholder="Search artist, country, profession, statement..." />
+        <select id="artistPositionFilter">
+          <option value="all">All positions</option>
+          <option value="Boycott Israel">Boycott Israel</option>
+          <option value="BDS support">BDS support</option>
+          <option value="Genocide accusation">Genocide accusation</option>
+          <option value="Anti-Israel statement">Anti-Israel statement</option>
+          <option value="Cancelled Israel event">Cancelled Israel event</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="artists-list-head">
+      <h2>Published artist records</h2>
+      <p id="artistsCount">Loading artists...</p>
+    </section>
+
+    <section id="artistsGrid" class="artists-grid"></section>
+    <div id="artistsEmpty" class="artists-empty">No published artist records found.</div>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <script src="/assets/js/components.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script src="/assets/js/artists.js"></script>
+</body>
+</html>
