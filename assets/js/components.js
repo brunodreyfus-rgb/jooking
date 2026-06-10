@@ -120,8 +120,8 @@ function injectMobileMenuAndStoreStyles() {
         left: 12px !important;
         right: 12px !important;
         z-index: 10000 !important;
-        background: #071a3d !important;
-        border: 1px solid rgba(255,255,255,.16) !important;
+        background: #0b2559 !important;
+        border: 1px solid rgba(255,255,255,.18) !important;
         border-radius: 18px !important;
         padding: 12px !important;
         box-shadow: 0 20px 45px rgba(0,0,0,.28) !important;
@@ -137,14 +137,19 @@ function injectMobileMenuAndStoreStyles() {
         display: block !important;
         padding: 13px 14px !important;
         border-radius: 12px !important;
-        color: #fff !important;
+        color: #ffffff !important;
         text-decoration: none !important;
         font-weight: 900 !important;
       }
 
+      .topbar .nav a:visited {
+        color: #ffffff !important;
+      }
+
       .topbar .nav a:hover,
       .topbar .nav a.active {
-        background: rgba(255,255,255,.12) !important;
+        background: rgba(255,255,255,.18) !important;
+        color: #ffffff !important;
       }
     }
 
