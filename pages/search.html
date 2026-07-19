@@ -9,13 +9,43 @@
   <link rel="stylesheet" href="/assets/css/header-fix.css"/>
   <link rel="stylesheet" href="/assets/css/footer-fix.css"/>
   <link rel="stylesheet" href="/assets/css/mobile-fix.css"/>
+  <link rel="stylesheet" href="/assets/css/reported-places-final-cleanup.css"/>
 </head>
 <body>
   <div id="siteHeader"></div>
-  <section class="page-hero"><div class="page-hero-inner"><h1>Search Reports</h1><p>Use the live homepage search to filter approved reports by country, city and category.</p><a class="btn btn-primary" href="/index.html#search">Open live search</a></div></section>
-  <main class="main"><section class="panel"><h2>Search is powered by the homepage report database</h2><p>This static page exists so the header Search link no longer routes as Home. Click the button above to jump directly to the live search module.</p></section></main>
+  <section class="page-hero"><div class="page-hero-inner"><h1>Search Reports</h1><p>Filter approved reports by country, city and category.</p></div></section>
+  <main class="main">
+    <section class="search-panel" style="margin-top:0">
+      <div class="search-title"><h2>Find approved incidents</h2><p>Choose one or more filters, then open a report for full details and sources.</p></div>
+      <div class="search-grid">
+        <div class="field"><label for="countrySelect">Country</label><select id="countrySelect"><option value="all">All countries</option></select></div>
+        <div class="field"><label for="citySelect">City</label><select id="citySelect"><option value="all">All cities</option></select></div>
+        <div class="field"><label for="categorySelect">Category</label><select id="categorySelect">
+          <option value="all">All categories</option><option value="Hotel">Hotels</option><option value="Restaurant">Restaurants</option>
+          <option value="Taxi / Transport">Taxi / Transport</option><option value="Attraction">Attractions</option><option value="Store">Stores</option>
+          <option value="Airbnb / Rental">Airbnb / Rentals</option><option value="Airport Service">Airport Services</option>
+          <option value="Harassment / Atmosphere">Harassment / Atmosphere</option>
+        </select></div>
+        <button class="btn btn-primary" onclick="filterIncidents()">Search</button>
+      </div>
+    </section>
+    <div class="section-head"><div><h2>Reported places</h2><p id="resultCount">Loading approved reports...</p></div><button class="btn btn-danger" onclick="resetFilters()">Reset filters</button></div>
+    <div class="results-grid" id="resultsGrid"></div>
+    <div class="empty-state" id="emptyState">No approved incidents found for this selection.</div>
+  </main>
+  <div class="modal-backdrop" id="modalBackdrop"><div class="modal"><button class="close-modal" onclick="closeModal()">×</button><div id="modalContent"></div></div></div>
   <div id="siteFooter"></div>
   <script src="/assets/js/components.js"></script>
-  <script src="/assets/js/privacy-cleanup.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script src="/assets/js/data.js"></script>
+  <script src="/assets/js/live-incidents.js"></script>
+  <script src="/assets/js/search.js"></script>
+  <script src="/assets/js/search-ui-fix.js"></script>
+  <script src="/assets/js/reported-places-final-cleanup.js"></script>
+  <script src="/assets/js/click-tracking.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>

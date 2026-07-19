@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Risks | Jooking</title>
-  <meta name="description" content="Browse Jooking risk reports and country-level risk intelligence."/>
+  <title>Travel Risks | Jooking</title>
+  <meta name="description" content="Understand the types of travel risks documented by Jooking and open the live country risk map."/>
   <link rel="stylesheet" href="/assets/css/style.css"/>
   <link rel="stylesheet" href="/assets/css/header-fix.css"/>
   <link rel="stylesheet" href="/assets/css/footer-fix.css"/>
@@ -12,10 +12,22 @@
 </head>
 <body>
   <div id="siteHeader"></div>
-  <section class="page-hero"><div class="page-hero-inner"><h1>Risks</h1><p>Browse approved risk reports and the live country risk map.</p><a class="btn btn-primary" href="/index.html#search">Browse reported places</a><a class="btn btn-light" href="/pages/country-risk.html" style="margin-left:12px;">Open Risk Map</a></div></section>
-  <main class="main"><section class="panel"><h2>Risk intelligence</h2><p>The risk section combines approved reported places with the live country-level map.</p></section></main>
+  <section class="page-hero"><div class="page-hero-inner"><h1>Travel Risks</h1><p>Understand the incident types documented by Jooking and review the live country-level map.</p></div></section>
+  <main class="main">
+    <section class="form-section">
+      <div class="panel"><h2>Direct service discrimination</h2><p>Refusal of accommodation, transport, restaurant service, airport assistance or another tourism service because a traveler is Jewish or Israeli.</p></div>
+      <div class="panel"><h2>Harassment and hostile atmosphere</h2><p>Threats, intimidation, abuse, assault or a hostile environment affecting travelers in or around tourism locations.</p></div>
+      <div class="panel"><h2>Operational disruption</h2><p>Protests, blockades, cancellations or other actions that specifically prevent Israeli or Jewish travelers from accessing a destination or service.</p></div>
+      <div class="panel"><h2>Evidence and confidence</h2><p>Reports are reviewed before publication. Risk levels reflect the number and nature of approved reports and do not describe every person or business in a country.</p></div>
+    </section>
+    <section class="info-band">
+      <div><h2>Explore the live risk map</h2><p>See approved reports by country, current risk level, leading categories and most recent incident date.</p></div>
+      <div class="steps"><a class="btn btn-primary" href="/pages/country-risk.html">Open Risk Map</a><a class="btn btn-light" href="/pages/search.html">Search individual reports</a></div>
+    </section>
+  </main>
   <div id="siteFooter"></div>
   <script src="/assets/js/components.js"></script>
-  <script src="/assets/js/privacy-cleanup.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
