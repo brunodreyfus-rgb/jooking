@@ -1,106 +1,74 @@
-/* Jooking V2.5.29 - clean single map renderer */
-
+/* Shared map presentation for Home and Risk Map pages. */
 .hero-map,
+.risk-world-map,
 #worldRiskMap {
   position: relative !important;
   overflow: hidden !important;
-  pointer-events: auto !important;
+  isolation: isolate !important;
+  contain: paint !important;
+  background-position: center center !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+}
+
+.hero-map {
+  background:
+    linear-gradient(0deg, rgba(255,255,255,.13), rgba(255,255,255,.13)),
+    url("https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg") center center / 100% 100% no-repeat !important;
 }
 
 .hero-map .map-pin,
-#worldRiskMap .map-pin {
+.hero-map .legacy-map-pin,
+.hero-map .map-marker,
+.risk-world-map .map-pin,
+.risk-world-map .legacy-map-pin,
+.risk-world-map .map-marker {
   display: none !important;
 }
 
-.jooking-dynamic-map-pin {
+.jooking-dynamic-map-pin,
+.country-pin.jooking-risk-pin {
   position: absolute !important;
   display: block !important;
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  z-index: 30 !important;
-  border: 0 !important;
+  width: 17px !important;
+  height: 17px !important;
   padding: 0 !important;
-  width: 16px !important;
-  height: 16px !important;
+  border: 3px solid #fff !important;
   border-radius: 999px !important;
   transform: translate(-50%, -50%) !important;
-  box-shadow: 0 0 0 5px rgba(255,255,255,.78), 0 8px 18px rgba(15, 23, 42, .22) !important;
+  box-shadow: 0 5px 14px rgba(15,23,42,.38) !important;
+  cursor: pointer !important;
+  z-index: 10 !important;
 }
 
-.jooking-dynamic-map-pin.high { background: #dc2626 !important; }
-.jooking-dynamic-map-pin.medium { background: #f59e0b !important; }
-.jooking-dynamic-map-pin.low { background: #2563eb !important; }
+.jooking-dynamic-map-pin::after,
+.country-pin.jooking-risk-pin::after {
+  display: none !important;
+}
+
+.jooking-dynamic-map-pin.high,
+.country-pin.jooking-risk-pin.high { background: #dc2626 !important; }
+.jooking-dynamic-map-pin.medium,
+.country-pin.jooking-risk-pin.medium { background: #f59e0b !important; }
+.jooking-dynamic-map-pin.low,
+.country-pin.jooking-risk-pin.low { background: #0038A8 !important; }
 
 .jooking-dynamic-map-pin:hover,
-.jooking-dynamic-map-pin:focus {
-  transform: translate(-50%, -50%) scale(1.22) !important;
+.jooking-dynamic-map-pin:focus,
+.country-pin.jooking-risk-pin:hover,
+.country-pin.jooking-risk-pin:focus {
+  transform: translate(-50%, -50%) scale(1.3) !important;
   outline: none !important;
-  box-shadow: 0 0 0 7px rgba(255,255,255,.86), 0 10px 22px rgba(0, 56, 168, .32) !important;
+  z-index: 20 !important;
 }
 
-.jooking-map-tooltip {
-  position: absolute !important;
-  transform: translate(-50%, -100%) !important;
-  z-index: 90 !important;
-  pointer-events: none !important;
-  opacity: 0;
-  transition: opacity .12s ease;
-  background: #071A3D !important;
-  color: #fff !important;
-  font-size: 13px !important;
-  font-weight: 900 !important;
-  line-height: 1.2 !important;
-  padding: 8px 10px !important;
-  border-radius: 10px !important;
-  white-space: nowrap !important;
-  box-shadow: 0 12px 26px rgba(15, 23, 42, .28) !important;
-}
-
-.jooking-map-tooltip::after {
-  content: "" !important;
-  position: absolute !important;
-  left: 50% !important;
-  bottom: -5px !important;
-  transform: translateX(-50%) !important;
-  border-left: 5px solid transparent !important;
-  border-right: 5px solid transparent !important;
-  border-top: 5px solid #071A3D !important;
-}
-
-.jooking-report-highlight {
-  outline: 4px solid rgba(0, 77, 190, .24) !important;
-  box-shadow: 0 0 0 8px rgba(0, 77, 190, .10) !important;
-}
-
-
-/* V2.6.1 map clipping fix: keep live pins inside the actual map box.
-   The previous overflow: visible let pins escape over the search panel. */
-.hero-map,
-#worldRiskMap,
-.risk-world-map {
-  background-position: center center !important;
-  background-size: 100% 100% !important;
-  overflow: hidden !important;
-  contain: paint !important;
-  isolation: isolate !important;
-}
-
-.hero-map::before,
-.world-map-wrap::before {
-  background-size: 100% 100% !important;
-  background-position: center center !important;
-}
-
-.hero-map .map-legend {
+.hero-map .map-legend,
+.risk-world-map .risk-map-legend {
   left: 14px !important;
   right: auto !important;
   bottom: 14px !important;
+  z-index: 30 !important;
 }
 
-.jooking-dynamic-map-pin.low { background: #0038A8 !important; }
-
-
-/* Keep map markers behind the search card if sections overlap. */
-.jooking-dynamic-map-pin { z-index: 4 !important; }
-.jooking-map-tooltip { z-index: 8 !important; }
-.search-panel { position: relative !important; z-index: 30 !important; }
+.search-panel { position: relative !important; z-index: 40 !important; }
+.jooking-report-highlight { outline: 4px solid rgba(0,77,190,.24) !important; }

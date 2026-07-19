@@ -28,13 +28,13 @@ function renderCountryCards(countries) {
   const count = document.getElementById("countryCount");
   if (!grid) return;
 
-  if (count) count.textContent = `${countries.length} countries with approved Supabase reports.`;
+  if (count) count.textContent = `${countries.length} countries with approved reports.`;
 
   if (!countries.length) {
     grid.innerHTML = `
       <div class="country-card">
         <h3>No approved reports</h3>
-        <p>No approved incidents found in Supabase.</p>
+        <p>No approved incidents found.</p>
       </div>
     `;
     return;
@@ -81,6 +81,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     console.error("Risk map failed", error);
     const element = document.getElementById("riskSummary");
-    if (element) element.textContent = "Could not load risk dashboard. Check Supabase connection.";
+    if (element) element.textContent = "Could not load risk dashboard. Please try again later.";
   }
 });

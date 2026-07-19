@@ -1,7 +1,7 @@
 async function uploadEvidenceFile(file, reporterEmail) {
   if (!file || !file.size) return null;
   const cleanName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const cleanEmail = reporterEmail.replace(/[^a-zA-Z0-9._-]/g, "_");
+  const cleanEmail = String(reporterEmail || "anonymous").replace(/[^a-zA-Z0-9._-]/g, "_");
   const path = `${Date.now()}-${cleanEmail}-${cleanName}`;
 
   const { error } = await antibookingSupabase.storage
@@ -28,7 +28,7 @@ async function submitReport(event) {
 
   try {
     const formData = new FormData(form);
-    const reporterEmail = formData.get("reporter_email");
+    const reporterEmail = String(formData.get("reporter_email") || "").trim();
     const fileUrl = await uploadEvidenceFile(formData.get("evidence_file"), reporterEmail);
 
     const payload = {
@@ -37,7 +37,7 @@ async function submitReport(event) {
       country: formData.get("country"),
       city: formData.get("city"),
       incident_date: formData.get("incident_date") || null,
-      reporter_email: reporterEmail,
+      reporter_email: reporterEmail || null,
       evidence_link: formData.get("evidence_link") || null,
       evidence_file_url: fileUrl,
       description: formData.get("description"),

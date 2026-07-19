@@ -8,7 +8,7 @@
 .risk-kpi{background:#f8fafc;border-radius:14px;padding:16px}
 .risk-kpi strong{display:block;font-size:30px;color:#0038A8}
 .risk-map-card{max-width:1450px;margin:0 auto 36px}
-.risk-world-map{position:relative;min-height:430px;border-radius:18px;overflow:hidden;background:linear-gradient(0deg,rgba(255,255,255,.1),rgba(255,255,255,.1)),url("https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg") center/cover no-repeat;box-shadow:0 16px 42px rgba(16,24,32,.12);border:1px solid rgba(16,24,32,.08)}
+.risk-world-map{position:relative;min-height:430px;border-radius:18px;overflow:hidden;background:linear-gradient(0deg,rgba(255,255,255,.1),rgba(255,255,255,.1)),url("https://upload.wikimedia.org/wikipedia/commons/8/83/Equirectangular_projection_SW.jpg") center/100% 100% no-repeat;box-shadow:0 16px 42px rgba(16,24,32,.12);border:1px solid rgba(16,24,32,.08)}
 .country-pin{position:absolute;z-index:4;width:28px;height:28px;border-radius:50% 50% 50% 0;transform:translate(-50%,-100%) rotate(-45deg);background:#f59e0b;border:3px solid #fff;box-shadow:0 8px 18px rgba(0,0,0,.35);cursor:pointer}
 .country-pin::after{content:"";width:8px;height:8px;background:#fff;border-radius:999px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
 .country-pin.high{background:#dc2626}.country-pin.medium{background:#f59e0b}.country-pin.low{background:#0038A8}

@@ -1,0 +1,9 @@
+body.report-page { background: #f4f7fb !important; }
+.report-page .main { margin-top: 0; padding-top: 36px; }
+.report-page .form-section { align-items: start; }
+.report-quality-note { margin-top: 20px; padding: 18px; border-radius: 14px; background: #eef6ff; border: 1px solid #cfe2ff; }
+.report-quality-note h3 { margin: 0 0 8px; color: #071A3D; font-size: 20px; }
+.report-quality-note p { margin: 8px 0 0; line-height: 1.55; }
+.optional-label { font-weight: 700; text-transform: none; letter-spacing: 0; color: #64748b; }
+.report-page .topbar .brand-logo,
+.report-page .footer .brand-logo { content: url('/assets/img/jooking-logo-final-transparent.png?v=2600'); }

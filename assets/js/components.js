@@ -1,9 +1,11 @@
 function siteHeader(current = "") {
   const nav = [
     ["Home", "/index.html"],
-    ["Friendly Places", "/pages/friendly.html"],
+    ["Search", "/pages/search.html"],
+    ["Risks", "/pages/risks.html"],
     ["Risk Map", "/pages/country-risk.html"],
     ["Methodology", "/pages/methodology.html"],
+    ["Partners", "/pages/partners.html"],
     ["Admin", "/pages/admin.html"]
   ];
 
@@ -233,8 +235,10 @@ function replaceBrandText(root = document.body) {
 function getCurrentNavLabel() {
   const path = window.location.pathname;
   if (path.includes("country-risk")) return "Risk Map";
+  if (path.includes("search")) return "Search";
+  if (path.includes("risks")) return "Risks";
   if (path.includes("methodology")) return "Methodology";
-  if (path.includes("friendly")) return "Friendly Places";
+  if (path.includes("partners")) return "Partners";
   if (path.includes("admin")) return "Admin";
   return "Home";
 }
