@@ -5,6 +5,7 @@ function siteHeader(current = "") {
     ["Risks", "/pages/risks.html"],
     ["Risk Map", "/pages/country-risk.html"],
     ["Methodology", "/pages/methodology.html"],
+    ["Artists", "/pages/artists.html"],
     ["Partners", "/pages/partners.html"],
     ["Admin", "/pages/admin.html"]
   ];
