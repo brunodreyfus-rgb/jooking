@@ -29,6 +29,26 @@ function isPublicIncidentStatus(status) {
   ].includes(value);
 }
 
+function incidentTimestamp(row) {
+  const value = row && (row.incident_date || row.date);
+  const timestamp = value ? new Date(value).getTime() : 0;
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
+function publicationTimestamp(row) {
+  const value = row && row.created_at;
+  const timestamp = value ? new Date(value).getTime() : 0;
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
+function sortByIncidentRecency(rows) {
+  return [...rows].sort((a, b) => {
+    const incidentDifference = incidentTimestamp(b) - incidentTimestamp(a);
+    if (incidentDifference !== 0) return incidentDifference;
+    return publicationTimestamp(b) - publicationTimestamp(a);
+  });
+}
+
 function mapSupabaseIncident(row) {
   return {
     id: row.id,
@@ -38,6 +58,7 @@ function mapSupabaseIncident(row) {
     country: row.country || "Unknown",
     city: row.city || "Unknown",
     date: row.incident_date || row.date || row.created_at || null,
+    created_at: row.created_at || null,
     summary: row.summary || row.short_summary || "",
     details: row.details || row.description || row.summary || "",
     confidence: row.confidence || row.evidence_quality || "Approved report",
@@ -63,7 +84,8 @@ async function getPublicIncidents() {
     .from("incidents")
     .select("*")
     .or("status.eq.approved,status.eq.Approved,status.eq.APPROVED,status.eq.validated,status.eq.Validated,status.eq.VALIDATED,status.eq.published,status.eq.Published,status.eq.PUBLISHED,status.eq.live,status.eq.Live,status.eq.active,status.eq.Active")
-    .order("created_at", { ascending: false })
+    .order("incident_date", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false, nullsFirst: false })
     .range(0, 999);
 
   if (error) {
@@ -72,15 +94,11 @@ async function getPublicIncidents() {
   }
 
   const rows = Array.isArray(data) ? data : [];
-  const publicRows = rows.filter(row => isPublicIncidentStatus(row.status));
+  const publicRows = sortByIncidentRecency(
+    rows.filter(row => isPublicIncidentStatus(row.status))
+  );
 
-  publicRows.sort((a, b) => {
-    const da = new Date(a.created_at || a.incident_date || 0).getTime();
-    const db = new Date(b.created_at || b.incident_date || 0).getTime();
-    return db - da;
-  });
-
-  console.info(`Jooking: loaded ${publicRows.length} public incidents from Supabase.`);
+  console.info(`Jooking: loaded ${publicRows.length} public incidents from Supabase, sorted by incident date.`);
 
   return publicRows.map(mapSupabaseIncident);
 }
