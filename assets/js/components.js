@@ -6,8 +6,8 @@ function siteHeader(current = "") {
     ["Risk Map", "/pages/country-risk.html"],
     ["Methodology", "/pages/methodology.html"],
     ["Artists", "/pages/artists.html"],
-    ["They Talk About Us", "/pages/media.html"],
     ["Partners", "/pages/partners.html"],
+    ["They Talk About Us", "/pages/media.html"],
     ["Admin", "/pages/admin.html"]
   ];
 
@@ -56,10 +56,10 @@ function injectMobileMenuAndStoreStyles() {
       display: none;
       width: 44px;
       height: 44px;
-      border: 1px solid rgba(255,255,255,.22);
+      border: 1px solid rgba(0,56,168,.28);
       border-radius: 14px;
-      background: rgba(255,255,255,.08);
-      color: #fff;
+      background: #ffffff;
+      color: #0038A8;
       align-items: center;
       justify-content: center;
       flex-direction: column;
@@ -75,6 +75,69 @@ function injectMobileMenuAndStoreStyles() {
       border-radius: 99px;
     }
 
+    /* V2.7.5: desktop navigation must always fit without overlapping */
+    body .topbar {
+      box-sizing: border-box !important;
+    }
+
+    body .topbar .brand {
+      flex: 0 0 140px !important;
+      width: 140px !important;
+      min-width: 140px !important;
+      margin-right: 4px !important;
+    }
+
+    body .topbar .brand-logo {
+      width: 140px !important;
+      max-width: 140px !important;
+    }
+
+    body .topbar .nav {
+      min-width: 0 !important;
+      gap: clamp(10px, 1.05vw, 22px) !important;
+      font-size: clamp(14px, 1.05vw, 18px) !important;
+    }
+
+    body .topbar .nav a {
+      flex: 0 0 auto !important;
+      white-space: nowrap !important;
+    }
+
+    body .topbar .report-cta {
+      flex: 0 0 auto !important;
+      min-width: 170px !important;
+      max-width: 185px !important;
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+      font-size: 16px !important;
+      line-height: 1.12 !important;
+      text-align: center !important;
+    }
+
+    @media (max-width: 1450px) {
+      body .topbar {
+        gap: 14px !important;
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+      }
+      body .topbar .brand,
+      body .topbar .brand-logo {
+        width: 122px !important;
+        min-width: 122px !important;
+        max-width: 122px !important;
+      }
+      body .topbar .nav {
+        gap: 10px !important;
+        font-size: 14px !important;
+      }
+      body .topbar .report-cta {
+        min-width: 146px !important;
+        max-width: 160px !important;
+        padding: 12px 11px !important;
+        font-size: 14px !important;
+      }
+    }
+
     .category-tile img[src*="store"] {
       width: 94px !important;
       height: 94px !important;
@@ -85,7 +148,7 @@ function injectMobileMenuAndStoreStyles() {
       transform-origin: center;
     }
 
-    @media (max-width: 820px) {
+    @media (max-width: 980px) {
       .topbar {
         position: relative !important;
         display: grid !important;
@@ -124,7 +187,7 @@ function injectMobileMenuAndStoreStyles() {
         left: 12px !important;
         right: 12px !important;
         z-index: 10000 !important;
-        background: #0b2559 !important;
+        background: #102f6b !important;
         border: 1px solid rgba(255,255,255,.18) !important;
         border-radius: 18px !important;
         padding: 12px !important;
@@ -137,7 +200,7 @@ function injectMobileMenuAndStoreStyles() {
         gap: 6px !important;
       }
 
-      .topbar .nav a {
+      body .topbar .nav a {
         display: block !important;
         padding: 13px 14px !important;
         border-radius: 12px !important;
@@ -146,14 +209,14 @@ function injectMobileMenuAndStoreStyles() {
         font-weight: 900 !important;
       }
 
-      .topbar .nav a:visited {
+      body .topbar .nav a:visited {
         color: #ffffff !important;
       }
 
-      .topbar .nav a:hover,
-      .topbar .nav a.active {
-        background: rgba(255,255,255,.18) !important;
-        color: #ffffff !important;
+      body .topbar .nav a:hover,
+      body .topbar .nav a.active {
+        background: #ffffff !important;
+        color: #0038A8 !important;
       }
     }
 
@@ -173,7 +236,70 @@ function injectMobileMenuAndStoreStyles() {
         max-width: 138px !important;
       }
 
-      .category-tile img[src*="store"] {
+      /* V2.7.5: desktop navigation must always fit without overlapping */
+    body .topbar {
+      box-sizing: border-box !important;
+    }
+
+    body .topbar .brand {
+      flex: 0 0 140px !important;
+      width: 140px !important;
+      min-width: 140px !important;
+      margin-right: 4px !important;
+    }
+
+    body .topbar .brand-logo {
+      width: 140px !important;
+      max-width: 140px !important;
+    }
+
+    body .topbar .nav {
+      min-width: 0 !important;
+      gap: clamp(10px, 1.05vw, 22px) !important;
+      font-size: clamp(14px, 1.05vw, 18px) !important;
+    }
+
+    body .topbar .nav a {
+      flex: 0 0 auto !important;
+      white-space: nowrap !important;
+    }
+
+    body .topbar .report-cta {
+      flex: 0 0 auto !important;
+      min-width: 170px !important;
+      max-width: 185px !important;
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+      font-size: 16px !important;
+      line-height: 1.12 !important;
+      text-align: center !important;
+    }
+
+    @media (max-width: 1450px) {
+      body .topbar {
+        gap: 14px !important;
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+      }
+      body .topbar .brand,
+      body .topbar .brand-logo {
+        width: 122px !important;
+        min-width: 122px !important;
+        max-width: 122px !important;
+      }
+      body .topbar .nav {
+        gap: 10px !important;
+        font-size: 14px !important;
+      }
+      body .topbar .report-cta {
+        min-width: 146px !important;
+        max-width: 160px !important;
+        padding: 12px 11px !important;
+        font-size: 14px !important;
+      }
+    }
+
+    .category-tile img[src*="store"] {
         width: 100px !important;
         height: 100px !important;
         max-width: 100px !important;
@@ -241,8 +367,8 @@ function getCurrentNavLabel() {
   if (path.includes("risks")) return "Risks";
   if (path.includes("methodology")) return "Methodology";
   if (path.includes("artists")) return "Artists";
-  if (path.includes("media")) return "They Talk About Us";
   if (path.includes("partners")) return "Partners";
+  if (path.includes("media")) return "They Talk About Us";
   if (path.includes("admin")) return "Admin";
   return "Home";
 }
