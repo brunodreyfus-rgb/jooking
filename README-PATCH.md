@@ -1,10 +1,12 @@
-# Jooking v2.7.3 fix patch
-Based on jooking-main (4).zip.
+Jooking v2.7.5 patch
+
+Only new/updated files:
+- assets/js/components.js
+- assets/css/media.css
+- pages/media.html
 
 Fixes:
-- Media page is included physically at pages/media.html (fixes Vercel 404 once this file is committed/deployed).
-- Adds "They Talk About Us" to the shared navigation.
-- Adds working Incidents by year rendering on Risk Map (JS + CSS + HTML).
-- Updates homepage banner from 192 to 213 published reports.
-
-Only new/updated files are included.
+1. Desktop header navigation no longer overlaps Report Incident/Admin.
+2. Mobile hamburger menu has high-contrast white text on navy, with active/hover item white background + blue text.
+3. Adds Radio JM Marseille interview from September 22, 2026 to They Talk About Us.
+4. Media page supports multiple cards cleanly on desktop and mobile.
