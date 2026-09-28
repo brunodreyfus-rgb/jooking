@@ -590,3 +590,21 @@ main {
     direction: ltr !important;
   }
 }
+
+
+/* V2.8.7 — country flags / selector polish */
+.country-flag {
+  font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif !important;
+  overflow: hidden;
+}
+
+#countrySelect {
+  font-family: Arial, "Noto Sans Hebrew", sans-serif !important;
+  font-weight: 700 !important;
+}
+
+#countrySelect option {
+  direction: rtl;
+  unicode-bidi: plaintext;
+  font-weight: 600;
+}
