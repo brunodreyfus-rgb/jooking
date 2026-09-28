@@ -123,7 +123,7 @@
 
   function isoFromRow(row){
     const fields = [
-      row?.country_code, row?.iso2, row?.iso_2, row?.code,
+      row?.country_code, row?.iso2, row?.iso_2,
       row?.CountryCode, row?.countryCode, row?.country_iso2
     ];
 
@@ -151,6 +151,12 @@
     const s = String(iso || "").toUpperCase();
     if (!/^[A-Z]{2}$/.test(s)) return "";
     return String.fromCodePoint(...[...s].map(c => 127397 + c.charCodeAt(0)));
+  }
+
+  function flagImageUrl(iso){
+    const s = String(iso || "").toLowerCase();
+    if (!/^[a-z]{2}$/.test(s)) return "";
+    return `https://flagcdn.com/w160/${s}.png`;
   }
 
   function countryIdentity(row){
@@ -293,15 +299,8 @@
     sel.innerHTML =
       '<option value="">בחרו מדינה</option>' +
       countryRows.map(r => {
-        const inferredIso =
-          r.iso ||
-          ISO_BY_HE[normalizeHebrew(r.country_he || "")] ||
-          ISO_BY_HE_DYNAMIC[normalizeHebrew(r.country_he || "")] ||
-          ISO_BY_EN[normalizeLatin(r.country_en || "")] ||
-          "";
-        const dropdownFlag = r.flag_emoji || flagFromIso(inferredIso);
         const cleanCountryLabel = cleanLabel(r.country_he || r.country_en);
-        const label = `${dropdownFlag ? dropdownFlag + " " : ""}${cleanCountryLabel}`;
+        const label = cleanCountryLabel;
         return `<option value="${esc(r.key)}">${esc(label)}</option>`;
       }).join("");
   }
@@ -334,7 +333,7 @@
       ISO_BY_HE_DYNAMIC[normalizeHebrew(row.country_he || "")] ||
       ISO_BY_EN[normalizeLatin(row.country_en || "")] ||
       "";
-    const flag = row.flag_emoji || flagFromIso(inferredIso) || "🏳️";
+    const flagUrl = flagImageUrl(inferredIso);
 
     const warningText = w
       ? (w.recommendation_he || w.recommendation || w.description_he || w.description || "אזהרת מסע רשמית זמינה למדינה זו.")
@@ -347,7 +346,11 @@
 
     $("helpContent").innerHTML = `
       <section class="country-hero-card">
-        <div class="country-flag" aria-hidden="true">${esc(flag)}</div>
+        ${flagUrl ? `
+          <div class="country-flag">
+            <img src="${esc(flagUrl)}" alt="${esc(countryName)}" loading="eager" referrerpolicy="no-referrer" onerror="this.closest('.country-flag').style.display='none'" />
+          </div>
+        ` : ""}
         <div class="country-hero-copy">
           <div class="country-eyebrow">מידע לישראלים בחו״ל</div>
           <h2>${esc(countryName)}</h2>
@@ -389,7 +392,7 @@
 
         <section class="help-card help-contact-card">
           <div class="card-heading-row">
-            <div class="card-icon">🇮🇱</div>
+            <div class="card-icon card-icon-israel">✡</div>
             <div>
               <div class="card-kicker">סיוע קונסולרי</div>
               <h2>${esc(h.embassy_name_he || ("נציגות ישראל — " + countryName))}</h2>
