@@ -181,8 +181,80 @@
     })[Number(level)] || "אין רמת אזהרה זמינה";
   }
 
+  function parseOfficialDate(value){
+    if (value === null || value === undefined || value === "") return null;
+    const s = String(value).trim();
+
+    let m = s.match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{4})/);
+    if (m) {
+      const d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+      return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (m) {
+      const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+      return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    const d = new Date(s);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  function officialWarningDates(row){
+    if (!row) return { published: null, updated: null };
+
+    const raw = (row.raw_payload && typeof row.raw_payload === "object") ? row.raw_payload : {};
+    const merged = { ...raw, ...row };
+    let published = null;
+    let updated = null;
+
+    const publicationKeys = [
+      "publication_date", "published_at", "publish_date", "date_published",
+      "PublicationDate", "PublishDate", "תאריך פרסום", "תאריך_פרסום"
+    ];
+    const updateKeys = [
+      "warning_updated_at", "source_updated_at", "update_date", "last_update_date",
+      "date_updated", "UpdateDate", "LastUpdateDate", "תאריך עדכון", "תאריך_עדכון"
+    ];
+
+    for (const key of publicationKeys) {
+      if (merged[key] !== undefined) {
+        published = parseOfficialDate(merged[key]);
+        if (published) break;
+      }
+    }
+    for (const key of updateKeys) {
+      if (merged[key] !== undefined) {
+        updated = parseOfficialDate(merged[key]);
+        if (updated) break;
+      }
+    }
+
+    /* Fallback for minor field-name changes in data.gov.il. */
+    for (const [key, value] of Object.entries(raw)) {
+      const k = String(key).toLowerCase().replace(/[\s_-]+/g, " ").trim();
+      if (!published && (k.includes("פרסום") || k.includes("publish"))) {
+        published = parseOfficialDate(value);
+      }
+      if (!updated && (k.includes("עדכון") || k.includes("update"))) {
+        updated = parseOfficialDate(value);
+      }
+    }
+
+    return { published, updated };
+  }
+
+  function formatOfficialDate(date){
+    return date ? date.toLocaleDateString("he-IL", { day:"2-digit", month:"2-digit", year:"numeric" }) : "";
+  }
+
   function warningTimestamp(row){
-    const raw = row?.updated_at || row?.synced_at || row?.created_at || row?.last_updated || 0;
+    const dates = officialWarningDates(row);
+    const preferred = dates.updated || dates.published;
+    if (preferred) return preferred.getTime();
+
+    const raw = row?.updated_at || row?.created_at || row?.last_updated || row?.synced_at || 0;
     const ts = new Date(raw).getTime();
     return Number.isFinite(ts) ? ts : 0;
   }
@@ -386,7 +458,14 @@
 
           <div class="source-note">
             מקור: המטה לביטחון לאומי / data.gov.il
-            ${w?.synced_at ? ` · עודכן ${esc(new Date(w.synced_at).toLocaleDateString("he-IL"))}` : ""}
+            ${w ? (() => {
+              const dates = officialWarningDates(w);
+              if (dates.updated && dates.published && dates.updated.getTime() !== dates.published.getTime()) {
+                return ` · פורסם ${esc(formatOfficialDate(dates.published))} · עודכן לאחרונה ${esc(formatOfficialDate(dates.updated))}`;
+              }
+              const date = dates.updated || dates.published;
+              return date ? ` · ${dates.updated ? "עודכן לאחרונה" : "פורסם"} ${esc(formatOfficialDate(date))}` : "";
+            })() : ""}
           </div>
         </section>
 
