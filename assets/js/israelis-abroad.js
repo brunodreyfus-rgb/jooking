@@ -27,6 +27,30 @@
   };
 
 
+
+  const ISO_BY_HE_DYNAMIC = (() => {
+    const out = {};
+    try {
+      const dn = new Intl.DisplayNames(["he"], { type: "region" });
+      for (let a = 65; a <= 90; a++) {
+        for (let b = 65; b <= 90; b++) {
+          const iso = String.fromCharCode(a, b);
+          const name = dn.of(iso);
+          if (!name || name === iso) continue;
+
+          const normalized = String(name)
+            .replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g, "")
+            .replace(/[״"'׳]/g, "")
+            .replace(/\s+/g, " ")
+            .trim();
+
+          if (normalized) out[normalized] = iso;
+        }
+      }
+    } catch(e) {}
+    return out;
+  })();
+
   const ISO_BY_HE = {
     "אוגנדה":"UG","אזרבייג'ן":"AZ","אזרבייג׳ן":"AZ","אוסטריה":"AT","אוסטרליה":"AU",
     "איטליה":"IT","אירלנד":"IE","איסלנד":"IS","אלבניה":"AL","אלג'יריה":"DZ","אנגליה":"GB",
@@ -36,7 +60,7 @@
     "ישראל":"IL","ליטא":"LT","לטביה":"LV","מקסיקו":"MX","מרוקו":"MA","נורבגיה":"NO",
     "ניו זילנד":"NZ","ספרד":"ES","פולין":"PL","פורטוגל":"PT","פינלנד":"FI","צרפת":"FR",
     "קולומביה":"CO","קנדה":"CA","קפריסין":"CY","קרואטיה":"HR","רומניה":"RO","שוודיה":"SE",
-    "שווייץ":"CH","שוויץ":"CH","תאילנד":"TH","תוניסיה":"TN","דרום אפריקה":"ZA"
+    "שווייץ":"CH","שוויץ":"CH","תאילנד":"TH","תוניסיה":"TN","דרום אפריקה":"ZA","איי הבהאמאס":"BS","בהאמה":"BS","בהאמאס":"BS","אוזבקיסטן":"UZ","איחוד האמירויות הערביות":"AE","ארצות הברית":"US","קוריאה הדרומית":"KR","דרום קוריאה":"KR","צ׳כיה":"CZ","צכיה":"CZ"
   };
 
   const ISO_BY_EN = {
@@ -72,11 +96,16 @@
   }
 
   function cleanLabel(v){
-    return String(v || "")
-      .replace(/^\s*[A-Z]{2}\s+/u, "")
-      .replace(/\s+[A-Z]{2}\s*$/u, "")
+    let s = String(v || "")
+      .replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g, "")
+      .replace(/\u00A0/g, " ")
       .replace(/\s+/g, " ")
       .trim();
+
+    s = s.replace(/^[A-Z]{2}(?:\s*[-–—:|]\s*|\s+)/u, "");
+    s = s.replace(/(?:\s*[-–—:|]\s*|\s+)[A-Z]{2}$/u, "");
+    s = s.replace(/^[A-Z]{2}$/u, "");
+    return s.trim();
   }
 
   function normalizeLatin(v){
@@ -115,7 +144,7 @@
     if (ISO_BY_EN[en]) return ISO_BY_EN[en];
 
     const he = normalizeHebrew(row?.country_he || row?.country || "");
-    return ISO_BY_HE[he] || "";
+    return ISO_BY_HE[he] || ISO_BY_HE_DYNAMIC[he] || "";
   }
 
   function flagFromIso(iso){
@@ -264,7 +293,15 @@
     sel.innerHTML =
       '<option value="">בחרו מדינה</option>' +
       countryRows.map(r => {
-        const label = `${r.flag_emoji ? r.flag_emoji + " " : ""}${r.country_he || r.country_en}`;
+        const inferredIso =
+          r.iso ||
+          ISO_BY_HE[normalizeHebrew(r.country_he || "")] ||
+          ISO_BY_HE_DYNAMIC[normalizeHebrew(r.country_he || "")] ||
+          ISO_BY_EN[normalizeLatin(r.country_en || "")] ||
+          "";
+        const dropdownFlag = r.flag_emoji || flagFromIso(inferredIso);
+        const cleanCountryLabel = cleanLabel(r.country_he || r.country_en);
+        const label = `${dropdownFlag ? dropdownFlag + " " : ""}${cleanCountryLabel}`;
         return `<option value="${esc(r.key)}">${esc(label)}</option>`;
       }).join("");
   }
@@ -290,8 +327,14 @@
 
     const h = row.help || fallbackHelpCard(row);
     const w = row.warning || null;
-    const countryName = row.country_he || row.country_en || "";
-    const flag = row.flag_emoji || flagFromIso(row.iso) || "🌍";
+    const countryName = cleanLabel(row.country_he || row.country_en || "");
+    const inferredIso =
+      row.iso ||
+      ISO_BY_HE[normalizeHebrew(row.country_he || "")] ||
+      ISO_BY_HE_DYNAMIC[normalizeHebrew(row.country_he || "")] ||
+      ISO_BY_EN[normalizeLatin(row.country_en || "")] ||
+      "";
+    const flag = row.flag_emoji || flagFromIso(inferredIso) || "🏳️";
 
     const warningText = w
       ? (w.recommendation_he || w.recommendation || w.description_he || w.description || "אזהרת מסע רשמית זמינה למדינה זו.")
