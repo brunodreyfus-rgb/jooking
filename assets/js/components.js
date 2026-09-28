@@ -39,7 +39,10 @@ function siteHeader(current = "") {
         </span>
         Report Incident
       </a>
-    </header>`;
+    </header>
+    <a class="israel-help-fab" href="/pages/israelis-abroad.html" lang="he" dir="rtl" aria-label="עזרה לישראלים בחו״ל">
+      <span aria-hidden="true">🆘</span> עזרה לישראלים בחו״ל
+    </a>`;
 }
 
 function siteFooter() {
@@ -138,6 +141,28 @@ function injectMobileMenuAndStoreStyles() {
       }
     }
 
+
+    .israel-help-fab {
+      position: fixed !important;
+      right: 18px !important;
+      bottom: 18px !important;
+      z-index: 12000 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      padding: 12px 16px !important;
+      border-radius: 999px !important;
+      background: #c81e1e !important;
+      color: #ffffff !important;
+      font-weight: 900 !important;
+      font-size: 15px !important;
+      text-decoration: none !important;
+      box-shadow: 0 12px 30px rgba(127, 29, 29, .28) !important;
+      border: 2px solid rgba(255,255,255,.9) !important;
+    }
+    .israel-help-fab:hover { background: #a91515 !important; transform: translateY(-1px); }
+    .israel-help-fab:visited { color: #ffffff !important; }
+
     .category-tile img[src*="store"] {
       width: 94px !important;
       height: 94px !important;
@@ -217,6 +242,17 @@ function injectMobileMenuAndStoreStyles() {
       body .topbar .nav a.active {
         background: #ffffff !important;
         color: #0038A8 !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .israel-help-fab {
+        right: 10px !important;
+        bottom: 10px !important;
+        left: 10px !important;
+        justify-content: center !important;
+        font-size: 15px !important;
+        padding: 12px 14px !important;
       }
     }
 

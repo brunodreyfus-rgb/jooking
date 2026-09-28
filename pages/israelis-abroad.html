@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>עזרה לישראלים בחו״ל | Jooking</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/israelis-abroad.css" />
+</head>
+<body class="israel-help-page">
+  <div id="siteHeader"></div>
+  <main class="help-shell">
+    <section class="help-hero">
+      <h1>עזרה לישראלים בחו״ל</h1>
+      <p>פרטי נציגויות ישראל, מספרי חירום ואזהרות מסע רשמיות — במקום אחד.</p>
+      <div class="help-disclaimer">במצב של סכנה מיידית יש לפנות קודם לשירותי החירום המקומיים. Jooking אינו שירות חירום ואינו מחליף את משרד החוץ או הרשויות המקומיות.</div>
+    </section>
+
+    <div class="help-search">
+      <select id="countrySelect" aria-label="בחרו מדינה"><option>טוען מדינות…</option></select>
+      <button id="countryGo" type="button">הצג מידע</button>
+    </div>
+
+    <div id="helpContent"><div class="help-card help-empty">טוען מידע…</div></div>
+
+    <section class="help-card help-general">
+      <h3>לא מצאתם את הנציגות או שאתם זקוקים לסיוע דחוף?</h3>
+      <p><strong>חדר מצב משרד החוץ — 24/7</strong></p>
+      <div class="help-actions">
+        <a class="danger" href="tel:+97225303155">+972-2-530-3155</a>
+        <a href="https://wa.me/972505073969" target="_blank" rel="noopener">WhatsApp: +972-50-507-3969</a>
+      </div>
+    </section>
+  </main>
+  <div id="siteFooter"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/supabase-client.js"></script>
+  <script src="/assets/js/components.js"></script>
+  <script>document.getElementById('siteHeader').innerHTML=siteHeader('');document.getElementById('siteFooter').innerHTML=siteFooter();</script>
+  <script src="/assets/js/israelis-abroad.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
+</body>
+</html>

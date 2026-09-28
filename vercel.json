@@ -29,5 +29,11 @@
       "destination": "https://jooking.org/:path*",
       "permanent": true
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/sync-travel-warnings",
+      "schedule": "0 3 * * *"
+    }
   ]
 }
