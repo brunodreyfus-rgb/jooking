@@ -129,3 +129,10 @@
   .help-actions { flex-direction: column; }
   .help-actions a { width: 100%; box-sizing: border-box; }
 }
+
+
+/* v2.8.2 — the Jooking logo is already visible in the header on this page.
+   Keep the footer clean and avoid repeating the brand mark. */
+.israel-help-page #siteFooter .brand {
+  display: none !important;
+}
