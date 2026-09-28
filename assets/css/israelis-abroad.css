@@ -608,3 +608,10 @@ main {
   unicode-bidi: plaintext;
   font-weight: 600;
 }
+
+
+/* V2.8.8 — real flags, no regional-indicator letters */
+.country-flag { padding:0!important; overflow:hidden!important; background:#fff!important; }
+.country-flag img { display:block!important; width:100%!important; height:100%!important; object-fit:cover!important; border-radius:inherit!important; }
+.card-icon-israel { color:#0d63d9!important; font-size:26px!important; font-family:Arial,sans-serif!important; }
+#countrySelect option { font-family:Arial, "Noto Sans Hebrew", sans-serif!important; }
